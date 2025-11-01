@@ -1,0 +1,89 @@
+/* components/UpcomingEvents.css */
+.events-section {
+  padding: 4rem 1rem;
+  background-color: var(--gray-light);
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.event-card {
+  background: var(--white);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.event-image {
+  height: 200px;
+  overflow: hidden;
+}
+
+.event-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.event-card:hover .event-image img {
+  transform: scale(1.1);
+}
+
+.event-content {
+  padding: 1.5rem;
+}
+
+.event-content h3 {
+  color: var(--uiu-orange);
+  margin-bottom: 1rem;
+}
+
+.event-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: var(--gray-dark);
+}
+
+.event-description {
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.event-actions {
+  text-align: right;
+}
+
+.no-events {
+  text-align: center;
+  padding: 2rem;
+  color: var(--gray-dark);
+}
+
+.events-actions {
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .events-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .event-content {
+    padding: 1rem;
+  }
+}

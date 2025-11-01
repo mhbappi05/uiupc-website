@@ -1,0 +1,9 @@
+/* pages/Admin.css */
+.admin-page {
+  min-height: 60vh;
+}
+
+.admin-content {
+  padding: 2rem 0;
+  text-align: center;
+}

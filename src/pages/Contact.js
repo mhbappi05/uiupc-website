@@ -1,0 +1,298 @@
+// pages/Contact.js
+import React, { useRef, useState } from "react";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaYoutube,
+  FaLinkedinIn,
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaClock,
+  FaPaperPlane,
+  FaCheck,
+  FaExclamationTriangle,
+} from "react-icons/fa";
+import emailjs from "emailjs-com";
+import "./Contact.css";
+
+const Contact = () => {
+  const form = useRef();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+  const [submitMessage, setSubmitMessage] = useState("");
+
+  // Replace these with your actual EmailJS credentials
+  const EMAILJS_CONFIG = {
+    serviceID: "service_sdytxvx", // From Email Services
+    templateID: "template_uretp9v", // From Email Templates
+    userID: "VI-iKC1S467IURbXu", // From Account > API Keys (Public Key)
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    emailjs
+      .sendForm(
+        EMAILJS_CONFIG.serviceID,
+        EMAILJS_CONFIG.templateID,
+        form.current,
+        EMAILJS_CONFIG.userID
+      )
+      .then((result) => {
+        console.log("Email sent successfully:", result.text);
+        setIsSubmitting(false);
+        setSubmitStatus("success");
+        setSubmitMessage(
+          "Thank you! Your message has been sent successfully. We will get back to you soon."
+        );
+        form.current.reset();
+      })
+      .catch((error) => {
+        console.error("Email sending failed:", error.text);
+        setIsSubmitting(false);
+        setSubmitStatus("error");
+        setSubmitMessage(
+          "Sorry, there was an error sending your message. Please try again or email us directly at photographyclub@dccsa.uiu.ac.bd"
+        );
+      });
+  };
+
+  return (
+    <div className="contact-page">
+      <div className="page-header">
+        <h1>Contact Us</h1>
+        <p>Get in touch with UIU Photography Club</p>
+      </div>
+
+      <div className="container">
+        <div className="contact-content">
+          <div className="contact-grid">
+            {/* Contact Information */}
+            <div className="contact-info">
+              {/* Social Media Links */}
+              <div className="social-section">
+                <h3>Follow Us</h3>
+                <div className="social-links">
+                  <a
+                    href="https://facebook.com/UIUPC"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-link facebook"
+                  >
+                    <FaFacebookF className="social-icon" />
+                    <span>Facebook</span>
+                  </a>
+
+                  <a
+                    href="https://www.instagram.com/uiuphotographyclub"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-link instagram"
+                  >
+                    <FaInstagram className="social-icon" />
+                    <span>Instagram</span>
+                  </a>
+
+                  <a
+                    href="https://www.youtube.com/@uiupc6885"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-link youtube"
+                  >
+                    <FaYoutube className="social-icon" />
+                    <span>YouTube</span>
+                  </a>
+
+                  <a
+                    href="https://linkedin.com/company/uiupc"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-link linkedin"
+                  >
+                    <FaLinkedinIn className="social-icon" />
+                    <span>LinkedIn</span>
+                  </a>
+                </div>
+              </div>
+
+              <div className="contact-details">
+
+                <div className="contact-item">
+                  <div className="contact-icon">
+                    <FaClock className="icon" />
+                  </div>
+                  <div className="contact-text">
+                    <h3>Club Hours</h3>
+                    <p>
+                      Saturday - Sunday: 8:30 AM - 4:30 PM
+                    </p>
+                    <p>
+                      Tuesday - Thursday: 8:30 AM - 4:30 PM
+                      <br />
+                      Makeup classday : By appointment
+                    </p>
+                  </div>
+                </div>
+
+                <div className="contact-item">
+                  <div className="contact-icon">
+                    <FaEnvelope className="icon" />
+                  </div>
+                  <div className="contact-text">
+                    <h3>Email</h3>
+                    <a href="mailto:photographyclub@dccsa.uiu.ac.bd">
+                      photographyclub@dccsa.uiu.ac.bd
+                    </a>
+                  </div>
+                </div>
+
+                <div className="contact-item">
+                  <div className="contact-icon">
+                    <FaMapMarkerAlt className="icon" />
+                  </div>
+                  <div className="contact-text">
+                    <h3>Location</h3>
+                    <p>
+                      United International University
+                      <br />
+                      United City, Madani Avenue
+                      <br />
+                      Dhaka 1212, Bangladesh
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Form */}
+            <div className="contact-form-container">
+              <h2>Send us a Message</h2>
+
+              {/* Status Messages */}
+              {submitStatus === "success" && (
+                <div className="status-message success">
+                  <FaCheck className="status-icon" />
+                  {submitMessage}
+                </div>
+              )}
+
+              {submitStatus === "error" && (
+                <div className="status-message error">
+                  <FaExclamationTriangle className="status-icon" />
+                  {submitMessage}
+                </div>
+              )}
+
+              <form ref={form} className="contact-form" onSubmit={handleSubmit}>
+                <div className="form-group">
+                  <label htmlFor="name">Full Name *</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="from_name"
+                    placeholder="Enter your full name"
+                    required
+                    disabled={isSubmitting}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="email">Email Address *</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="from_email"
+                    placeholder="Enter your email"
+                    required
+                    disabled={isSubmitting}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="subject">Subject *</label>
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    placeholder="What is this regarding?"
+                    required
+                    disabled={isSubmitting}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="department">Department (Optional)</label>
+                  <input
+                    type="text"
+                    id="department"
+                    name="department"
+                    placeholder="Your department at UIU"
+                    disabled={isSubmitting}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="message">Message *</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows="5"
+                    placeholder="Tell us about your inquiry, collaboration idea, or anything else..."
+                    required
+                    disabled={isSubmitting}
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  className={`btn-primary submit-btn ${
+                    isSubmitting ? "submitting" : ""
+                  }`}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="spinner"></div>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <FaPaperPlane className="btn-icon" />
+                      Send Message
+                    </>
+                  )}
+                </button>
+              </form>
+            </div>
+          </div>
+
+          {/* Map Section */}
+          <div className="map-section">
+            <h2>Find Us at UIU</h2>
+            <div className="map-container">
+              <div className="map-placeholder">
+                <div className="map-icon">🗺️</div>
+                <h3>United International University</h3>
+                <p>United City, Madani Avenue, Badda, Dhaka 1212, Bangladesh</p>
+                <div className="map-actions">
+                  <a
+                    href="https://maps.google.com/?q=United+International+University+Dhaka"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-secondary"
+                  >
+                    Open in Google Maps
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Contact;

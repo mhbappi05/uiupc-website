@@ -1,0 +1,90 @@
+/* components/MemberCard.css */
+.member-card {
+  background: var(--white);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.member-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.member-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.member-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.role-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--white);
+}
+
+.role-badge.president {
+  background: var(--uiu-orange);
+}
+
+.role-badge.secretary {
+  background: var(--uiu-orange-light);
+}
+
+.member-info {
+  padding: 1.5rem;
+}
+
+.member-info h3 {
+  color: var(--uiu-orange);
+  margin-bottom: 0.5rem;
+}
+
+.member-role {
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 0.25rem;
+}
+
+.member-department {
+  color: var(--gray-dark);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.member-bio {
+  color: var(--gray-dark);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.member-social {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.member-social a {
+  display: inline-block;
+  padding: 0.5rem;
+  background: var(--gray-light);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.member-social a:hover {
+  background: var(--uiu-orange);
+  color: var(--white);
+}

@@ -1,0 +1,9 @@
+/* pages/Blog.css */
+.blog-page {
+  min-height: 60vh;
+}
+
+.blog-content {
+  padding: 2rem 0;
+  text-align: center;
+}

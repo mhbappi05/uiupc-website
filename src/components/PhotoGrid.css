@@ -1,0 +1,72 @@
+/* components/PhotoGrid.css */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 0 1rem;
+}
+
+.photo-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  aspect-ratio: 4/3;
+}
+
+.photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.photo-item:hover img {
+  transform: scale(1.05);
+}
+
+.photo-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: var(--white);
+  padding: 1.5rem;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.photo-item:hover .photo-overlay {
+  transform: translateY(0);
+}
+
+.photo-info h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.photo-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.no-photos {
+  text-align: center;
+  padding: 3rem;
+  color: var(--gray-dark);
+}
+
+@media (max-width: 768px) {
+  .photo-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+  
+  .photo-overlay {
+    transform: translateY(0);
+    background: rgba(0, 0, 0, 0.7);
+  }
+}

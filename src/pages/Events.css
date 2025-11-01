@@ -1,0 +1,9 @@
+/* pages/Events.css */
+.events-page {
+  min-height: 60vh;
+}
+
+.events-content {
+  padding: 2rem 0;
+  text-align: center;
+}
