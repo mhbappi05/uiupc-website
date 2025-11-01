@@ -50,7 +50,7 @@ const Navbar = ({ user }) => {
           <img src={myLogo} alt="UIUPC Logo" className="logo-icon" />
           <div className="logo-text">
             <span className="logo-main">UIUPC</span>
-            <span className="logo-sub">Photography Club</span>
+            <span className="logo-sub">UIU Photography Club</span>
           </div>
         </Link>
 

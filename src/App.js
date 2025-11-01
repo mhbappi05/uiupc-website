@@ -17,6 +17,7 @@ import Join from './pages/Join';
 import Contact from './pages/Contact';
 import Admin from './pages/Admin';
 import Loading from './components/Loading';
+import EventDetail from './pages/EventDetail';
 
 // Styles
 import './styles/App.css';
@@ -93,6 +94,7 @@ function App() {
             <Route path="/blog" element={<Blog />} />
             <Route path="/join" element={<Join />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/events/:eventId" element={<EventDetail />} />
             {user && <Route path="/admin" element={<Admin user={user} />} />}
           </Routes>
         </main>
