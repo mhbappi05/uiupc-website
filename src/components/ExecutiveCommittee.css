@@ -62,14 +62,14 @@
 }
 
 .carousel-card.left {
-  transform: translateX(-100%) scale(0.8);
+  transform: translateX(-120%) scale(0.8);
   z-index: 20;
   opacity: 0.6;
   filter: blur(1px) brightness(0.9);
 }
 
 .carousel-card.right {
-  transform: translateX(100%) scale(0.8);
+  transform: translateX(120%) scale(0.8);
   z-index: 20;
   opacity: 0.6;
   filter: blur(1px) brightness(0.9);
@@ -135,7 +135,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 2rem;
+  padding: 0.1rem;
   color: white;
   transition: all 0.4s ease;
   display: flex;
@@ -208,7 +208,7 @@
 }
 
 .member-department {
-  color: rgba(255, 255, 255, 0.9);
+  color: white;
   font-weight: 500;
   margin: 0 0 1.5rem 0;
   font-size: 0.9rem;
@@ -217,10 +217,10 @@
   text-align: left;
 }
 
-/* Social Links in Bottom Left */
-.social-links {
+/* Social Links - Icons Only (No Background, No Border) */
+/* .social-links {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   justify-content: flex-start;
   opacity: 0.9;
   transition: all 0.3s ease;
@@ -235,37 +235,43 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 5px;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
+  width: auto;
+  height: auto;
+  background: transparent;
+  border-radius: 0;
   color: white;
   text-decoration: none;
   transition: all 0.3s ease;
-  font-size: 0.9rem;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 1.4rem;
+  border: none;
+  padding: 0;
 }
 
 .social-link:hover {
   transform: translateY(-2px) scale(1.1);
-  background: rgba(255, 255, 255, 0.3);
+  background: transparent;
+  border: none;
 }
 
 .social-link.facebook:hover {
-  background: #1877F2;
-  border-color: #1877F2;
+  color: #1877F2;
 }
 
 .social-link.instagram:hover {
-  background: #E4405F;
-  border-color: #E4405F;
+  color: #E4405F;
+}
+
+.social-link.linkedin:hover {
+  color: #0A66C2;
+}
+
+.social-link.behance:hover {
+  color: #1769FF;
 }
 
 .social-link.portfolio:hover {
-  background: var(--uiu-orange);
-  border-color: var(--uiu-orange);
-}
+  color: var(--uiu-orange);
+} */
 
 /* Navigation Controls */
 .carousel-controls {
@@ -394,6 +400,10 @@
     font-size: 0.85rem;
   }
   
+  .social-link {
+    font-size: 1.3rem;
+  }
+  
   .carousel-controls {
     gap: 1.5rem;
     margin-top: 2rem;
@@ -443,9 +453,11 @@
   }
   
   .social-link {
-    width: 32px;
-    height: 32px;
-    font-size: 0.85rem;
+    font-size: 1.2rem;
+  }
+  
+  .social-links {
+    gap: 0.8rem;
   }
   
   .carousel-controls {

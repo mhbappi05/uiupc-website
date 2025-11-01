@@ -1,19 +1,21 @@
 // pages/Members.js
-import React, { useState, useEffect } from 'react';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
-import { db } from '../firebase';
-import MemberCard from '../components/MemberCard';
-import ExecutiveCommittee from '../components/ExecutiveCommittee';
-import PreviousCommittee from '../components/PreviousCommittee';
-import Loading from '../components/Loading';
-import './Members.css';
+import React, { useState, useEffect } from "react";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { db } from "../firebase";
+import MemberCard from "../components/MemberCard";
+import ExecutiveCommittee from "../components/ExecutiveCommittee";
+import PreviousCommittee from "../components/PreviousCommittee";
+import Loading from "../components/Loading";
+import "./Members.css";
 
 const Members = () => {
   const [members, setMembers] = useState([]);
   const [currentCommittee, setCurrentCommittee] = useState([]);
   const [previousCommittees, setPreviousCommittees] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('current');
+  const [activeTab, setActiveTab] = useState("current");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [membersPerPage] = useState(8);
 
   useEffect(() => {
     fetchMembers();
@@ -26,72 +28,210 @@ const Members = () => {
       const demoMembers = [
         {
           id: 1,
-          name: "Sarah Johnson",
+          name: "Ishrak Ahmed",
           department: "Computer Science & Engineering",
-          profileImage: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face",
-          role: "Photographer",
+          profileImage:
+            "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983043/ishrak_yyw6tr.jpg",
+          role: "Head of Designer",
           social: {
             facebook: "https://facebook.com/sarahjohnson",
-            instagram: "https://instagram.com/sarahjohnson"
-          }
+            instagram: "https://instagram.com/sarahjohnson",
+          },
         },
         {
           id: 2,
-          name: "Mike Chen",
-          department: "Electrical Engineering",
-          profileImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
-          role: "Videographer",
+          name: "Md Reza",
+          department: "Computer Science & Engineering",
+          profileImage:
+            "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983043/reza_raexvo.jpg",
+          role: "Head of Org.",
           social: {
-            instagram: "https://instagram.com/mikechen",
-            portfolio: "https://mikechen.com"
-          }
+            facebook: "https://facebook.com/sarahjohnson",
+            instagram: "https://instagram.com/sarahjohnson",
+          },
         },
         {
           id: 3,
-          name: "Emily Davis",
-          department: "Business Administration",
-          profileImage: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
-          role: "Event Coordinator",
+          name: "Abdul Mohsen Rubay",
+          department: "Computer Science & Engineering",
+          profileImage:
+            "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761984293/rubay_tdrwo8.jpg",
+          role: "Head of PR",
           social: {
-            facebook: "https://facebook.com/emilydavis",
-            linkedin: "https://linkedin.com/in/emilydavis"
-          }
+            instagram: "https://instagram.com/mikechen",
+            portfolio: "https://mikechen.com",
+          },
         },
         {
           id: 4,
-          name: "Alex Rodriguez",
-          department: "Architecture",
-          profileImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
-          role: "Portrait Specialist",
+          name: "Md Zobaer Ahmed",
+          department: "Computer Science & Engineering",
+          profileImage:
+            "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983045/zobayer_rztaox.jpg",
+          role: "Head of HR",
           social: {
-            instagram: "https://instagram.com/alexrodriguez",
-            behance: "https://behance.net/alexrodriguez"
-          }
+            facebook: "https://facebook.com/emilydavis",
+            linkedin: "https://linkedin.com/in/emilydavis",
+          },
         },
         {
           id: 5,
-          name: "Jessica Wang",
-          department: "Graphic Design",
-          profileImage: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=face",
-          role: "Creative Director",
+          name: "Dipto Mahdud Sultan",
+          department: "Department of MSJ",
+          profileImage:
+            "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983041/dipto_yxckvv.jpg",
+          role: "Head of Event",
           social: {
-            instagram: "https://instagram.com/jessicawang",
-            portfolio: "https://jessicawang.design"
-          }
+            instagram: "https://instagram.com/alexrodriguez",
+            behance: "https://behance.net/alexrodriguez",
+          },
         },
         {
           id: 6,
-          name: "David Kim",
-          department: "Film Studies",
-          profileImage: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&crop=face",
-          role: "Cinematographer",
+          name: "Tahsin Topu",
+          department: "Computer Science & Engineering",
+          profileImage:
+            "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983046/topu_g4zpf6.jpg",
+          role: "Ass. Head of ORG",
+          social: {
+            instagram: "https://instagram.com/jessicawang",
+            portfolio: "https://jessicawang.design",
+          },
+        },
+        {
+          id: 7,
+          name: "Tanvir Ahmed",
+          department: "Computer Science & Engineering",
+          profileImage:
+            "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/tanvir_cuzdid.jpg",
+          role: "Ass. Head of ORG",
           social: {
             youtube: "https://youtube.com/davidkim",
-            instagram: "https://instagram.com/davidkim"
-          }
-        }
+            instagram: "https://instagram.com/davidkim",
+          },
+        },
+        {
+          id: 8,
+          name: "Jonayed",
+          department: "Computer Science & Engineering",
+          profileImage:
+            "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983043/Jonayed_ozbke5.jpg",
+          role: "Designer",
+          social: {
+            youtube: "https://youtube.com/davidkim",
+            instagram: "https://instagram.com/davidkim",
+          },
+        },
+        {
+          id: 9,
+          name: "Rani",
+          department: "Computer Science & Engineering",
+          profileImage:
+            "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983042/rani_yjhsyo.jpg",
+          role: "Ass. Head of PR",
+          social: {
+            youtube: "https://youtube.com/davidkim",
+            instagram: "https://instagram.com/davidkim",
+          },
+        },
+        {
+          id: 10,
+          name: "Siddiquee Shuaib",
+          department: "Electrical & Electronic Engineering",
+          profileImage:
+            "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/shuaib_yripkq.jpg",
+          role: "Ass. Head of PR",
+          social: {
+            youtube: "https://youtube.com/davidkim",
+            instagram: "https://instagram.com/davidkim",
+          },
+        },
+        {
+          id: 11,
+          name: "Ishrak Farhan",
+          department: "Computer Science & Engineering",
+          profileImage:
+            "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983043/farhan_z4d9el.jpg",
+          role: "Ass. Head of HR",
+          social: {
+            youtube: "https://youtube.com/davidkim",
+            instagram: "https://instagram.com/davidkim",
+          },
+        },
+        {
+          id: 12,
+          name: "Rifat Hassan Rabib",
+          department: "Computer Science & Engineering",
+          profileImage:
+            "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983041/rabib_dzpawf.jpg",
+          role: "Ass. Head of HR",
+          social: {
+            youtube: "https://youtube.com/davidkim",
+            instagram: "https://instagram.com/davidkim",
+          },
+        },
+        {
+          id: 13,
+          name: "Minhaz Hossain Shemul",
+          department: "Electrical & Electronic Engineering",
+          profileImage:
+            "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/shemul_o2n1am.jpg",
+          role: "Executives",
+          social: {
+            youtube: "https://youtube.com/davidkim",
+            instagram: "https://instagram.com/davidkim",
+          },
+        },
+        {
+          id: 14,
+          name: "Mayesha Nur",
+          department: "Computer Science & Engineering",
+          profileImage:
+            "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/maisha_eawkws.jpg",
+          role: "Executives",
+          social: {
+            youtube: "https://youtube.com/davidkim",
+            instagram: "https://instagram.com/davidkim",
+          },
+        },
+        {
+          id: 15,
+          name: "Jahid Hasan Sabbir",
+          department: "Computer Science & Engineering",
+          profileImage:
+            "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983043/sabbir_tdtnke.jpg",
+          role: "Executives",
+          social: {
+            youtube: "https://youtube.com/davidkim",
+            instagram: "https://instagram.com/davidkim",
+          },
+        },
+        {
+          id: 16,
+          name: "Zannatul Amin",
+          department: "Computer Science & Engineering",
+          profileImage:
+            "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983042/anika_anssy2.jpg",
+          role: "Executives",
+          social: {
+            youtube: "https://youtube.com/davidkim",
+            instagram: "https://instagram.com/davidkim",
+          },
+        },
+        {
+          id: 17,
+          name: "Arean Nobi",
+          department: "Computer Science & Engineering",
+          profileImage:
+            "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983041/arean_ubnwpt.jpg",
+          role: "Executives",
+          social: {
+            youtube: "https://youtube.com/davidkim",
+            instagram: "https://instagram.com/davidkim",
+          },
+        },
       ];
-      
+
       setMembers(demoMembers);
       setLoading(false);
     } catch (error) {
@@ -108,68 +248,74 @@ const Members = () => {
         name: "Pulok Sikder",
         role: "President",
         department: "Computer Science & Engineering",
-        profileImage: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=300&h=300&fit=crop&crop=face",
+        profileImage:
+          "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983041/pulok_fotumj.jpg",
         social: {
           facebook: "https://facebook.com/puloksikder",
           instagram: "https://instagram.com/puloksikder",
-        }
+        },
       },
       {
         id: 2,
         name: "Nafis Nawal",
         role: "Vice President",
         department: "Computer Science & Engineering",
-        profileImage: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&h=300&fit=crop&crop=face",
+        profileImage:
+          "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983045/nafis_fslsiw.jpg",
         social: {
           facebook: "https://facebook.com/nafisnawal",
-          instagram: "https://instagram.com/nafisnawal"
-        }
+          instagram: "https://instagram.com/nafisnawal",
+        },
       },
       {
         id: 3,
         name: "Md Mahmudul Hasan",
         role: "General Secretary",
         department: "Computer Science & Engineering",
-        profileImage: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=300&h=300&fit=crop&crop=face",
+        profileImage:
+          "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983042/hasan_p7zfgk.jpg",
         social: {
           facebook: "https://facebook.com/mahmudulhasan",
           linkedin: "https://linkedin.com/in/mahmudulhasan",
-          portfolio: "https://mahmudulhasan.com"
-        }
+          portfolio: "https://mahmudulhasan.com",
+        },
       },
       {
         id: 4,
         name: "Ahmad Hasan",
         role: "Ass. General Secretary",
         department: "Computer Science & Engineering",
-        profileImage: "https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=300&h=300&fit=crop&crop=face",
+        profileImage:
+          "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983042/ahmad_enzaam.jpg",
         social: {
           facebook: "https://facebook.com/ahmadhasan",
-          instagram: "https://instagram.com/ahmadhasan"
-        }
+          instagram: "https://instagram.com/ahmadhasan",
+        },
       },
       {
         id: 5,
         name: "Muhit Khan",
         role: "Treasurer",
         department: "Computer Science & Engineering",
-        profileImage: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&h=300&fit=crop&crop=face",
+        profileImage:
+          "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983045/muhit_pvc0bx.jpg",
         social: {
           facebook: "https://facebook.com/muhitkhan",
-          instagram: "https://instagram.com/muhitkhan"
-        }
+          instagram: "https://instagram.com/muhitkhan",
+        },
       },
       {
         id: 6,
         name: "Anika Anjum Mona",
         role: "Ass. Treasurer",
         department: "Environmental Science",
-        profileImage: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=300&fit=crop&crop=face",
+        profileImage:
+          "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/mona_y54t2k.jpg",
         social: {
           facebook: "https://facebook.com/anikamona",
-          instagram: "https://instagram.com/anikamona"
-        }
-      }
+          instagram: "https://instagram.com/anikamona",
+        },
+      },
     ];
 
     // Previous Committees with more detailed data
@@ -177,83 +323,121 @@ const Members = () => {
       {
         year: "2023",
         members: [
-          { 
-            name: "Alex Thompson", 
-            role: "President", 
+          {
+            name: "Alex Thompson",
+            role: "President",
             department: "Computer Science & Engineering",
-            profileImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+            profileImage:
+              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
           },
-          { 
-            name: "Maria Garcia", 
-            role: "Vice President", 
+          {
+            name: "Maria Garcia",
+            role: "Vice President",
             department: "Electrical & Electronic Engineering",
-            profileImage: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face"
+            profileImage:
+              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
           },
-          { 
-            name: "James Wilson", 
-            role: "General Secretary", 
+          {
+            name: "James Wilson",
+            role: "General Secretary",
             department: "Business Administration",
-            profileImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+            profileImage:
+              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
           },
-          { 
-            name: "Lisa Brown", 
-            role: "Treasurer", 
+          {
+            name: "Lisa Brown",
+            role: "Treasurer",
             department: "Economics",
-            profileImage: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
-          }
-        ]
+            profileImage:
+              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+          },
+        ],
       },
       {
         year: "2022",
         members: [
-          { 
-            name: "Robert Davis", 
-            role: "President", 
+          {
+            name: "Robert Davis",
+            role: "President",
             department: "Computer Science & Engineering",
-            profileImage: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face"
+            profileImage:
+              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
           },
-          { 
-            name: "Sarah Miller", 
-            role: "Vice President", 
+          {
+            name: "Sarah Miller",
+            role: "Vice President",
             department: "Pharmacy",
-            profileImage: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
+            profileImage:
+              "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
           },
-          { 
-            name: "Kevin Lee", 
-            role: "Secretary", 
+          {
+            name: "Kevin Lee",
+            role: "Secretary",
             department: "Economics",
-            profileImage: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&h=150&fit=crop&crop=face"
-          }
-        ]
+            profileImage:
+              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&h=150&fit=crop&crop=face",
+          },
+        ],
       },
       {
         year: "2021",
         members: [
-          { 
-            name: "Michael Brown", 
-            role: "President", 
+          {
+            name: "Michael Brown",
+            role: "President",
             department: "Architecture",
-            profileImage: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face"
+            profileImage:
+              "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face",
           },
-          { 
-            name: "Jennifer Wilson", 
-            role: "Vice President", 
+          {
+            name: "Jennifer Wilson",
+            role: "Vice President",
             department: "English Literature",
-            profileImage: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face"
+            profileImage:
+              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
           },
-          { 
-            name: "Chris Taylor", 
-            role: "Secretary", 
+          {
+            name: "Chris Taylor",
+            role: "Secretary",
             department: "Law",
-            profileImage: "https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=150&h=150&fit=crop&crop=face"
-          }
-        ]
-      }
+            profileImage:
+              "https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=150&h=150&fit=crop&crop=face",
+          },
+        ],
+      },
     ];
 
     setCurrentCommittee(currentExecutives);
     setPreviousCommittees(previousExecutives);
   };
+
+  //pagination logic
+  const indexOfLastMember = currentPage * membersPerPage;
+  const indexOfFirstMember = indexOfLastMember - membersPerPage;
+  const currentMembers = members.slice(indexOfFirstMember, indexOfLastMember);
+  const totalPages = Math.ceil(members.length / membersPerPage);
+
+  //change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  //next page
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  //previous page
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  //reset to page 1 when tab changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeTab]);
 
   if (loading) {
     return <Loading />;
@@ -265,11 +449,14 @@ const Members = () => {
         {/* Executive Committee Section */}
         <section className="executive-section">
           <div className="section-header">
-            <h2>Executive Committee 2024</h2>
-            <p>The dedicated team leading our photography community</p>
+            <h2>Meet Our Team</h2>
+            <p className="carousel-subtitle">
+              The passionate individuals driving our photography community
+              forward
+            </p>
             <div className="section-divider"></div>
           </div>
-          
+
           <ExecutiveCommittee members={currentCommittee} />
         </section>
 
@@ -277,29 +464,82 @@ const Members = () => {
         <section className="members-tabs-section">
           <div className="tabs-container">
             <div className="tabs-header">
-              <button 
-                className={`tab-button ${activeTab === 'current' ? 'active' : ''}`}
-                onClick={() => setActiveTab('current')}
+              <button
+                className={`tab-button ${
+                  activeTab === "current" ? "active" : ""
+                }`}
+                onClick={() => setActiveTab("current")}
               >
                 Current Members
               </button>
-              <button 
-                className={`tab-button ${activeTab === 'previous' ? 'active' : ''}`}
-                onClick={() => setActiveTab('previous')}
+              <button
+                className={`tab-button ${
+                  activeTab === "previous" ? "active" : ""
+                }`}
+                onClick={() => setActiveTab("previous")}
               >
                 Previous Committees
               </button>
             </div>
 
             <div className="tab-content">
-              {activeTab === 'current' ? (
+              {activeTab === "current" ? (
                 <div className="current-members">
+                  {/* Members Count */}
+                  <div className="members-count">
+                    Showing {indexOfFirstMember + 1}-
+                    {Math.min(indexOfLastMember, members.length)} of{" "}
+                    {members.length} members
+                  </div>
+
                   <div className="members-grid">
-                    {members.map(member => (
+                    {currentMembers.map((member) => (
                       <MemberCard key={member.id} member={member} />
                     ))}
                   </div>
-                  
+
+                  {/* Pagination Controls */}
+                  {members.length > membersPerPage && (
+                    <div className="pagination-controls">
+                      <button
+                        className={`pagination-btn ${
+                          currentPage === 1 ? "disabled" : ""
+                        }`}
+                        onClick={prevPage}
+                        disabled={currentPage === 1}
+                      >
+                        Previous
+                      </button>
+
+                      <div className="pagination-numbers">
+                        {Array.from(
+                          { length: totalPages },
+                          (_, i) => i + 1
+                        ).map((number) => (
+                          <button
+                            key={number}
+                            className={`pagination-number ${
+                              currentPage === number ? "active" : ""
+                            }`}
+                            onClick={() => paginate(number)}
+                          >
+                            {number}
+                          </button>
+                        ))}
+                      </div>
+
+                      <button
+                        className={`pagination-btn ${
+                          currentPage === totalPages ? "disabled" : ""
+                        }`}
+                        onClick={nextPage}
+                        disabled={currentPage === totalPages}
+                      >
+                        Next
+                      </button>
+                    </div>
+                  )}
+
                   {members.length === 0 && (
                     <div className="no-members">
                       <div className="no-members-icon">📸</div>
@@ -319,7 +559,10 @@ const Members = () => {
         <section className="join-cta-section">
           <div className="cta-content">
             <h2>Want to Join Our Community?</h2>
-            <p>Become part of UIU's vibrant photography family and showcase your talent</p>
+            <p>
+              Become part of UIU's vibrant photography family and showcase your
+              talent
+            </p>
             <button className="btn-primary cta-button">
               Join Photography Club
             </button>

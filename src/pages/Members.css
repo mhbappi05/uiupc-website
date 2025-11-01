@@ -330,3 +330,120 @@
     font-size: 1.6rem;
   }
 }
+
+/* Members Count */
+.members-count {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--gray-dark);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Pagination Controls */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding: 2rem 0;
+}
+
+.pagination-btn {
+  padding: 0.75rem 1.5rem;
+  background: var(--white);
+  border: 2px solid var(--uiu-orange);
+  color: var(--uiu-orange);
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;
+}
+
+.pagination-btn:hover:not(.disabled) {
+  background: var(--uiu-orange);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+.pagination-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: var(--gray);
+  color: var(--gray-dark);
+}
+
+.pagination-numbers {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.pagination-number {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--gray);
+  background: var(--white);
+  color: var(--gray-dark);
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pagination-number:hover {
+  border-color: var(--uiu-orange);
+  color: var(--uiu-orange);
+  transform: translateY(-2px);
+}
+
+.pagination-number.active {
+  background: var(--uiu-orange);
+  border-color: var(--uiu-orange);
+  color: var(--white);
+  transform: scale(1.1);
+}
+
+/* Responsive Pagination */
+@media (max-width: 768px) {
+  .pagination-controls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .pagination-numbers {
+    order: -1;
+    margin-bottom: 1rem;
+  }
+  
+  .pagination-number {
+    width: 40px;
+    height: 40px;
+    font-size: 0.9rem;
+  }
+  
+  .pagination-btn {
+    min-width: 80px;
+    padding: 0.6rem 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pagination-numbers {
+    gap: 0.25rem;
+  }
+  
+  .pagination-number {
+    width: 35px;
+    height: 35px;
+    font-size: 0.8rem;
+  }
+  
+  .members-count {
+    font-size: 0.9rem;
+  }
+}

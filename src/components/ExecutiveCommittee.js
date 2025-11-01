@@ -92,20 +92,10 @@ const ExecutiveCommittee = ({ members }) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="carousel-header">
-        <h2>Meet Our Team</h2>
-        <p className="carousel-subtitle">
-          The passionate individuals driving our photography community forward
-        </p>
-      </div>
-
       <div className="carousel-container" ref={carouselRef}>
         <div className="carousel-track">
           {members.map((member, index) => {
             const position = getCardPosition(index);
-            const nameParts = member.name.split(" ");
-            const firstName = nameParts[0];
-            const lastName = nameParts.slice(1).join(" ");
             return (
               <div
                 key={member.id}
@@ -132,16 +122,11 @@ const ExecutiveCommittee = ({ members }) => {
                   {/* Content Overlay */}
                   <div className="card-overlay">
                     <div className="member-info">
+                      <h3 className="member-name">{member.name}</h3>
                       <div className="member-role">{member.role}</div>
-                      <h3 className="member-name">
-                        <span className="member-name-line">{firstName}</span>
-                        {lastName && (
-                          <span className="member-name-line">{lastName}</span>
-                        )}
-                      </h3>
                       <p className="member-department">{member.department}</p>
 
-                      <div className="social-links">
+                      {/* <div className="social-links">
                         {member.social &&
                           Object.entries(member.social).map(
                             ([platform, url]) => (
@@ -157,7 +142,7 @@ const ExecutiveCommittee = ({ members }) => {
                               </a>
                             )
                           )}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
