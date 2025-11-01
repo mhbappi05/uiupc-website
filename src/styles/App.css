@@ -4,7 +4,16 @@
   flex-direction: column;
 }
 
+body {
+  padding-top: 80px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 main {
+  min-height: calc(100vh-80vh);
   flex: 1;
 }
 

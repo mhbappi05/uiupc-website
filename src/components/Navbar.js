@@ -1,17 +1,30 @@
 // components/Navbar.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
+import { FaCamera, FaTimes, FaBars } from 'react-icons/fa';
+import myLogo from '../assests/logo.jpg';
 import './Navbar.css';
 
 const Navbar = ({ user }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleSignOut = async () => {
     try {
       await signOut(auth);
+      setIsMenuOpen(false);
     } catch (error) {
       console.error("Error signing out:", error);
     }
@@ -19,101 +32,118 @@ const Navbar = ({ user }) => {
 
   const isActive = (path) => location.pathname === path;
 
+  const navItems = [
+    { path: '/', label: 'Home' },
+    { path: '/gallery', label: 'Gallery' },
+    { path: '/members', label: 'Members' },
+    { path: '/events', label: 'Events' },
+    { path: '/blog', label: 'Blog' },
+    { path: '/join', label: 'Join Us' },
+    { path: '/contact', label: 'Contact' },
+  ];
+
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="nav-container">
-        <Link to="/" className="nav-logo">
-          <div className="logo">
-            <span className="logo-icon">📷</span>
-            <span>UIU Photography Club</span>
+        {/* Logo */}
+        <Link to="/" className="nav-logo" onClick={() => setIsMenuOpen(false)}>
+          <img src={myLogo} alt="UIUPC Logo" className="logo-icon" />
+          <div className="logo-text">
+            <span className="logo-main">UIUPC</span>
+            <span className="logo-sub">Photography Club</span>
           </div>
         </Link>
 
-        <div className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
-          <Link 
-            to="/" 
-            className={`nav-link ${isActive('/') ? 'active' : ''}`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Home
-          </Link>
-          <Link 
-            to="/gallery" 
-            className={`nav-link ${isActive('/gallery') ? 'active' : ''}`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Gallery
-          </Link>
-          <Link 
-            to="/members" 
-            className={`nav-link ${isActive('/members') ? 'active' : ''}`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Members
-          </Link>
-          <Link 
-            to="/events" 
-            className={`nav-link ${isActive('/events') ? 'active' : ''}`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Events
-          </Link>
-          <Link 
-            to="/blog" 
-            className={`nav-link ${isActive('/blog') ? 'active' : ''}`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Blog
-          </Link>
-          <Link 
-            to="/join" 
-            className={`nav-link ${isActive('/join') ? 'active' : ''}`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Join Us
-          </Link>
-          <Link 
-            to="/contact" 
-            className={`nav-link ${isActive('/contact') ? 'active' : ''}`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Contact
-          </Link>
+        {/* Desktop Menu */}
+        <div className="nav-menu">
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`nav-link ${isActive(item.path) ? 'active' : ''}`}
+            >
+              {item.label}
+            </Link>
+          ))}
+          
+          {user && (
+            <Link to="/admin" className={`nav-link admin-link ${isActive('/admin') ? 'active' : ''}`}>
+              Admin
+            </Link>
+          )}
+          
+          <div className="nav-actions">
+            {user ? (
+              <button className="nav-btn sign-out" onClick={handleSignOut}>
+                Sign Out
+              </button>
+            ) : (
+              <Link to="/join" className="nav-btn join-btn">
+                Join Now
+              </Link>
+            )}
+          </div>
+        </div>
+
+        {/* Mobile Menu Toggle */}
+        <button 
+          className="nav-toggle"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          {isMenuOpen ? <FaTimes /> : <FaBars />}
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      <div className={`mobile-menu ${isMenuOpen ? 'active' : ''}`}>
+        <div className="mobile-menu-content">
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`mobile-nav-link ${isActive(item.path) ? 'active' : ''}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {item.label}
+            </Link>
+          ))}
           
           {user && (
             <Link 
               to="/admin" 
-              className={`nav-link admin-link ${isActive('/admin') ? 'active' : ''}`}
+              className="mobile-nav-link admin-link"
               onClick={() => setIsMenuOpen(false)}
             >
               Admin
             </Link>
           )}
           
-          {user ? (
-            <button className="btn-secondary nav-btn" onClick={handleSignOut}>
-              Sign Out
-            </button>
-          ) : (
-            <Link 
-              to="/join" 
-              className="btn-primary nav-btn"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Join Now
-            </Link>
-          )}
-        </div>
-
-        <div 
-          className={`nav-toggle ${isMenuOpen ? 'active' : ''}`}
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          <span className="bar"></span>
-          <span className="bar"></span>
-          <span className="bar"></span>
+          <div className="mobile-actions">
+            {user ? (
+              <button className="mobile-btn sign-out" onClick={handleSignOut}>
+                Sign Out
+              </button>
+            ) : (
+              <Link 
+                to="/join" 
+                className="mobile-btn join-btn"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Join Now
+              </Link>
+            )}
+          </div>
         </div>
       </div>
+
+      {/* Backdrop for mobile menu */}
+      {isMenuOpen && (
+        <div 
+          className="menu-backdrop"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
     </nav>
   );
 };
