@@ -103,8 +103,8 @@ const Events = () => {
       },
       image: "/api/placeholder/1200/600",
       gallery: [
-        "/api/placeholder/400/300",
-        "/api/placeholder/400/300",
+        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114875/ss2_lmeeau.jpg",
+        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114876/ss3_cn8xru.jpg",
         "/api/placeholder/400/300",
       ],
     },
@@ -130,11 +130,11 @@ const Events = () => {
         chapters: "3",
         awards: "30+",
       },
-      image: "/api/placeholder/1200/600",
+      image: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762113860/muthography2_rvnrai.jpg",
       gallery: [
         "/api/placeholder/400/300",
-        "/api/placeholder/400/300",
-        "/api/placeholder/400/300",
+        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762113860/muthography2_rvnrai.jpg",
+        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114587/muthography3_tri0zz.jpg",
       ],
     },
     "photo-carnival": {
@@ -159,11 +159,11 @@ const Events = () => {
         chapters: "Annual",
         awards: "40+",
       },
-      image: "/api/placeholder/1200/600",
+      image: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114645/Carnival23_wqmjw6.jpg",
       gallery: [
-        "/api/placeholder/400/300",
-        "/api/placeholder/400/300",
-        "/api/placeholder/400/300",
+        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114645/Carnival01_frfe4k.jpg",
+        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114645/Carnival22_firfhw.jpg",
+        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114645/Carnival23_wqmjw6.jpg",
       ],
     },
     "friday-exposures": {
@@ -188,9 +188,9 @@ const Events = () => {
         frequency: "Weekly",
         duration: "Year-round",
       },
-      image: "/api/placeholder/1200/600",
+      image: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114757/FE01_sav4cs.jpg",
       gallery: [
-        "/api/placeholder/400/300",
+        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114757/FE01_sav4cs.jpg",
         "/api/placeholder/400/300",
         "/api/placeholder/400/300",
       ],
