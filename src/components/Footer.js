@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {
-  FaCamera,
+  /* FaCamera,
   FaFacebookF,
   FaInstagram,
   FaTwitter,
@@ -10,7 +10,7 @@ import {
   FaEnvelope,
   FaPhone,
   FaMapMarkerAlt,
-  FaHeart,
+  FaHeart, */
   FaArrowRight,
 } from "react-icons/fa";
 import "./Footer.css";
@@ -99,7 +99,7 @@ const Footer = () => {
           {/* Quick Links */}
           <div className="footer-section">
             <h3 className="section-title">Quick Links</h3>
-            <ul className="footer-links">
+            <ul className="footer-links two-columns">
               <li>
                 <Link to="/gallery" className="footer-link">
                   <FaArrowRight className="link-icon" />

@@ -73,7 +73,7 @@
 
 .footer-content {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  grid-template-columns: 2fr 1.5fr 1fr;
   gap: 3rem;
   margin-bottom: 3rem;
 }
@@ -234,6 +234,19 @@
 }
 
 /* Footer Links */
+.footer-links.two-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.15rem 2rem;
+}
+
+@media (max-width: 768px) {
+  .footer-links.two-columns {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+}
+
 .footer-links {
   list-style: none;
   display: flex;
