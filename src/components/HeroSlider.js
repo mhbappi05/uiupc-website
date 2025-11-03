@@ -1,68 +1,42 @@
-// components/HeroSlider.js - Eye-catching banner with featured photos
+// components/HeroSlider.js - TEMPORARY LOCAL VERSION
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, orderBy, query, limit } from 'firebase/firestore';
-import { db } from '../firebase';
 import './HeroSlider.css';
 
 const HeroSlider = () => {
-  const [slides, setSlides] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  useEffect(() => {
-    const fetchSlides = async () => {
-      try {
-        const q = query(
-          collection(db, 'heroSlides'), 
-          orderBy('createdAt', 'desc'), 
-          limit(5)
-        );
-        const querySnapshot = await getDocs(q);
-        const slidesData = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setSlides(slidesData);
-      } catch (error) {
-        console.error("Error fetching hero slides:", error);
-      }
-    };
-
-    fetchSlides();
-  }, []);
-
-  useEffect(() => {
-    if (slides.length > 0) {
-      const interval = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % slides.length);
-      }, 5000);
-      return () => clearInterval(interval);
+  
+  // Local slides data - no Firebase
+  const localSlides = [
+    {
+      id: 1,
+      imageUrl: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762118110/uiupc_HeroSlider1_dy7fch.jpg",
+      title: "UIU Photography Club",
+      subtitle: "Capturing Moments, Creating Memories"
+    },
+    {
+      id: 2,
+      imageUrl: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762121158/uiupc_HeroSlider2_cyl1xw.jpg", 
+      title: "Join Our Community",
+      subtitle: "Learn, Share, and Grow Together"
+    },
+    {
+      id: 3,
+      imageUrl: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762121162/uiupc_HeroSlider3_wrpuvz.jpg",
+      title: "Shutter Stories - Chapter IV Coming Soon", 
+      subtitle: "Showcase Your Talent"
     }
-  }, [slides.length]);
+  ];
 
-  const goToSlide = (index) => {
-    setCurrentSlide(index);
-  };
-
-  if (slides.length === 0) {
-    return (
-      <div className="hero-slider">
-        <div className="slide active">
-          <div className="slide-content">
-            <h1>UIU Photography Club</h1>
-            <p>Capturing Moments, Creating Memories</p>
-            <div className="cta-buttons">
-              <button className="btn-primary">Join Now</button>
-              <button className="btn-secondary">View Gallery</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % localSlides.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="hero-slider">
-      {slides.map((slide, index) => (
+      {localSlides.map((slide, index) => (
         <div 
           key={slide.id}
           className={`slide ${index === currentSlide ? 'active' : ''}`}
@@ -70,24 +44,23 @@ const HeroSlider = () => {
         >
           <div className="slide-overlay"></div>
           <div className="slide-content">
-            <h1>{slide.title || "UIU Photography Club"}</h1>
-            <p>{slide.subtitle || "Capturing Moments, Creating Memories"}</p>
-            <div className="cta-buttons">
-              <button className="btn-primary">Join Now</button>
-              <button className="btn-secondary">View Gallery</button>
-            </div>
+            <h1>{slide.title}</h1>
+            <p>{slide.subtitle}</p>
           </div>
         </div>
       ))}
-      <div className="slider-indicators">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            className={`indicator ${index === currentSlide ? 'active' : ''}`}
-            onClick={() => goToSlide(index)}
-          ></button>
-        ))}
-      </div>
+      
+      {localSlides.length > 1 && (
+        <div className="slider-indicators">
+          {localSlides.map((_, index) => (
+            <button
+              key={index}
+              className={`indicator ${index === currentSlide ? 'active' : ''}`}
+              onClick={() => setCurrentSlide(index)}
+            ></button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
