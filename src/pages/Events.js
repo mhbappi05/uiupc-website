@@ -237,7 +237,7 @@ const Events = () => {
             <div className="hero-text">
               <h1 className="hero-title">
                 <span className="title-line">UIU Photography Club</span>
-                <span className="title-line highlight">Grand Events</span>
+                <span className="title-line highlight">Signature Events</span>
               </h1>
               <p className="hero-subtitle">
                 Experience the pinnacle of photographic excellence through our
