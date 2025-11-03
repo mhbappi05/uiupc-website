@@ -1,6 +1,9 @@
 // pages/Join.js
 import React, { useState } from 'react';
 import { 
+  FaChalkboardTeacher,
+  FaImages,
+  FaWalking,
   FaUser, 
   FaEnvelope, 
   FaIdCard, 
@@ -10,7 +13,10 @@ import {
   FaPaperPlane,
   FaCheck,
   FaExclamationTriangle,
-  FaSpinner
+  FaSpinner,
+  FaTrophy,
+  FaHandshake,
+  FaCameraRetro,
 } from 'react-icons/fa';
 import './Join.css';
 
@@ -117,7 +123,7 @@ const Join = () => {
       });
 
       if (response.ok) {
-        const result = await response.text();
+        await response.text();
         setIsSubmitting(false);
         setSubmitStatus('success');
         setSubmitMessage('Thank you for your application! We will review it and get back to you soon.');
@@ -161,37 +167,49 @@ const Join = () => {
               <h2>Why Join Us?</h2>
               <div className="benefits-grid">
                 <div className="benefit-card">
-                  <div className="benefit-icon">📸</div>
+                  <div className="benefit-icon">
+                    <FaChalkboardTeacher />
+                  </div>
                   <h3>Workshops & Training</h3>
                   <p>Learn from experienced photographers and improve your skills</p>
                 </div>
                 
                 <div className="benefit-card">
-                  <div className="benefit-icon">🌟</div>
+                  <div className="benefit-icon">
+                    <FaWalking />
+                  </div>
                   <h3>Photo Walks & Events</h3>
                   <p>Participate in organized photo walks and photography events</p>
                 </div>
                 
                 <div className="benefit-card">
-                  <div className="benefit-icon">🏆</div>
+                  <div className="benefit-icon">
+                    <FaTrophy />
+                  </div>
                   <h3>Competitions</h3>
                   <p>Showcase your work in our regular photography competitions</p>
-                </div>
+                </div>  
                 
                 <div className="benefit-card">
-                  <div className="benefit-icon">🤝</div>
+                  <div className="benefit-icon">
+                    <FaHandshake />
+                  </div>
                   <h3>Networking</h3>
                   <p>Connect with fellow photography enthusiasts</p>
                 </div>
                 
                 <div className="benefit-card">
-                  <div className="benefit-icon">🖼️</div>
+                  <div className="benefit-icon">
+                    <FaImages />
+                  </div>
                   <h3>Exhibitions</h3>
                   <p>Get opportunities to exhibit your work in campus exhibitions</p>
                 </div>
                 
                 <div className="benefit-card">
-                  <div className="benefit-icon">📚</div>
+                  <div className="benefit-icon">
+                    <FaCameraRetro />
+                  </div>
                   <h3>Resources</h3>
                   <p>Access to photography equipment and learning resources</p>
                 </div>
