@@ -2,13 +2,37 @@
 import React from 'react';
 import './MemberCard.css';
 
-const MemberCard = ({ member }) => {
+const MemberCard = ({ member, index }) => {
+  const getSocialIcon = (platform, url) => {
+    const icons = {
+      instagram: '📷',
+      behance: '🎨',
+      portfolio: '🌐',
+      linkedin: '💼',
+      github: '⚡'
+    };
+    
+    return icons[platform] || '🔗';
+  };
+
+  const socialLinks = [
+    { platform: 'instagram', url: member.instagram },
+    { platform: 'behance', url: member.behance },
+    { platform: 'portfolio', url: member.portfolio },
+    { platform: 'linkedin', url: member.linkedin },
+    { platform: 'github', url: member.github }
+  ].filter(link => link.url);
+
   return (
-    <div className="member-card">
+    <div 
+      className="member-card"
+      style={{ animationDelay: `${index * 0.1}s` }}
+    >
       <div className="member-image">
         <img 
           src={member.profileImage || '/default-avatar.png'} 
           alt={member.name}
+          loading="lazy"
         />
         {member.role === 'President' && (
           <span className="role-badge president">President</span>
@@ -24,26 +48,29 @@ const MemberCard = ({ member }) => {
         <p className="member-department">{member.department}</p>
         
         {member.bio && (
-          <p className="member-bio">{member.bio.substring(0, 100)}...</p>
+          <p className="member-bio">
+            {member.bio.length > 120 
+              ? `${member.bio.substring(0, 120)}...` 
+              : member.bio
+            }
+          </p>
         )}
         
-        <div className="member-social">
-          {member.instagram && (
-            <a href={member.instagram} target="_blank" rel="noopener noreferrer">
-              📷
-            </a>
-          )}
-          {member.behance && (
-            <a href={member.behance} target="_blank" rel="noopener noreferrer">
-              🎨
-            </a>
-          )}
-          {member.portfolio && (
-            <a href={member.portfolio} target="_blank" rel="noopener noreferrer">
-              🌐
-            </a>
-          )}
-        </div>
+        {socialLinks.length > 0 && (
+          <div className="member-social">
+            {socialLinks.map((link, idx) => (
+              <a 
+                key={idx}
+                href={link.url} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label={`${member.name}'s ${link.platform}`}
+              >
+                {getSocialIcon(link.platform)}
+              </a>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
