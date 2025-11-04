@@ -15,7 +15,7 @@ const Members = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("current");
   const [currentPage, setCurrentPage] = useState(1);
-  const [membersPerPage] = useState(8);
+  const [membersPerPage] = useState(9);
 
   useEffect(() => {
     fetchMembers();
