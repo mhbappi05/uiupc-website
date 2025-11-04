@@ -1,6 +1,6 @@
 // components/PreviousCommittee.js
 import React, { useState } from 'react';
-import { FaChevronDown, FaChevronUp, FaHistory } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp, FaHistory, FaUsers, FaAward } from 'react-icons/fa';
 import './PreviousCommittee.css';
 
 const PreviousCommittee = ({ committees = [] }) => {
@@ -18,7 +18,7 @@ const PreviousCommittee = ({ committees = [] }) => {
             <FaHistory />
           </div>
           <h3>No Previous Committees</h3>
-          <p>Committee history will be displayed here as the club grows.</p>
+          <p>Committee history will be displayed here as the club grows and new generations take the lead.</p>
         </div>
       </div>
     );
@@ -35,8 +35,14 @@ const PreviousCommittee = ({ committees = [] }) => {
           >
             <div className="timeline-header" onClick={() => toggleYear(committee.year)}>
               <div className="timeline-year">
-                <span className="year-badge">{committee.year}</span>
-                <h3 className="year-title">Executive Committee {committee.year}</h3>
+                <span className="year-badge">
+                  <FaAward style={{ marginRight: '8px', fontSize: '0.9em' }} />
+                  {committee.year}
+                </span>
+                <h3 className="year-title">
+                  <FaUsers style={{ marginRight: '12px', opacity: 0.8 }} />
+                  Executive Committee {committee.year}
+                </h3>
               </div>
               <div className="timeline-toggle">
                 {expandedYear === committee.year ? <FaChevronUp /> : <FaChevronDown />}
