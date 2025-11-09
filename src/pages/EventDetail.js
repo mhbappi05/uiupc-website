@@ -30,7 +30,7 @@ const EventDetail = () => {
       time: "9:00 AM - 8:00 PM",
       //   location: 'UIU Campus & National Museum, Dhaka',
       location: "Will be Announced SOON, Stay Tuned!",
-      // registrationLink: "https://forms.gle/your-registration-link",
+       registrationLink: "/register/shutter-stories",
       entryFee: "Initially Free , 1000BDT per Single Photos & 2000BDT per Photo Story after shortlisting",
       submissionDeadline: "December 15, 2025",
       announcementDate: "November 15, 2025",
@@ -241,7 +241,7 @@ const EventDetail = () => {
               >
                 Register Now <FaExternalLinkAlt />
               </button>
-              <button className="btn-secondary">Add to Calendar</button>
+              {/* <button className="btn-secondary">Add to Calendar</button> */}
             </div>
           </div>
         </div>
