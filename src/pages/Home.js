@@ -23,14 +23,14 @@ const Home = ({ featuredPhotos }) => {
         const mockEvents = [
           {
             id: "shutter-stories",
-            title: "Shutter Stories Chapter 4",
+            title: "Shutter Stories Chapter IV",
             subtitle: "National Photography Exhibition",
             status: "upcoming",
             chapter: "Chapter 4",
             date: "Nov 15 - Dec 20, 2025",
             time: "9:00 AM - 8:00 PM",
             location: "Will be Announced SOON, Stay Tuned!",
-            registrationLink: "https://forms.gle/your-registration-link",
+            // registrationLink: "https://forms.gle/your-registration-link",
             entryFee: "Initially Free, 1000BDT per Single Photos & 2000BDT per Photo Story after shortlisting",
             submissionDeadline: "December 20, 2025",
             announcementDate: "December 20, 2025",

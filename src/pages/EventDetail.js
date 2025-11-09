@@ -22,25 +22,25 @@ const EventDetail = () => {
   const eventData = {
     "shutter-stories": {
       id: "shutter-stories",
-      title: "Shutter Stories Chapter 4",
+      title: "Shutter Stories Chapter IV",
       subtitle: "National Photography Exhibition",
       status: "upcoming",
       chapter: "Chapter 4",
-      date: "Nov 15 - Dec 20, 2025",
+      date: "Nov 15 - Dec 15, 2025",
       time: "9:00 AM - 8:00 PM",
       //   location: 'UIU Campus & National Museum, Dhaka',
       location: "Will be Announced SOON, Stay Tuned!",
-      registrationLink: "https://forms.gle/your-registration-link",
+      // registrationLink: "https://forms.gle/your-registration-link",
       entryFee: "Initially Free , 1000BDT per Single Photos & 2000BDT per Photo Story after shortlisting",
-      submissionDeadline: "December 20, 2025",
-      announcementDate: "December 20, 2025",
+      submissionDeadline: "December 15, 2025",
+      announcementDate: "November 15, 2025",
       description:
         "A prestigious national-level photography exhibition that brings together photography enthusiasts from across the country.",
       fullDescription: `
-        # Shutter Stories Chapter 4
+        # Shutter Stories Chapter IV
         ## National Photography Exhibition
         
-        Welcome to the most anticipated photography event of the year! Shutter Stories Chapter 4 continues our legacy of celebrating visual storytelling through the lens. This national-level exhibition brings together amateur and professional photographers from across Bangladesh.
+        Welcome to the most anticipated photography event of the year! Shutter Stories Chapter IV continues our legacy of celebrating visual storytelling through the lens. This national-level exhibition brings together amateur and professional photographers from across Bangladesh.
 
         ## 🎯 Event Overview
         Shutter Stories is more than just a competition; it's a platform for photographers to share their unique perspectives, tell compelling stories, and connect with like-minded individuals. This year, we're expanding our reach with new categories and exciting opportunities.
@@ -78,11 +78,11 @@ const EventDetail = () => {
         5. **Originality**: Must be your own work
 
         ## ⏰ Important Dates
-        - **Registration Opens**: November 1, 2024
-        - **Submission Deadline**: December 5, 2024
-        - **Jury Review**: December 6-12, 2024
-        - **Exhibition**: December 15-17, 2024
-        - **Award Ceremony**: December 17, 2024
+        - **Registration Opens**: November 15, 2025
+        - **Submission Deadline**: December 15, 2025
+        - **Jury Review**: December 6-12, 2025
+        - **Exhibition**: January 10-25, 2026
+        - **Award Ceremony**: January , 2026
 
         ## 💰 Registration Fees
         - **Single Category**: 1000BDT each
@@ -309,7 +309,7 @@ const EventDetail = () => {
                   </div>
                   <div className="info-item">
                     <strong>Categories</strong>
-                    <span>6 Single + Photo Story</span>
+                    <span>Single & Photo Story</span>
                   </div>
                 </div>
               </div>
@@ -329,7 +329,7 @@ const EventDetail = () => {
                 <h3>Contact Information</h3>
                 <div className="contact-info">
                   <div className="contact-item">
-                    <strong>Event Coordinator</strong>
+                    <strong>Head of PR</strong>
                     <span>{event.contact.coordinator}</span>
                   </div>
                   <div className="contact-item">

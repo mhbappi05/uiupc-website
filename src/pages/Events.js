@@ -48,6 +48,18 @@ const Events = () => {
     return () => clearInterval(timer);
   }, []);
 
+  // Add this function to handle registration
+  const handleRegisterClick = (eventId) => {
+    if (eventId === "shutter-stories") {
+      // Open registration form in a new tab or modal
+      window.open("/register/shutter-stories", "_blank");
+      // Or use navigate if you want same page
+      // navigate('/register/shutter-stories');
+    } else {
+      navigate(`/events/${eventId}`);
+    }
+  };
+
   const signatureEvents = {
     "shutter-stories": {
       id: "shutter-stories",
@@ -62,7 +74,7 @@ const Events = () => {
       description:
         "A prestigious national-level photography exhibition that brings together photography enthusiasts from across the country. Featuring both single photographs and compelling photo stories that narrate powerful visual tales.",
       fullDescription: `
-        Shutter Stories Chapter 4 is our flagship national photography exhibition that celebrates the art of visual storytelling. This year, we're taking it to new heights with expanded categories, prestigious jury members, and exciting prizes.
+        Shutter Stories Chapter IV is our flagship national photography exhibition that celebrates the art of visual storytelling. This year, we're taking it to new heights with expanded categories, prestigious jury members, and exciting prizes.
 
         ## Event Highlights:
         - **National-level participation** from photography enthusiasts
@@ -84,7 +96,7 @@ const Events = () => {
 
         Don't miss this opportunity to showcase your talent on a national platform!
       `,
-      registrationLink: "https://forms.gle/your-registration-link",
+      // registrationLink: "https://forms.gle/your-registration-link",
       entryFee: "Initially Free entry",
       submissionDeadline: "December 20, 2025",
       highlights: [
@@ -130,7 +142,8 @@ const Events = () => {
         chapters: "3",
         awards: "30+",
       },
-      image: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762113860/muthography2_rvnrai.jpg",
+      image:
+        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762113860/muthography2_rvnrai.jpg",
       gallery: [
         "/api/placeholder/400/300",
         "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762113860/muthography2_rvnrai.jpg",
@@ -159,7 +172,8 @@ const Events = () => {
         chapters: "Annual",
         awards: "40+",
       },
-      image: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114645/Carnival23_wqmjw6.jpg",
+      image:
+        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114645/Carnival23_wqmjw6.jpg",
       gallery: [
         "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114645/Carnival01_frfe4k.jpg",
         "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114645/Carnival22_firfhw.jpg",
@@ -188,7 +202,8 @@ const Events = () => {
         frequency: "Weekly",
         duration: "Year-round",
       },
-      image: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114757/FE01_sav4cs.jpg",
+      image:
+        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114757/FE01_sav4cs.jpg",
       gallery: [
         "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114757/FE01_sav4cs.jpg",
         "/api/placeholder/400/300",
@@ -212,10 +227,10 @@ const Events = () => {
 
   const currentEvent = signatureEvents[activeEvent];
 
-  const handleRegisterClick = (eventId) => {
-    navigate(`/events/${eventId}`);
-  };
-/* 
+  // const handleRegisterClick = (eventId) => {
+  //   navigate(`/events/${eventId}`);
+  // };
+  /* 
   const handleViewDetails = (eventId) => {
     navigate(`/events/${eventId}`);
   }; */
@@ -457,7 +472,7 @@ const Events = () => {
                       Submit Now <FaArrowRight />
                     </button>
                   )}
-                 {/*  <button
+                  {/*  <button
                     className="btn-secondary"
                     onClick={() => handleViewDetails(currentEvent.id)}
                   >
