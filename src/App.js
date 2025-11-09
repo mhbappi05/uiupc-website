@@ -18,6 +18,7 @@ import Contact from './pages/Contact';
 import Admin from './pages/Admin';
 import Loading from './components/Loading';
 import EventDetail from './pages/EventDetail';
+import PhotoSubmissionForm from './components/PhotoSubmissionForm';
 
 // Styles
 import './styles/App.css';
@@ -96,6 +97,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/events/:eventId" element={<EventDetail />} />
             {user && <Route path="/admin" element={<Admin user={user} />} />}
+            <Route path="/register/:eventId" element={<PhotoSubmissionForm />} />
           </Routes>
         </main>
         <Footer />
