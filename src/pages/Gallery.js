@@ -17,15 +17,15 @@ const Gallery = () => {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchPhotos();
-    fetchCategories();
-    fetchEvents();
-  }, []);
+  // useEffect(() => {
+  //   fetchPhotos();
+  //   fetchCategories();
+  //   fetchEvents();
+  // }, []);
 
-  useEffect(() => {
-    filterPhotos();
-  }, [activeFilter, filterType, photos]);
+  // useEffect(() => {
+  //   filterPhotos();
+  // }, [activeFilter, filterType, photos]);
 
   // const fetchPhotos = async () => {
   //   try {
