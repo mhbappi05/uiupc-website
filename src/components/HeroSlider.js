@@ -21,7 +21,7 @@ const HeroSlider = () => {
     },
     {
       id: 3,
-      imageUrl: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762121162/uiupc_HeroSlider3_wrpuvz.jpg",
+      imageUrl: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799600/uiupc_HeroSlider3_iehvzr.png",
       title: "Shutter Stories - Chapter IV Coming Soon", 
       subtitle: "Showcase Your Talent"
     }
