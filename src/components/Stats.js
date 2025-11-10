@@ -17,7 +17,7 @@ const Stats = () => {
       description: 'Passionate photographers'
     },
     { 
-      number: '20+', 
+      number: '50+', 
       label: 'Events Organized', 
       icon: FaCalendarAlt,
       color: '#2196F3',
@@ -33,7 +33,7 @@ const Stats = () => {
       description: 'National recognition'
     },
     { 
-      number: '50+', 
+      number: '100+', 
       label: 'Workshops', 
       icon: FaPhotoVideo,
       color: '#9C27B0',
@@ -134,7 +134,7 @@ const Stats = () => {
         <div className="stats-footer">
           <div className="achievement-badge">
             <FaStar className="badge-icon" />
-            <span>Photography Community Since 2008</span>
+            <span>Photography Community Since 2005</span>
           </div>
         </div>
       </div>
