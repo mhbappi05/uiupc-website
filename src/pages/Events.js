@@ -66,7 +66,7 @@ const Events = () => {
       title: "Shutter Stories",
       subtitle: "National Photography Exhibition",
       status: "upcoming",
-      chapter: "Chapter 4",
+      chapter: "Chapter IV",
       date: " Photo Submission Started from November 15, 2025",
       // time: "9:00 AM - 8:00 PM",
       // location: "UIU Campus & National Museum",
@@ -113,7 +113,7 @@ const Events = () => {
         chapters: "3",
         awards: "50+",
       },
-      image: "/api/placeholder/1200/600",
+      image: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799836/Blog5_lbkrue.png",
       gallery: [
         "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114875/ss2_lmeeau.jpg",
         "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114876/ss3_cn8xru.jpg",
@@ -290,7 +290,7 @@ const Events = () => {
               <div className="badge-pulse"></div>
             </div>
             <h2 className="banner-title">Shutter Stories</h2>
-            <h2 className="banner-title">Chapter 4</h2>
+            <h2 className="banner-title">Chapter clearInterval</h2>
             <p className="banner-subtitle">
               National Photography Exhibition • November 15, 2025
             </p>
@@ -341,7 +341,7 @@ const Events = () => {
           <div className="banner-visual">
             <div className="visual-glow"></div>
             <div className="visual-frame">
-              <img src="/api/placeholder/600/400" alt="Shutter Stories" />
+              <img src="https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799836/Blog5_lbkrue.png" alt="Shutter Stories" />
             </div>
           </div>
         </div>
