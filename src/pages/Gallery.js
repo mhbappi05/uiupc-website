@@ -27,61 +27,61 @@ const Gallery = () => {
     filterPhotos();
   }, [activeFilter, filterType, photos]);
 
-  const fetchPhotos = async () => {
-    try {
-      const q = query(collection(db, 'photos'), orderBy('uploadedAt', 'desc'));
-      const querySnapshot = await getDocs(q);
-      const photosData = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setPhotos(photosData);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching photos:", error);
-      setLoading(false);
-    }
-  };
+  // const fetchPhotos = async () => {
+  //   try {
+  //     const q = query(collection(db, 'photos'), orderBy('uploadedAt', 'desc'));
+  //     const querySnapshot = await getDocs(q);
+  //     const photosData = querySnapshot.docs.map(doc => ({
+  //       id: doc.id,
+  //       ...doc.data()
+  //     }));
+  //     setPhotos(photosData);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error("Error fetching photos:", error);
+  //     setLoading(false);
+  //   }
+  // };
 
-  const fetchCategories = async () => {
-    try {
-      const q = query(collection(db, 'categories'));
-      const querySnapshot = await getDocs(q);
-      const categoriesData = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setCategories(categoriesData);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
+  // const fetchCategories = async () => {
+  //   try {
+  //     const q = query(collection(db, 'categories'));
+  //     const querySnapshot = await getDocs(q);
+  //     const categoriesData = querySnapshot.docs.map(doc => ({
+  //       id: doc.id,
+  //       ...doc.data()
+  //     }));
+  //     setCategories(categoriesData);
+  //   } catch (error) {
+  //     console.error("Error fetching categories:", error);
+  //   }
+  // };
 
-  const fetchEvents = async () => {
-    try {
-      const q = query(collection(db, 'events'), orderBy('date', 'desc'));
-      const querySnapshot = await getDocs(q);
-      const eventsData = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setEvents(eventsData);
-    } catch (error) {
-      console.error("Error fetching events:", error);
-    }
-  };
+  // const fetchEvents = async () => {
+  //   try {
+  //     const q = query(collection(db, 'events'), orderBy('date', 'desc'));
+  //     const querySnapshot = await getDocs(q);
+  //     const eventsData = querySnapshot.docs.map(doc => ({
+  //       id: doc.id,
+  //       ...doc.data()
+  //     }));
+  //     setEvents(eventsData);
+  //   } catch (error) {
+  //     console.error("Error fetching events:", error);
+  //   }
+  // };
 
-  const filterPhotos = () => {
-    if (activeFilter === 'all') {
-      setFilteredPhotos(photos);
-    } else {
-      if (filterType === 'category') {
-        setFilteredPhotos(photos.filter(photo => photo.category === activeFilter));
-      } else if (filterType === 'event') {
-        setFilteredPhotos(photos.filter(photo => photo.eventId === activeFilter));
-      }
-    }
-  };
+  // const filterPhotos = () => {
+  //   if (activeFilter === 'all') {
+  //     setFilteredPhotos(photos);
+  //   } else {
+  //     if (filterType === 'category') {
+  //       setFilteredPhotos(photos.filter(photo => photo.category === activeFilter));
+  //     } else if (filterType === 'event') {
+  //       setFilteredPhotos(photos.filter(photo => photo.eventId === activeFilter));
+  //     }
+  //   }
+  // };
 
   const handleFilterChange = (filter, type) => {
     setActiveFilter(filter);
