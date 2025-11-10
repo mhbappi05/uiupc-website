@@ -88,6 +88,27 @@ const PostCard = ({ post }) => {
     setIsExpanded(!isExpanded);
   };
 
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: post.title,
+        text: post.description.substring(0, 100) + '...',
+        url: window.location.href,
+      })
+      .catch((error) => console.log('Error sharing:', error));
+    } else {
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(window.location.href)
+        .then(() => {
+          alert('Link copied to clipboard!');
+        })
+        .catch((error) => {
+          console.log('Error copying to clipboard:', error);
+          alert('Share this page: ' + window.location.href);
+        });
+    }
+  };
+
   const descriptionClass = isExpanded ? 'blog-post-description expanded' : 'blog-post-description';
   const buttonText = isExpanded ? 'Show Less' : 'Show More';
 
@@ -109,6 +130,9 @@ const PostCard = ({ post }) => {
       
       <div className="blog-post-meta">
         <span className="blog-post-date">{post.date}</span>
+        <button className="blog-share-btn" onClick={handleShare}>
+          📤 Share
+        </button>
       </div>
     </div>
   );

@@ -272,15 +272,53 @@
 }
 
 /* Post Meta */
+/* Add to Blog.css */
+
 .blog-post-meta {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   padding-top: 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.7);
   margin-top: auto;
+  gap: 1rem;
+}
+
+.blog-share-btn {
+  background: rgba(255, 107, 0, 0.2);
+  border: 1px solid rgba(255, 107, 0, 0.3);
+  border-radius: 10px;
+  color: #FF6B00;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.blog-share-btn:hover {
+  background: rgba(255, 107, 0, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 107, 0, 0.3);
+}
+
+/* Responsive adjustments for share button */
+@media (max-width: 480px) {
+  .blog-post-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .blog-share-btn {
+    align-self: flex-start;
+  }
 }
 
 .blog-post-date {
