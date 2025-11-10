@@ -1,6 +1,6 @@
 // components/Stats.js - ENHANCED VERSION
 import React, { useEffect, useRef, useState } from 'react';
-import { FaUsers, FaCamera, FaCalendarAlt, FaTrophy, FaHeart, FaStar, FaAward, FaPhotoVideo } from 'react-icons/fa';
+import { FaUsers, FaCalendarAlt, FaTrophy, FaStar, FaPhotoVideo } from 'react-icons/fa';
 import './Stats.css';
 
 const Stats = () => {

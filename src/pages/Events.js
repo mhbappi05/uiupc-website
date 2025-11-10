@@ -6,7 +6,6 @@ import {
   FaMapMarkerAlt,
   FaUsers,
   FaCamera,
-  FaTrophy,
   FaArrowRight,
   FaPlay,
   FaPause,

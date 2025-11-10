@@ -1,6 +1,6 @@
 // pages/Gallery.js - Organized photo gallery with filtering
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
+//import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
 import PhotoGrid from '../components/PhotoGrid';
 import FilterBar from '../components/FilterBar';
