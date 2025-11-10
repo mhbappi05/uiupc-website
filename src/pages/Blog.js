@@ -1,18 +1,189 @@
 // pages/Blog.js
-import React from 'react';
+import React, { useState } from 'react';
 import './Blog.css';
 
+// --- MediaCarousel Component ---
+const MediaCarousel = ({ media }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  if (!media || media.length === 0) {
+    return null;
+  }
+
+  const goToPrevious = (e) => {
+    e.stopPropagation();
+    const isFirstSlide = currentIndex === 0;
+    const newIndex = isFirstSlide ? media.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIndex);
+  };
+
+  const goToNext = (e) => {
+    e.stopPropagation();
+    const isLastSlide = currentIndex === media.length - 1;
+    const newIndex = isLastSlide ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
+  };
+
+  const goToSlide = (slideIndex) => {
+    setCurrentIndex(slideIndex);
+  };
+
+  const currentMedia = media[currentIndex];
+
+  return (
+    <div className="blog-carousel-container">
+      {media.length > 1 && (
+        <>
+          <div className="blog-carousel-arrow blog-left-arrow" onClick={goToPrevious}>
+            &#10094;
+          </div>
+          <div className="blog-carousel-arrow blog-right-arrow" onClick={goToNext}>
+            &#10095;
+          </div>
+        </>
+      )}
+      
+      <div className="blog-slide-container" style={{lineHeight: 0 }}>
+        {currentMedia.type === 'image' ? (
+          <img 
+            src={currentMedia.url} 
+            alt={currentMedia.caption}
+            className="blog-slide-content"
+            loading="lazy"
+            style={{ display: 'block', width: '100%' }}
+          />
+        ) : (
+          <video 
+            controls
+            className="blog-slide-content"
+            poster={currentMedia.thumbnail}
+            style={{ display: 'block', width: '100%' }}
+          >
+            <source src={currentMedia.url} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        )}
+      </div>
+
+      {media.length > 1 && (
+        <div className="blog-dots-container">
+          {media.map((_, slideIndex) => (
+            <div
+              key={slideIndex}
+              className={`blog-dot ${currentIndex === slideIndex ? 'active' : ''}`}
+              onClick={() => goToSlide(slideIndex)}
+            ></div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// --- PostCard Component ---
+const PostCard = ({ post }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleDescription = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const descriptionClass = isExpanded ? 'blog-post-description expanded' : 'blog-post-description';
+  const buttonText = isExpanded ? 'Show Less' : 'Show More';
+
+  return (
+    <div className="blog-post-card">
+      <h2 className="blog-post-title">{post.title}</h2>
+      
+      <div className={descriptionClass}>
+        {post.description}
+      </div>
+      
+      {post.description.length > 120 && (
+        <button className="blog-show-more-btn" onClick={toggleDescription}>
+          {buttonText}
+        </button>
+      )}
+      
+      <MediaCarousel media={post.media} />
+      
+      <div className="blog-post-meta">
+        <span className="blog-post-date">{post.date}</span>
+      </div>
+    </div>
+  );
+};
+
 const Blog = () => {
+  const [posts] = useState([
+    {
+      id: 1,
+      title: "Something is cooking??",
+      description: "Exciting news is on the horizon! UIU Photography Club is thrilled to announce that we are cooking up something special just for you. Stay tuned for an upcoming event that promises to ignite your creativity and passion for photography. Get ready to capture moments, learn new skills, and connect with fellow photography enthusiasts. Keep an eye on our page for more details coming soon!",
+      media: [
+        { 
+          type: 'image', 
+          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799836/Blog5_lbkrue.png',  
+        }
+      ],
+      date: "November 11, 2025"
+    },
+    {
+      id: 2,
+      title: "Media Fest 2025 Achievements",
+      description: "UIU Media Fest 2025 celebrated the brightest talents in creativity, storytelling and we are proud to announce that our very own Executive Members shined with their remarkable achievements! Minhaz Hossain Shemul secured the 1st Runner-up in the Photography Segment, capturing powerful stories! Zannatul Amin Anika, Mayesha Tun Nur, and Jonayed Shah Jesun achieved the 1st Runner-up in the Media Quiz Competition, showcasing their sharp knowledge and passion for media studies. Your hard work, creativity and dedication truly reflect the spirit of excellence that defines UIUPC. Keep inspiring and reaching new milestones!",
+      media: [
+        { 
+          type: 'image', 
+          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762796842/Blog01_rcdns7.jpg',  
+        },
+        { 
+          type: 'image', 
+          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762796842/Blog02_r0zkvb.jpg', 
+        }
+      ],
+      date: "September 30, 2025"
+    },
+    {
+      id: 3,
+      title: "Vertex : Language discussion",
+      description: "We proudly presents another exciting chapter of Vertex! This time, we dive into Language Discussion, where photography meets the art of storytelling through words, visuals and expressions. Join us for an engaging session filled with creative exchanges, thought-provoking conversations! Date: Saturday, 23 August 2025 Time: 3:10 PM .Let's explore how language and photography blend together!",
+      media: [
+        { 
+          type: 'image', 
+          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762797135/Blog03_jpaqiw.jpg',  
+        }
+      ],
+      date: "August 22, 2025"
+    },
+    {
+      id: 4,
+      title: "Photography Day 2025",
+      description: "Photography takes an instant out of time, altering life by holding it still.  -Dorothea Lange, American photographer.Wishing Happy World Photography Day 2025 from UIU Photography Club!",
+      media: [
+        { 
+          type: 'image', 
+          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799155/Blog04_taox6m.jpg',  
+        }
+      ],
+      date: "August 19, 2025"
+    },
+  ]);
+
   return (
     <div className="blog-page">
-      <div className="page-header">
-        <h1>Blog & News</h1>
+      <div className="blog-page-header">
+        <h1>News & Updates</h1>
         <p>Stories, tutorials, and updates from our photography community</p>
       </div>
       
-      <div className="container">
+      <div className="blog-container">
         <div className="blog-content">
-          <p>Blog page coming soon...</p>
+          <div className="blog-posts-grid">
+            {posts.map(post => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
