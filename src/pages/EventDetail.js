@@ -4,13 +4,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   FaCalendarAlt,
   FaMapMarkerAlt,
-  FaUsers,
   FaMoneyBillWave,
   FaClock,
-  FaArrowLeft,
   FaExternalLinkAlt,
-  FaDownload,
-  FaShare,
 } from "react-icons/fa";
 import "./EventDetail.css";
 

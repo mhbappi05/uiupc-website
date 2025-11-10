@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
-import { FaCamera, FaTimes, FaBars } from 'react-icons/fa';
+import { FaTimes, FaBars } from 'react-icons/fa';
 import myLogo from '../assests/logo.jpg';
 import './Navbar.css';
 

@@ -1,7 +1,7 @@
 // pages/Members.js
 import React, { useState, useEffect } from "react";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
-import { db } from "../firebase";
+//import { collection, getDocs, query, orderBy } from "firebase/firestore";
+//import { db } from "../firebase";
 import MemberCard from "../components/MemberCard";
 import ExecutiveCommittee from "../components/ExecutiveCommittee";
 import PreviousCommittee from "../components/PreviousCommittee";
