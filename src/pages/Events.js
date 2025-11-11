@@ -1,5 +1,5 @@
 // pages/Events.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FaCalendarAlt,
@@ -211,18 +211,22 @@ const Events = () => {
     },
   };
 
+  const handleAutoPlay = useCallback(() => {
+    if (isPlaying) {
+      const events = Object.keys(signatureEvents);
+      const currentIndex = events.indexOf(activeEvent);
+      const nextIndex = (currentIndex + 1) % events.length;
+      setActiveEvent(events[nextIndex]);
+    }
+  }, [activeEvent, isPlaying, signatureEvents]);
+
   useEffect(() => {
     let interval;
     if (isPlaying) {
-      interval = setInterval(() => {
-        const events = Object.keys(signatureEvents);
-        const currentIndex = events.indexOf(activeEvent);
-        const nextIndex = (currentIndex + 1) % events.length;
-        setActiveEvent(events[nextIndex]);
-      }, 5000);
+      interval = setInterval(handleAutoPlay, 5000);
     }
     return () => clearInterval(interval);
-  }, [activeEvent, isPlaying]);
+  }, [handleAutoPlay, isPlaying])
 
   const currentEvent = signatureEvents[activeEvent];
 
