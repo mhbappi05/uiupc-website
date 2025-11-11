@@ -146,7 +146,7 @@ const EventDetail = () => {
     window.open(event.registrationLink, "_blank");
   };
 
-  const handleShare = async () => {
+  /* const handleShare = async () => {
     if (navigator.share) {
       try {
         await navigator.share({
@@ -162,7 +162,7 @@ const EventDetail = () => {
       navigator.clipboard.writeText(window.location.href);
       alert("Event link copied to clipboard!");
     }
-  };
+  }; */
 
   return (
     <div className="event-detail-page">
