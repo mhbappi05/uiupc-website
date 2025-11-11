@@ -38,7 +38,6 @@ const Navbar = ({ user }) => {
     { path: '/members', label: 'Members' },
     { path: '/events', label: 'Events' },
     { path: '/blog', label: 'Blog' },
-    { path: '/join', label: 'Join Us' },
     { path: '/contact', label: 'Contact' },
   ];
 
@@ -79,7 +78,7 @@ const Navbar = ({ user }) => {
               </button>
             ) : (
               <Link to="/join" className="nav-btn join-btn">
-                Join Now
+                Join Us
               </Link>
             )}
           </div>
@@ -130,7 +129,7 @@ const Navbar = ({ user }) => {
                 className="mobile-btn join-btn"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Join Now
+                Join Us
               </Link>
             )}
           </div>
