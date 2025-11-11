@@ -1,5 +1,5 @@
 // components/ExecutiveCommittee.js
-import React, { useState, useRef, useEffect, useCAllback} from "react";
+import React, { useState, useRef, useEffect, useCallback} from "react";
 import {
   FaChevronLeft,
   FaChevronRight,
@@ -29,12 +29,11 @@ const ExecutiveCommittee = ({ members }) => {
   //   }
   // };
 
-  const nextSlide = () => {
-    //setDirection("next");
+  const nextSlide = useCallback(() => {
     setCurrentIndex((prevIndex) =>
       prevIndex === members.length - 1 ? 0 : prevIndex + 1
     );
-  };
+  }, [members.length]);
 
   const prevSlide = () => {
     //setDirection("prev");

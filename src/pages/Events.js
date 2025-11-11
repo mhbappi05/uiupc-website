@@ -1,5 +1,5 @@
 // pages/Events.js
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FaCalendarAlt,
@@ -59,7 +59,7 @@ const Events = () => {
     }
   };
 
-  const signatureEvents = {
+  const signatureEvents = useMemo(() => ({
     "shutter-stories": {
       id: "shutter-stories",
       title: "Shutter Stories",
@@ -209,7 +209,7 @@ const Events = () => {
         "/api/placeholder/400/300",
       ],
     },
-  };
+   }), []);
 
   const handleAutoPlay = useCallback(() => {
     if (isPlaying) {
