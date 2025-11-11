@@ -1,5 +1,5 @@
 // pages/Gallery.js - Organized photo gallery with filtering
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PhotoGrid from '../components/PhotoGrid';
 import FilterBar from '../components/FilterBar';
 import Lightbox from '../components/Lightbox';
@@ -140,7 +140,7 @@ const Gallery = () => {
     setLoading(false);
   };
 
-  const filterPhotos = () => {
+  const filterPhotos = useCallback(() => {
     if (activeFilter === 'all') {
       setFilteredPhotos(photos);
     } else {
@@ -150,7 +150,11 @@ const Gallery = () => {
         setFilteredPhotos(photos.filter(photo => photo.eventId === activeFilter));
       }
     }
-  };
+  }, [activeFilter, filterType, photos]);
+
+  useEffect(() => {
+    filterPhotos();
+  }, [filterPhotos]);
 
   const handleFilterChange = (filter, type) => {
     setActiveFilter(filter);
