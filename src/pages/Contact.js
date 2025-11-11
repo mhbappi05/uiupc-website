@@ -20,6 +20,7 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [submitMessage, setSubmitMessage] = useState("");
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false); // Add this line
 
   // Replace these with your actual EmailJS credentials
   const EMAILJS_CONFIG = {
@@ -47,6 +48,10 @@ const Contact = () => {
         setSubmitMessage(
           "Thank you! Your message has been sent successfully. We will get back to you soon."
         );
+        
+        // Show popup message
+        setShowSuccessPopup(true);
+        
         form.current.reset();
       })
       .catch((error) => {
@@ -291,6 +296,31 @@ const Contact = () => {
           </div>
         </div>
       </div>
+
+      {/* Success Popup - Add this at the end of the return statement */}
+      {showSuccessPopup && (
+        <div className="success-popup-overlay">
+          <div className="success-popup">
+            <div className="popup-header">
+              <FaCheck className="popup-icon" />
+              <h3>Message Sent Successfully!</h3>
+            </div>
+            <div className="popup-content">
+              <p>Thank you for contacting UIU Photography Club!</p>
+              <p>We have received your message and will respond to you shortly.</p>
+              <p>You should receive a confirmation email within the next few hours.</p>
+            </div>
+            <div className="popup-actions">
+              <button 
+                className="btn-primary"
+                onClick={() => setShowSuccessPopup(false)}
+              >
+                Got It!
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
