@@ -33,10 +33,6 @@ const Members = () => {
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983043/ishrak_yyw6tr.jpg",
           role: "Head of Designer",
-          social: {
-            facebook: "https://facebook.com/sarahjohnson",
-            instagram: "https://instagram.com/sarahjohnson",
-          },
         },
         {
           id: 2,
@@ -45,10 +41,6 @@ const Members = () => {
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983043/reza_raexvo.jpg",
           role: "Head of Org.",
-          social: {
-            facebook: "https://facebook.com/sarahjohnson",
-            instagram: "https://instagram.com/sarahjohnson",
-          },
         },
         {
           id: 3,
@@ -57,10 +49,6 @@ const Members = () => {
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761984293/rubay_tdrwo8.jpg",
           role: "Head of PR",
-          social: {
-            instagram: "https://instagram.com/mikechen",
-            portfolio: "https://mikechen.com",
-          },
         },
         {
           id: 4,
@@ -69,10 +57,6 @@ const Members = () => {
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983045/zobayer_rztaox.jpg",
           role: "Head of HR",
-          social: {
-            facebook: "https://facebook.com/emilydavis",
-            linkedin: "https://linkedin.com/in/emilydavis",
-          },
         },
         {
           id: 5,
@@ -81,10 +65,6 @@ const Members = () => {
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983041/dipto_yxckvv.jpg",
           role: "Head of Event",
-          social: {
-            instagram: "https://instagram.com/alexrodriguez",
-            behance: "https://behance.net/alexrodriguez",
-          },
         },
         {
           id: 6,
@@ -93,10 +73,6 @@ const Members = () => {
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983046/topu_g4zpf6.jpg",
           role: "Ass. Head of ORG",
-          social: {
-            instagram: "https://instagram.com/jessicawang",
-            portfolio: "https://jessicawang.design",
-          },
         },
         {
           id: 7,
@@ -105,10 +81,6 @@ const Members = () => {
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/tanvir_cuzdid.jpg",
           role: "Ass. Head of ORG",
-          social: {
-            youtube: "https://youtube.com/davidkim",
-            instagram: "https://instagram.com/davidkim",
-          },
         },
         {
           id: 8,
@@ -117,118 +89,70 @@ const Members = () => {
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983043/Jonayed_ozbke5.jpg",
           role: "Designer",
-          social: {
-            youtube: "https://youtube.com/davidkim",
-            instagram: "https://instagram.com/davidkim",
-          },
         },
         {
           id: 9,
-          name: "Rani",
-          department: "Computer Science & Engineering",
-          profileImage:
-            "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983042/rani_yjhsyo.jpg",
-          role: "Ass. Head of PR",
-          social: {
-            youtube: "https://youtube.com/davidkim",
-            instagram: "https://instagram.com/davidkim",
-          },
-        },
-        {
-          id: 10,
           name: "Siddiquee Shuaib",
           department: "Electrical & Electronic Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/shuaib_yripkq.jpg",
           role: "Ass. Head of PR",
-          social: {
-            youtube: "https://youtube.com/davidkim",
-            instagram: "https://instagram.com/davidkim",
-          },
         },
         {
-          id: 11,
+          id: 10,
           name: "Ishrak Farhan",
           department: "Computer Science & Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983043/farhan_z4d9el.jpg",
           role: "Ass. Head of HR",
-          social: {
-            youtube: "https://youtube.com/davidkim",
-            instagram: "https://instagram.com/davidkim",
-          },
         },
         {
-          id: 12,
+          id: 11,
           name: "Rifat Hassan Rabib",
           department: "Computer Science & Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983041/rabib_dzpawf.jpg",
           role: "Ass. Head of HR",
-          social: {
-            youtube: "https://youtube.com/davidkim",
-            instagram: "https://instagram.com/davidkim",
-          },
         },
         {
-          id: 13,
+          id: 12,
           name: "Minhaz Hossain Shemul",
           department: "Electrical & Electronic Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/shemul_o2n1am.jpg",
           role: "Executives",
-          social: {
-            youtube: "https://youtube.com/davidkim",
-            instagram: "https://instagram.com/davidkim",
-          },
         },
         {
-          id: 14,
+          id: 13,
           name: "Mayesha Nur",
           department: "Computer Science & Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/maisha_eawkws.jpg",
           role: "Executives",
-          social: {
-            youtube: "https://youtube.com/davidkim",
-            instagram: "https://instagram.com/davidkim",
-          },
         },
         {
-          id: 15,
+          id: 14,
           name: "Jahid Hasan Sabbir",
           department: "Computer Science & Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983043/sabbir_tdtnke.jpg",
           role: "Executives",
-          social: {
-            youtube: "https://youtube.com/davidkim",
-            instagram: "https://instagram.com/davidkim",
-          },
         },
         {
-          id: 16,
+          id: 15,
           name: "Zannatul Amin",
           department: "Computer Science & Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983042/anika_anssy2.jpg",
           role: "Executives",
-          social: {
-            youtube: "https://youtube.com/davidkim",
-            instagram: "https://instagram.com/davidkim",
-          },
         },
         {
-          id: 17,
+          id: 16,
           name: "Arean Nobi",
           department: "Computer Science & Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983041/arean_ubnwpt.jpg",
           role: "Executives",
-          social: {
-            youtube: "https://youtube.com/davidkim",
-            instagram: "https://instagram.com/davidkim",
-          },
         },
       ];
 
@@ -243,17 +167,27 @@ const Members = () => {
   const loadCommitteeData = () => {
     // Current Executive Committee 2024 with real image links
     const currentExecutives = [
+
+      // {
+      //   id: 1,
+      //   name: "name",
+      //   role: "role",
+      //   department: "Computer Science & Engineering",
+      //   profileImage:
+      //     "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983041/pulok_fotumj.jpg",
+      //   social: {
+      //     facebook: "fb link",
+      //     instagram: "insta link",
+      //   },
+      // },
+
       {
         id: 1,
-        name: "Pulok Sikder",
+        name: "Pulok Sikdar",
         role: "President",
         department: "Computer Science & Engineering",
         profileImage:
           "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983041/pulok_fotumj.jpg",
-        social: {
-          facebook: "https://facebook.com/puloksikder",
-          instagram: "https://instagram.com/puloksikder",
-        },
       },
       {
         id: 2,
@@ -262,10 +196,6 @@ const Members = () => {
         department: "Computer Science & Engineering",
         profileImage:
           "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983045/nafis_fslsiw.jpg",
-        social: {
-          facebook: "https://facebook.com/nafisnawal",
-          instagram: "https://instagram.com/nafisnawal",
-        },
       },
       {
         id: 3,
@@ -274,11 +204,6 @@ const Members = () => {
         department: "Computer Science & Engineering",
         profileImage:
           "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983042/hasan_p7zfgk.jpg",
-        social: {
-          facebook: "https://facebook.com/mahmudulhasan",
-          linkedin: "https://linkedin.com/in/mahmudulhasan",
-          portfolio: "https://mahmudulhasan.com",
-        },
       },
       {
         id: 4,
@@ -287,10 +212,6 @@ const Members = () => {
         department: "Computer Science & Engineering",
         profileImage:
           "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983042/ahmad_enzaam.jpg",
-        social: {
-          facebook: "https://facebook.com/ahmadhasan",
-          instagram: "https://instagram.com/ahmadhasan",
-        },
       },
       {
         id: 5,
@@ -299,10 +220,6 @@ const Members = () => {
         department: "Computer Science & Engineering",
         profileImage:
           "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983045/muhit_pvc0bx.jpg",
-        social: {
-          facebook: "https://facebook.com/muhitkhan",
-          instagram: "https://instagram.com/muhitkhan",
-        },
       },
       {
         id: 6,
@@ -311,10 +228,6 @@ const Members = () => {
         department: "Environmental Science",
         profileImage:
           "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/mona_y54t2k.jpg",
-        social: {
-          facebook: "https://facebook.com/anikamona",
-          instagram: "https://instagram.com/anikamona",
-        },
       },
     ];
 
@@ -729,7 +642,10 @@ const Members = () => {
               Become part of UIU's vibrant photography family and showcase your
               talent
             </p>
-            <button className="btn-primary cta-button">
+            <button 
+            className="btn-primary cta-button"
+            onClick={() => window.location.href = '/join'}
+            >
               Join Photography Club
             </button>
           </div>
