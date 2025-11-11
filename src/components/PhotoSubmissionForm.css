@@ -630,3 +630,78 @@
 .submission-details {
   text-align: center;
 }
+
+/* Progress Bar Styles */
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  margin: 20px 0;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(135deg, var(--uiu-orange), var(--uiu-orange-dark));
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 0.9rem;
+  color: var(--gray-dark);
+  margin-top: 10px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.wait-message {
+  font-size: 0.9rem;
+  color: var(--uiu-orange);
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Remove or modify the indeterminate class */
+.progress-fill.indeterminate {
+  /* Remove this or keep it simple */
+  background: linear-gradient(135deg, var(--uiu-orange), var(--uiu-orange-dark));
+}
+
+/* Or better yet, remove the indeterminate class usage entirely and just use: */
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(135deg, var(--uiu-orange), var(--uiu-orange-dark));
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* Error State Styles */
+.error-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-weight: 600;
+  margin: 1rem 0;
+}
+
+.error-suggestions {
+  background: #fff3e0;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  text-align: left;
+}
+
+.error-suggestions ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.error-suggestions li {
+  margin: 0.25rem 0;
+}

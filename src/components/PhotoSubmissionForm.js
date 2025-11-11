@@ -1,21 +1,31 @@
 // components/PhotoSubmissionForm.js
-import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { FaUpload, FaUser, FaEnvelope, FaPhone, FaUniversity, FaCamera, FaArrowLeft, FaFileAlt, FaTimes } from 'react-icons/fa';
-import './PhotoSubmissionForm.css';
+import React, { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  FaUpload,
+  FaUser,
+  FaEnvelope,
+  FaPhone,
+  FaUniversity,
+  FaCamera,
+  FaArrowLeft,
+  FaFileAlt,
+  FaTimes,
+} from "react-icons/fa";
+import "./PhotoSubmissionForm.css";
 
 const PhotoSubmissionForm = () => {
   const { eventId } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    institution: '',
-    category: 'single',
+    name: "",
+    email: "",
+    phone: "",
+    institution: "",
+    category: "single",
     photos: [],
     photoStory: [],
-    storyTextFile: null
+    storyTextFile: null,
   });
   const [uploading, setUploading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -23,102 +33,111 @@ const PhotoSubmissionForm = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
 
   // Updated Google Apps Script URL - make sure to deploy as web app
-  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxFdQy5xzgkFW6S_-qJX66pelFf94uD7D4U70txi4C2n4vpmQKnUUrcibFKlxs7Wd0Y/exec';
+  const GOOGLE_SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbzZ25KVEGQ62aXfgYCl8huO9XKyYrPgr-ejPI9VE5pERYfRZQXAJXGIIZTThb0kVSgb/exec";
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSinglePhotoUpload = (e) => {
     const files = Array.from(e.target.files);
-    
+
     // Check total files after adding new ones
     const totalFiles = formData.photos.length + files.length;
     if (totalFiles > 10) {
-      alert(`Maximum 10 photos allowed. You already have ${formData.photos.length} photos selected.`);
-      e.target.value = ''; // Reset input
-      return;
-    }
-    
-    const oversizedFiles = files.filter(file => file.size > 10 * 1024 * 1024);
-    if (oversizedFiles.length > 0) {
-      alert('Some files exceed 10MB limit. Please resize your images.');
-      e.target.value = ''; // Reset input
+      alert(
+        `Maximum 10 photos allowed. You already have ${formData.photos.length} photos selected.`
+      );
+      e.target.value = ""; // Reset input
       return;
     }
 
-    setFormData(prev => ({
+    const oversizedFiles = files.filter((file) => file.size > 10 * 1024 * 1024);
+    if (oversizedFiles.length > 0) {
+      alert("Some files exceed 10MB limit. Please resize your images.");
+      e.target.value = ""; // Reset input
+      return;
+    }
+
+    setFormData((prev) => ({
       ...prev,
-      photos: [...prev.photos, ...files]
+      photos: [...prev.photos, ...files],
     }));
 
     // Reset the file input to allow selecting the same file again if needed
-    e.target.value = '';
+    e.target.value = "";
   };
 
   const handlePhotoStoryUpload = (e) => {
     const files = Array.from(e.target.files);
-    
+
     // Separate images and text files
-    const imageFiles = files.filter(file => file.type.startsWith('image/'));
-    const textFiles = files.filter(file => file.type === 'text/plain' || file.name.endsWith('.txt'));
-    
+    const imageFiles = files.filter((file) => file.type.startsWith("image/"));
+    const textFiles = files.filter(
+      (file) => file.type === "text/plain" || file.name.endsWith(".txt")
+    );
+
     // Check total story photos after adding new ones
     const totalStoryPhotos = formData.photoStory.length + imageFiles.length;
     if (totalStoryPhotos > 8) {
-      alert(`Maximum 8 photos allowed for photo story. You already have ${formData.photoStory.length} photos selected.`);
-      e.target.value = ''; // Reset input
+      alert(
+        `Maximum 8 photos allowed for photo story. You already have ${formData.photoStory.length} photos selected.`
+      );
+      e.target.value = ""; // Reset input
       return;
     }
 
     if (textFiles.length > 0 && formData.storyTextFile) {
-      alert('You can only upload one text file. Please remove the existing text file first.');
-      e.target.value = ''; // Reset input
+      alert(
+        "You can only upload one text file. Please remove the existing text file first."
+      );
+      e.target.value = ""; // Reset input
       return;
     }
 
-    const oversizedFiles = files.filter(file => file.size > 10 * 1024 * 1024);
+    const oversizedFiles = files.filter((file) => file.size > 10 * 1024 * 1024);
     if (oversizedFiles.length > 0) {
-      alert('Some files exceed 10MB limit. Please resize your images.');
-      e.target.value = ''; // Reset input
+      alert("Some files exceed 10MB limit. Please resize your images.");
+      e.target.value = ""; // Reset input
       return;
     }
 
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       photoStory: [...prev.photoStory, ...imageFiles],
-      storyTextFile: textFiles.length > 0 ? textFiles[0] : prev.storyTextFile
+      storyTextFile: textFiles.length > 0 ? textFiles[0] : prev.storyTextFile,
     }));
 
     // Reset the file input
-    e.target.value = '';
+    e.target.value = "";
   };
 
   // Remove single photo
   const removeSinglePhoto = (index) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      photos: prev.photos.filter((_, i) => i !== index)
+      photos: prev.photos.filter((_, i) => i !== index),
     }));
   };
 
   // Remove story photo
   const removeStoryPhoto = (index) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      photoStory: prev.photoStory.filter((_, i) => i !== index)
+      photoStory: prev.photoStory.filter((_, i) => i !== index),
     }));
   };
 
   // Remove text file
   const removeTextFile = () => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      storyTextFile: null
+      storyTextFile: null,
     }));
   };
 
@@ -127,274 +146,377 @@ const PhotoSubmissionForm = () => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        // Update progress
-        setUploadProgress(prev => Math.min(prev + (100 / (formData.photos.length + formData.photoStory.length + (formData.storyTextFile ? 1 : 0))), 100));
         resolve(reader.result);
       };
-      reader.onerror = error => reject(error);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  // New helper function for uploading with progress
+  const uploadWithProgress = (url, data, onProgress) => {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", url);
+
+      // This is the key: listen to upload progress events
+      xhr.upload.addEventListener("progress", (event) => {
+        if (event.lengthComputable) {
+          const percentComplete = (event.loaded / event.total) * 100;
+          onProgress(percentComplete);
+        }
+      });
+
+      // Handle successful upload
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            // Try to parse response as JSON, just like fetch
+            resolve(JSON.parse(xhr.responseText));
+          } catch (e) {
+            resolve(xhr.responseText); // Or just resolve the text
+          }
+        } else {
+          reject(new Error(`HTTP ${xhr.status}: ${xhr.statusText}`));
+        }
+      };
+
+      // Handle network errors
+      xhr.onerror = () => {
+        reject(new Error("Network error occurred during upload."));
+      };
+
+      // Set headers (matching your old Method 1)
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+      // Send the data
+      xhr.send(JSON.stringify(data));
     });
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setUploading(true);
-    setUploadProgress(0);
+  e.preventDefault();
+  setUploading(true);
+  setUploadProgress(0);
 
-    try {
-      console.log('🔄 Starting submission process...');
+  const forceRenderTick = () => new Promise(resolve => setTimeout(resolve, 0));
 
-      // Show initial processing message
-      setSubmissionDetails({
-        success: false,
-        message: "Processing your photos and story... Please wait.",
-        processing: true
-      });
-      setSubmitted(true);
+  try {
+    console.log('🔄 Starting individual file upload process...');
 
-      // Convert photos to base64
-      const photoPromises = formData.photos.map(convertToBase64);
-      const storyPhotoPromises = formData.photoStory.map(convertToBase64);
-      const storyTextPromise = formData.storyTextFile ? convertToBase64(formData.storyTextFile) : Promise.resolve(null);
-      
-      const [photosBase64, storyPhotosBase64, storyTextBase64] = await Promise.all([
-        Promise.all(photoPromises),
-        Promise.all(storyPhotoPromises),
-        storyTextPromise
-      ]);
+    // Combine all files
+    const allFiles = [
+      ...formData.photos,
+      ...formData.photoStory,
+      ...(formData.storyTextFile ? [formData.storyTextFile] : [])
+    ];
+    
+    if (allFiles.length === 0) {
+      throw new Error("No files to upload.");
+    }
 
-      const submissionData = {
-        timestamp: new Date().toISOString(),
-        eventId: eventId,
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        institution: formData.institution,
-        category: formData.category,
-        photos: photosBase64,
-        photoStory: storyPhotosBase64,
-        storyTextFile: storyTextBase64,
-        photoNames: formData.photos.map(file => file.name),
-        storyPhotoNames: formData.photoStory.map(file => file.name),
-        storyTextFileName: formData.storyTextFile ? formData.storyTextFile.name : null,
-        photoCount: formData.photos.length,
-        storyPhotoCount: formData.photoStory.length,
-        hasStoryText: !!formData.storyTextFile
-      };
+    // Show initial processing message
+    setSubmissionDetails({
+      success: false,
+      message: "Creating submission folder...",
+      processing: true
+    });
+    setSubmitted(true);
 
-      console.log('📊 Data prepared:', {
-        name: submissionData.name,
-        photos: submissionData.photos.length,
-        storyPhotos: submissionData.photoStory.length,
-        hasStoryText: submissionData.hasStoryText
-      });
+    // Step 1: Create folder using URL encoded form data (Method 2)
+    const folderData = {
+      action: 'createFolder',
+      timestamp: new Date().toISOString(),
+      eventId: eventId,
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      institution: formData.institution,
+      category: formData.category,
+      photoCount: formData.photos.length,
+      storyPhotoCount: formData.photoStory.length,
+      hasStoryText: !!formData.storyTextFile,
+      storyTextFileName: formData.storyTextFile ? formData.storyTextFile.name : null
+    };
 
-      // Update message to show uploading
-      setSubmissionDetails({
-        success: false,
-        message: "Uploading to Google Drive... This may take a few minutes depending on file sizes.",
-        processing: true
-      });
-
-      // METHOD 1: Try direct JSON POST
-      console.log('🚀 Trying Method 1: Direct JSON POST...');
-      try {
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(submissionData)
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          console.log('✅ Method 1 Success:', result);
-          if (result.success) {
-            setSubmissionDetails({
-              ...result,
-              processing: false
-            });
-            return;
-          }
-        }
-        throw new Error(`HTTP ${response.status}`);
-      } catch (error) {
-        console.log('❌ Method 1 Failed:', error.message);
+    console.log('🚀 Creating folder with URL encoded form data...');
+    
+    const formDataEncoded = new URLSearchParams();
+    Object.keys(folderData).forEach(key => {
+      if (Array.isArray(folderData[key])) {
+        formDataEncoded.append(key, JSON.stringify(folderData[key]));
+      } else {
+        formDataEncoded.append(key, folderData[key]);
       }
+    });
 
-      // METHOD 2: Try URL encoded form data
-      console.log('🚀 Trying Method 2: URL Encoded Form...');
+    const folderResponse = await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: formDataEncoded
+    });
+
+    if (!folderResponse.ok) {
+      throw new Error(`Failed to create folder: HTTP ${folderResponse.status}`);
+    }
+
+    const folderResult = await folderResponse.json();
+    
+    if (!folderResult.success) {
+      throw new Error(folderResult.error || 'Failed to create folder');
+    }
+
+    console.log('✅ Folder created successfully:', folderResult);
+
+    // Step 2: Upload files one by one
+    setSubmissionDetails({
+      success: false,
+      message: "Uploading files to Google Drive...",
+      processing: true
+    });
+
+    setUploadProgress(0);
+    const totalFiles = allFiles.length;
+    let successfulUploads = 0;
+
+    // Upload single photos
+    for (let i = 0; i < formData.photos.length; i++) {
+      const file = formData.photos[i];
+      await uploadSingleFile(file, 'photo', i + 1, folderResult.folderId);
+      successfulUploads++;
+      setUploadProgress((successfulUploads / totalFiles) * 85);
+      await forceRenderTick();
+    }
+
+    // Upload story photos
+    for (let i = 0; i < formData.photoStory.length; i++) {
+      const file = formData.photoStory[i];
+      await uploadSingleFile(file, 'story', i + 1, folderResult.folderId);
+      successfulUploads++;
+      setUploadProgress((successfulUploads / totalFiles) * 85);
+      await forceRenderTick();
+    }
+
+    // Upload text file if exists
+    if (formData.storyTextFile) {
+      await uploadSingleFile(formData.storyTextFile, 'text', 1, folderResult.folderId);
+      successfulUploads++;
+      setUploadProgress((successfulUploads / totalFiles) * 85);
+      await forceRenderTick();
+    }
+
+    // Step 3: Finalize submission
+    setSubmissionDetails({
+      success: false,
+      message: "Finalizing submission...",
+      processing: true
+    });
+
+    const finalizeFormData = new URLSearchParams();
+    finalizeFormData.append('action', 'finalizeSubmission');
+    finalizeFormData.append('folderId', folderResult.folderId);
+
+    const finalizeResponse = await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: finalizeFormData
+    });
+
+    if (!finalizeResponse.ok) {
+      throw new Error('Failed to finalize submission');
+    }
+
+    const finalizeResult = await finalizeResponse.json();
+
+    if (!finalizeResult.success) {
+      throw new Error(finalizeResult.error || 'Failed to finalize submission');
+    }
+
+    // Set to 100% when complete
+    setUploadProgress(100);
+    await forceRenderTick();
+
+    // Show success
+    setSubmissionDetails({
+      success: true,
+      message: "All files uploaded successfully!",
+      photosSaved: successfulUploads,
+      folderUrl: folderResult.folderUrl,
+      processing: false,
+      spreadsheetRow: finalizeResult.spreadsheetRow
+    });
+
+  } catch (error) {
+    console.error('💥 Upload failed:', error);
+    
+    setUploadProgress(100);
+    await forceRenderTick();
+    
+    setSubmissionDetails({
+      success: false,
+      message: "Upload Failed",
+      error: error.message,
+      processing: false
+    });
+    
+  } finally {
+    setUploading(false);
+  }
+};
+
+// Individual file upload helper function using only URL encoded form data (Method 2)
+const uploadSingleFile = async (file, fileType, index, folderId) => {
+  return new Promise(async (resolve, reject) => {
+    const reader = new FileReader();
+    
+    reader.onload = async () => {
       try {
+        const fileData = {
+          action: 'uploadFile',
+          fileData: reader.result.split(',')[1],
+          fileName: file.name,
+          fileType: file.type,
+          fileSize: file.size,
+          folderId: folderId,
+          fileTypeCategory: fileType,
+          fileIndex: index,
+          timestamp: new Date().toISOString()
+        };
+
         const formDataEncoded = new URLSearchParams();
-        Object.keys(submissionData).forEach(key => {
-          if (Array.isArray(submissionData[key])) {
-            formDataEncoded.append(key, JSON.stringify(submissionData[key]));
+        Object.keys(fileData).forEach(key => {
+          if (Array.isArray(fileData[key])) {
+            formDataEncoded.append(key, JSON.stringify(fileData[key]));
           } else {
-            formDataEncoded.append(key, submissionData[key]);
+            formDataEncoded.append(key, fileData[key]);
           }
         });
 
         const response = await fetch(GOOGLE_SCRIPT_URL, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: formDataEncoded
         });
 
         if (response.ok) {
           const result = await response.json();
-          console.log('✅ Method 2 Success:', result);
           if (result.success) {
-            setSubmissionDetails({
-              ...result,
-              processing: false
-            });
-            return;
+            console.log(`✅ ${fileType} file ${index} uploaded: ${file.name}`);
+            resolve(result);
+          } else {
+            reject(new Error(`Failed to upload ${file.name}: ${result.error}`));
           }
+        } else {
+          reject(new Error(`HTTP error for ${file.name}: ${response.status}`));
         }
-        throw new Error(`HTTP ${response.status}`);
       } catch (error) {
-        console.log('❌ Method 2 Failed:', error.message);
+        reject(new Error(`Upload failed for ${file.name}: ${error.message}`));
       }
+    };
 
-      // METHOD 3: Try without headers
-      console.log('🚀 Trying Method 3: No Headers...');
-      try {
-        const formDataNoHeaders = new FormData();
-        formDataNoHeaders.append('data', JSON.stringify(submissionData));
+    reader.onerror = () => {
+      reject(new Error(`Failed to read file: ${file.name}`));
+    };
 
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          body: formDataNoHeaders
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          console.log('✅ Method 3 Success:', result);
-          if (result.success) {
-            setSubmissionDetails({
-              ...result,
-              processing: false
-            });
-            return;
-          }
-        }
-        throw new Error(`HTTP ${response.status}`);
-      } catch (error) {
-        console.log('❌ Method 3 Failed:', error.message);
-      }
-
-      // METHOD 4: Fire and forget (no-cors)
-      console.log('🚀 Trying Method 4: No-CORS (Fire and Forget)...');
-      try {
-        await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(submissionData)
-        });
-
-        console.log('✅ Method 4: Request sent (no response available)');
-        setSubmissionDetails({
-          success: true,
-          message: "Submission sent successfully! Photos and story are being processed.",
-          photosSaved: submissionData.photos.length + submissionData.photoStory.length + (submissionData.hasStoryText ? 1 : 0),
-          note: "Due to browser restrictions, we cannot confirm processing. Check your email for confirmation.",
-          processing: false
-        });
-        return;
-
-      } catch (error) {
-        console.log('❌ Method 4 Failed:', error.message);
-      }
-
-      // If all methods fail
-      throw new Error('All submission methods failed due to CORS restrictions');
-
-    } catch (error) {
-      console.error('💥 All submission methods failed:', error);
-      
-      // Even if methods fail, the request might have gone through
-      setSubmissionDetails({
-        success: true,
-        message: "Submission completed! Due to technical limitations, we cannot confirm processing immediately. Your photos and story should be processed shortly.",
-        photosSaved: formData.photos.length + formData.photoStory.length + (formData.storyTextFile ? 1 : 0),
-        note: "Please check your email for confirmation or contact support if you don't receive confirmation within 24 hours.",
-        processing: false
-      });
-      
-    } finally {
-      setUploading(false);
-    }
-  };
+    reader.readAsDataURL(file);
+  });
+};
 
   // Success/Processing Screen
-  if (submitted) {
-    return (
-      <div className="submission-success">
-        <div className="success-content">
-          {submissionDetails?.processing ? (
-            <>
-              <div className="processing-spinner">
-                <div className="spinner"></div>
+if (submitted) {
+  return (
+    <div className="submission-success">
+      <div className="success-content">
+        {submissionDetails?.processing ? (
+          <>
+            <div className="processing-spinner">
+              <div className="spinner"></div>
+            </div>
+            <h2>Processing Your Submission</h2>
+            <p>{submissionDetails.message}</p>
+            
+            {/* Progress Bar */}
+            <div className="progress-bar">
+              <div 
+                className="progress-fill"
+                style={{ width: `${uploadProgress}%` }}
+              ></div>
+            </div>
+
+            {/* Show different text based on the stage */}
+            {submissionDetails.message.includes("Processing your photos") ? (
+              <>
+                <p className="progress-text">{Math.round(uploadProgress)}% complete</p>
+                <p className="wait-message">
+                  Please wait while we process your {formData.category === 'story' ? 'photos and story' : 'photos'}...
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="progress-text">{Math.round(uploadProgress)}% uploaded</p>
+                <p className="wait-message">
+                  Uploading to Google Drive... This may take a few minutes depending on file sizes.
+                </p>
+              </>
+            )}
+          </>
+        ) : submissionDetails?.success ? (
+          // Success UI
+          <>
+            <div className="success-icon">✅</div>
+            <h2>Submission Successful!</h2>
+            <p>Your {formData.category === 'story' ? 'photo story and text file' : 'photos'} have been saved successfully.</p>
+            
+            {submissionDetails && (
+              <div className="submission-details">
+                <p><strong>Files Saved:</strong> {submissionDetails.photosSaved}</p>
+                {formData.category === 'story' && formData.storyTextFile && (
+                  <p><strong>Story File:</strong> {formData.storyTextFile.name}</p>
+                )}
+                {submissionDetails.folderUrl && (
+                  <p>
+                    <strong>Files Location:</strong>{' '}
+                    <a href={submissionDetails.folderUrl} target="_blank" rel="noopener noreferrer">
+                      View in Google Drive
+                    </a>
+                  </p>
+                )}
               </div>
-              <h2>Processing Your Submission</h2>
-              <p>{submissionDetails.message}</p>
-              <div className="progress-bar">
-                <div 
-                  className="progress-fill" 
-                  style={{ width: `${uploadProgress}%` }}
-                ></div>
-              </div>
-              <p className="progress-text">{Math.round(uploadProgress)}% complete</p>
-              <p className="wait-message">
-                Please wait while we process your {formData.category === 'story' ? 'photos and story' : 'photos'}...<br />
-              </p>
-            </>
-          ) : (
-            <>
-              <div className="success-icon">✅</div>
-              <h2>Submission Successful!</h2>
-              <p>Your {formData.category === 'story' ? 'photo story and text file' : 'photos'} have been saved successfully.</p>
-              
-              {submissionDetails && (
-                <div className="submission-details">
-                  <p><strong>Files Saved:</strong> {submissionDetails.photosSaved}</p>
-                  {formData.category === 'story' && formData.storyTextFile && (
-                    <p><strong>Story File:</strong> {formData.storyTextFile.name}</p>
-                  )}
-                  {submissionDetails.folderUrl && (
-                    <p>
-                      <strong>Files Location:</strong>{' '}
-                      <a href={submissionDetails.folderUrl} target="_blank" rel="noopener noreferrer">
-                        View in Google Drive
-                      </a>
-                    </p>
-                  )}
-                  {submissionDetails.note && (
-                    <p className="submission-note">{submissionDetails.note}</p>
-                  )}
-                </div>
-              )}
-              
-              <button onClick={() => navigate('/events')} className="btn-primary">
-                Back to Events
-              </button>
-            </>
-          )}
-        </div>
+            )}
+            
+            <button onClick={() => navigate('/events')} className="btn-primary">
+              Back to Events
+            </button>
+          </>
+        ) : (
+          // Error UI
+          <>
+            <div className="error-icon">❌</div>
+            <h2>Upload Failed</h2>
+            <p className="error-message">{submissionDetails?.error || 'Failed to upload files to Google Drive.'}</p>
+            <div className="error-suggestions">
+              <p><strong>Suggestions:</strong></p>
+              <ul>
+                <li>Reduce the number of photos</li>
+                <li>Compress your photos to reduce file size</li>
+                <li>Try uploading in smaller batches</li>
+                <li>Check your internet connection</li>
+              </ul>
+            </div>
+            <button onClick={() => setSubmitted(false)} className="btn-primary">
+              Try Again
+            </button>
+          </>
+        )}
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   return (
     <div className="photo-submission-form">
       <div className="form-container">
         <header className="form-header">
-          <button onClick={() => navigate('/events')} className="back-button">
+          <button onClick={() => navigate("/events")} className="back-button">
             <FaArrowLeft />
             Back to Events
           </button>
@@ -469,7 +591,9 @@ const PhotoSubmissionForm = () => {
                   <option value="College Student">College Student</option>
                   <option value="School Student">School Student</option>
                   <option value="Freelancer">Freelancer</option>
-                  <option value="Professional Photographer">Professional Photographer</option>
+                  <option value="Professional Photographer">
+                    Professional Photographer
+                  </option>
                   <option value="Other">Other</option>
                 </select>
               </div>
@@ -485,7 +609,7 @@ const PhotoSubmissionForm = () => {
                   type="radio"
                   name="category"
                   value="single"
-                  checked={formData.category === 'single'}
+                  checked={formData.category === "single"}
                   onChange={handleInputChange}
                 />
                 <div className="category-card">
@@ -496,7 +620,9 @@ const PhotoSubmissionForm = () => {
                     <li>Maximum 10 photos</li>
                     <li>10MB per photo limit</li>
                     <li>Open theme</li>
-                    <li>Rename Photos: Name_University_PhoneNo._Single_SeNo.</li>
+                    <li>
+                      Rename Photos: Name_University_PhoneNo._Single_SeNo.
+                    </li>
                   </ul>
                 </div>
               </label>
@@ -506,7 +632,7 @@ const PhotoSubmissionForm = () => {
                   type="radio"
                   name="category"
                   value="story"
-                  checked={formData.category === 'story'}
+                  checked={formData.category === "story"}
                   onChange={handleInputChange}
                 />
                 <div className="category-card">
@@ -517,7 +643,9 @@ const PhotoSubmissionForm = () => {
                     <li>5-8 photos required</li>
                     <li>10MB per photo limit</li>
                     <li>Open theme</li>
-                    <li>Rename Photos: Name_University_PhoneNo._Stories_SeNo.</li>
+                    <li>
+                      Rename Photos: Name_University_PhoneNo._Stories_SeNo.
+                    </li>
                     <li>Include a .txt file with your story description</li>
                   </ul>
                 </div>
@@ -528,14 +656,18 @@ const PhotoSubmissionForm = () => {
           {/* Photo Upload Section */}
           <div className="form-section">
             <h3>Photo Upload</h3>
-            <p className="form-note">Photos will be automatically saved to Google Drive</p>
-            
-            {formData.category === 'single' ? (
+            <p className="form-note">
+              Photos will be automatically saved to Google Drive
+            </p>
+
+            {formData.category === "single" ? (
               <div className="upload-section">
                 <label className="upload-area">
                   <FaUpload className="upload-icon" />
                   <span>Upload Single Photos (Max 10, 10MB each)</span>
-                  <span className="upload-hint">You can upload photos one by one</span>
+                  <span className="upload-hint">
+                    You can upload photos one by one
+                  </span>
                   <input
                     type="file"
                     multiple
@@ -548,10 +680,12 @@ const PhotoSubmissionForm = () => {
                   <div className="upload-preview">
                     <div className="preview-header">
                       <h4>Selected Photos ({formData.photos.length}/10)</h4>
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         className="clear-all-btn"
-                        onClick={() => setFormData(prev => ({ ...prev, photos: [] }))}
+                        onClick={() =>
+                          setFormData((prev) => ({ ...prev, photos: [] }))
+                        }
                       >
                         Clear All
                       </button>
@@ -559,7 +693,7 @@ const PhotoSubmissionForm = () => {
                     <div className="preview-grid">
                       {formData.photos.map((photo, index) => (
                         <div key={index} className="preview-item">
-                          <button 
+                          <button
                             className="remove-btn"
                             onClick={() => removeSinglePhoto(index)}
                             type="button"
@@ -567,9 +701,14 @@ const PhotoSubmissionForm = () => {
                           >
                             <FaTimes />
                           </button>
-                          <img src={URL.createObjectURL(photo)} alt={`Preview ${index + 1}`} />
+                          <img
+                            src={URL.createObjectURL(photo)}
+                            alt={`Preview ${index + 1}`}
+                          />
                           <span className="file-name">{photo.name}</span>
-                          <span className="file-size">{(photo.size / (1024 * 1024)).toFixed(2)} MB</span>
+                          <span className="file-size">
+                            {(photo.size / (1024 * 1024)).toFixed(2)} MB
+                          </span>
                         </div>
                       ))}
                     </div>
@@ -580,8 +719,12 @@ const PhotoSubmissionForm = () => {
               <div className="upload-section">
                 <label className="upload-area">
                   <FaUpload className="upload-icon" />
-                  <span>Upload Photo Story (5-8 photos + optional .txt file)</span>
-                  <span className="upload-hint">You can upload photos and text file one by one</span>
+                  <span>
+                    Upload Photo Story (5-8 photos + optional .txt file)
+                  </span>
+                  <span className="upload-hint">
+                    You can upload photos and text file one by one
+                  </span>
                   <input
                     type="file"
                     multiple
@@ -594,10 +737,16 @@ const PhotoSubmissionForm = () => {
                   <div className="upload-preview">
                     <div className="preview-header">
                       <h4>Photo Story Files</h4>
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         className="clear-all-btn"
-                        onClick={() => setFormData(prev => ({ ...prev, photoStory: [], storyTextFile: null }))}
+                        onClick={() =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            photoStory: [],
+                            storyTextFile: null,
+                          }))
+                        }
                       >
                         Clear All
                       </button>
@@ -608,7 +757,7 @@ const PhotoSubmissionForm = () => {
                         <div className="preview-grid">
                           {formData.photoStory.map((photo, index) => (
                             <div key={index} className="preview-item">
-                              <button 
+                              <button
                                 className="remove-btn"
                                 onClick={() => removeStoryPhoto(index)}
                                 type="button"
@@ -616,9 +765,16 @@ const PhotoSubmissionForm = () => {
                               >
                                 <FaTimes />
                               </button>
-                              <img src={URL.createObjectURL(photo)} alt={`Story ${index + 1}`} />
-                              <span className="file-name">Photo {index + 1}</span>
-                              <span className="file-size">{(photo.size / (1024 * 1024)).toFixed(2)} MB</span>
+                              <img
+                                src={URL.createObjectURL(photo)}
+                                alt={`Story ${index + 1}`}
+                              />
+                              <span className="file-name">
+                                Photo {index + 1}
+                              </span>
+                              <span className="file-size">
+                                {(photo.size / (1024 * 1024)).toFixed(2)} MB
+                              </span>
                             </div>
                           ))}
                         </div>
@@ -626,7 +782,7 @@ const PhotoSubmissionForm = () => {
                     )}
                     {formData.storyTextFile && (
                       <div className="text-file-preview">
-                        <button 
+                        <button
                           className="remove-btn"
                           onClick={removeTextFile}
                           type="button"
@@ -636,8 +792,12 @@ const PhotoSubmissionForm = () => {
                         </button>
                         <FaFileAlt className="text-file-icon" />
                         <div className="text-file-info">
-                          <span className="file-name">{formData.storyTextFile.name}</span>
-                          <span className="file-size">{(formData.storyTextFile.size / 1024).toFixed(2)} KB</span>
+                          <span className="file-name">
+                            {formData.storyTextFile.name}
+                          </span>
+                          <span className="file-size">
+                            {(formData.storyTextFile.size / 1024).toFixed(2)} KB
+                          </span>
                         </div>
                       </div>
                     )}
@@ -649,19 +809,24 @@ const PhotoSubmissionForm = () => {
 
           {/* Submission Button */}
           <div className="form-actions">
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="btn-primary submit-btn"
-              disabled={uploading || 
-                (formData.category === 'single' && formData.photos.length === 0) ||
-                (formData.category === 'story' && (formData.photoStory.length < 5 || formData.photoStory.length > 8))
+              disabled={
+                uploading ||
+                (formData.category === "single" &&
+                  formData.photos.length === 0) ||
+                (formData.category === "story" &&
+                  (formData.photoStory.length < 5 ||
+                    formData.photoStory.length > 8))
               }
             >
-              {uploading ? 'Uploading to Google Drive...' : 'Submit Photos'}
+              {uploading ? "Uploading to Google Drive..." : "Submit Photos"}
             </button>
             {uploading && (
               <p className="upload-warning">
-                Please wait while we process your submission. This may take a few minutes...
+                Please wait while we process your submission. This may take a
+                few minutes...
               </p>
             )}
           </div>
