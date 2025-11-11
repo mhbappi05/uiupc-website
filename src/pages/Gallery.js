@@ -20,6 +20,24 @@ const Gallery = () => {
     fetchMockData();
   }, []);
 
+  
+  const filterPhotos = useCallback(() => {
+    if (activeFilter === 'all') {
+      setFilteredPhotos(photos);
+    } else {
+      if (filterType === 'category') {
+        setFilteredPhotos(photos.filter(photo => photo.category === activeFilter));
+      } else if (filterType === 'event') {
+        setFilteredPhotos(photos.filter(photo => photo.eventId === activeFilter));
+      }
+    }
+  }, [activeFilter, filterType, photos]);
+
+  useEffect(() => {
+    filterPhotos();
+  }, [filterPhotos]);
+  
+
   useEffect(() => {
     filterPhotos();
   }, [activeFilter, filterType, photos]);
@@ -139,22 +157,6 @@ const Gallery = () => {
     setPhotos(mockPhotos);
     setLoading(false);
   };
-
-  const filterPhotos = useCallback(() => {
-    if (activeFilter === 'all') {
-      setFilteredPhotos(photos);
-    } else {
-      if (filterType === 'category') {
-        setFilteredPhotos(photos.filter(photo => photo.category === activeFilter));
-      } else if (filterType === 'event') {
-        setFilteredPhotos(photos.filter(photo => photo.eventId === activeFilter));
-      }
-    }
-  }, [activeFilter, filterType, photos]);
-
-  useEffect(() => {
-    filterPhotos();
-  }, [filterPhotos]);
 
   const handleFilterChange = (filter, type) => {
     setActiveFilter(filter);
