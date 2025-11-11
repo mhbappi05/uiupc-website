@@ -1,5 +1,5 @@
 // components/ExecutiveCommittee.js
-import React, { useState, useRef, useEffect, useCallback} from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   FaChevronLeft,
   FaChevronRight,
