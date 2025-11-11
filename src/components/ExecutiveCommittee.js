@@ -17,22 +17,22 @@ const ExecutiveCommittee = ({ members }) => {
   const carouselRef = useRef(null);
   const autoPlayRef = useRef(null);
 
-  const getSocialIcon = (platform) => {
-    switch (platform) {
-      case "facebook":
-        return <FaFacebook />;
-      case "instagram":
-        return <FaInstagram />;
-      case "linkedin":
-        return <FaLinkedin />;
-      case "behance":
-        return <FaBehance />;
-      case "portfolio":
-        return <FaGlobe />;
-      default:
-        return null;
-    }
-  };
+  // const getSocialIcon = (platform) => {
+  //   switch (platform) {
+  //     case "facebook":
+  //       return <FaFacebook />;
+  //     case "instagram":
+  //       return <FaInstagram />;
+  //     case "linkedin":
+  //       return <FaLinkedin />;
+  //     case "behance":
+  //       return <FaBehance />;
+  //     case "portfolio":
+  //       return <FaGlobe />;
+  //     default:
+  //       return null;
+  //   }
+  // };
 
   const nextSlide = () => {
     setDirection("next");
@@ -75,7 +75,7 @@ const ExecutiveCommittee = ({ members }) => {
   };
 
   const visibleCards = getVisibleCards();
-  const cardWidth = 100 / visibleCards;
+  //const cardWidth = 100 / visibleCards;
 
   // Calculate which cards are visible
   const getCardPosition = (index) => {
