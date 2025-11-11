@@ -34,7 +34,7 @@ const PhotoSubmissionForm = () => {
 
   // Updated Google Apps Script URL - make sure to deploy as web app
   const GOOGLE_SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycbzZ25KVEGQ62aXfgYCl8huO9XKyYrPgr-ejPI9VE5pERYfRZQXAJXGIIZTThb0kVSgb/exec";
+    "https://script.google.com/macros/s/AKfycbz1Z7-aa6oYd4vNV18MLAN9k1wFSZqjbReLihkFhWUCAP2mXhFh3FAaSaKrVbMUO6ti/exec";
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
