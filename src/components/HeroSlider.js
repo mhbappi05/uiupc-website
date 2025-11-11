@@ -32,7 +32,7 @@ const HeroSlider = () => {
       setCurrentSlide((prev) => (prev + 1) % localSlides.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [localSlides.length]);
 
   return (
     <div className="hero-slider">
