@@ -62,12 +62,12 @@ const ExecutiveCommittee = ({ members }) => {
     autoPlayRef.current = setInterval(nextSlide, 4000);
   };
 
-  const getVisibleCards = () => {
-    const width = window.innerWidth;
-    if (width < 768) return 1;
-    if (width < 1200) return 2;
-    return 3;
-  };
+  // const getVisibleCards = () => {
+  //   const width = window.innerWidth;
+  //   if (width < 768) return 1;
+  //   if (width < 1200) return 2;
+  //   return 3;
+  // };
 
   //const visibleCards = getVisibleCards();
   //const cardWidth = 100 / visibleCards;

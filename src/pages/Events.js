@@ -289,7 +289,7 @@ const Events = () => {
               <div className="badge-pulse"></div>
             </div>
             <h2 className="banner-title">Shutter Stories</h2>
-            <h2 className="banner-title">Chapter clearInterval</h2>
+            <h2 className="banner-title">Chapter IV</h2>
             <p className="banner-subtitle">
               National Photography Exhibition • November 15, 2025
             </p>
