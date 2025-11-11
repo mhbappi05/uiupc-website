@@ -1,5 +1,5 @@
 // components/ExecutiveCommittee.js
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCAllback} from "react";
 import {
   FaChevronLeft,
   FaChevronRight,
@@ -8,7 +8,7 @@ import "./ExecutiveCommittee.css";
 
 const ExecutiveCommittee = ({ members }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState("next");
+  //const [direction, setDirection] = useState("next");
   const carouselRef = useRef(null);
   const autoPlayRef = useRef(null);
 
@@ -30,21 +30,21 @@ const ExecutiveCommittee = ({ members }) => {
   // };
 
   const nextSlide = () => {
-    setDirection("next");
+    //setDirection("next");
     setCurrentIndex((prevIndex) =>
       prevIndex === members.length - 1 ? 0 : prevIndex + 1
     );
   };
 
   const prevSlide = () => {
-    setDirection("prev");
+    //setDirection("prev");
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? members.length - 1 : prevIndex - 1
     );
   };
 
   const goToSlide = (index) => {
-    setDirection(index > currentIndex ? "next" : "prev");
+    //setDirection(index > currentIndex ? "next" : "prev");
     setCurrentIndex(index);
   };
 
@@ -52,7 +52,7 @@ const ExecutiveCommittee = ({ members }) => {
   useEffect(() => {
     autoPlayRef.current = setInterval(nextSlide, 4000);
     return () => clearInterval(autoPlayRef.current);
-  }, [members.length]);
+  }, [nextSlide]);
 
   const handleMouseEnter = () => {
     clearInterval(autoPlayRef.current);
@@ -69,7 +69,7 @@ const ExecutiveCommittee = ({ members }) => {
     return 3;
   };
 
-  const visibleCards = getVisibleCards();
+  //const visibleCards = getVisibleCards();
   //const cardWidth = 100 / visibleCards;
 
   // Calculate which cards are visible
