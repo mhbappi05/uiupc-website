@@ -8,7 +8,7 @@ import {
   FaPhone,
   FaUniversity,
   FaCamera,
-  FaArrowLeft,
+  //FaArrowLeft,
   FaFileAlt,
   FaTimes,
 } from "react-icons/fa";
@@ -515,10 +515,10 @@ const PhotoSubmissionForm = () => {
     <div className="photo-submission-form">
       <div className="form-container">
         <header className="form-header">
-          <button onClick={() => navigate("/events")} className="back-button">
+          {/* <button onClick={() => navigate("/events")} className="back-button">
             <FaArrowLeft />
             Back to Events
-          </button>
+          </button> */}
           <h1>Photo Submission Form</h1>
           <p>Shutter Stories Chapter 4 - National Photography Exhibition</p>
           <p className="form-note">Your photos will be saved to Google Drive</p>

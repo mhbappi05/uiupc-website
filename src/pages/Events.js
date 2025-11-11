@@ -9,6 +9,7 @@ import {
   FaArrowRight,
   FaPlay,
   FaPause,
+  FaEye,
 } from "react-icons/fa";
 import "./Events.css";
 
@@ -57,6 +58,11 @@ const Events = () => {
     } else {
       navigate(`/events/${eventId}`);
     }
+  };
+
+  // Add this function to handle view details
+  const handleViewDetails = (eventId) => {
+    navigate(`/events/${eventId}`);
   };
 
   const signatureEvents = useMemo(() => ({
@@ -230,14 +236,6 @@ const Events = () => {
 
   const currentEvent = signatureEvents[activeEvent];
 
-  // const handleRegisterClick = (eventId) => {
-  //   navigate(`/events/${eventId}`);
-  // };
-  /* 
-  const handleViewDetails = (eventId) => {
-    navigate(`/events/${eventId}`);
-  }; */
-
   return (
     <div className="events-page">
       {/* Grand Header */}
@@ -333,12 +331,12 @@ const Events = () => {
               >
                 Submit Now <FaArrowRight />
               </button>
-              {/* <button
+              <button
                 className="btn-secondary banner-btn"
                 onClick={() => handleViewDetails("shutter-stories")}
               >
-                View Details
-              </button> */}
+                <FaEye /> View Details
+              </button>
             </div>
           </div>
           <div className="banner-visual">
@@ -475,12 +473,12 @@ const Events = () => {
                       Submit Now <FaArrowRight />
                     </button>
                   )}
-                  {/*  <button
+                  <button
                     className="btn-secondary"
                     onClick={() => handleViewDetails(currentEvent.id)}
                   >
-                    View Details
-                  </button> */}
+                    <FaEye /> View Details
+                  </button>
                   {currentEvent.registrationLink && (
                     <button className="btn-secondary">Download Brochure</button>
                   )}
