@@ -141,376 +141,375 @@ const PhotoSubmissionForm = () => {
     }));
   };
 
-  const convertToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        resolve(reader.result);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setUploading(true);
+    setUploadProgress(0);
+
+    const forceRenderTick = () =>
+      new Promise((resolve) => setTimeout(resolve, 0));
+
+    try {
+      console.log("🔄 Starting individual file upload process...");
+
+      // Combine all files
+      const allFiles = [
+        ...formData.photos,
+        ...formData.photoStory,
+        ...(formData.storyTextFile ? [formData.storyTextFile] : []),
+      ];
+
+      if (allFiles.length === 0) {
+        throw new Error("No files to upload.");
+      }
+
+      // Show initial processing message
+      setSubmissionDetails({
+        success: false,
+        message: "Creating submission folder...",
+        processing: true,
+      });
+      setSubmitted(true);
+
+      // Step 1: Create folder using URL encoded form data (Method 2)
+      const folderData = {
+        action: "createFolder",
+        timestamp: new Date().toISOString(),
+        eventId: eventId,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        institution: formData.institution,
+        category: formData.category,
+        photoCount: formData.photos.length,
+        storyPhotoCount: formData.photoStory.length,
+        hasStoryText: !!formData.storyTextFile,
+        storyTextFileName: formData.storyTextFile
+          ? formData.storyTextFile.name
+          : null,
       };
-      reader.onerror = (error) => reject(error);
-    });
-  };
 
-  // New helper function for uploading with progress
-  const uploadWithProgress = (url, data, onProgress) => {
-    return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open("POST", url);
+      console.log("🚀 Creating folder with URL encoded form data...");
 
-      // This is the key: listen to upload progress events
-      xhr.upload.addEventListener("progress", (event) => {
-        if (event.lengthComputable) {
-          const percentComplete = (event.loaded / event.total) * 100;
-          onProgress(percentComplete);
+      const formDataEncoded = new URLSearchParams();
+      Object.keys(folderData).forEach((key) => {
+        if (Array.isArray(folderData[key])) {
+          formDataEncoded.append(key, JSON.stringify(folderData[key]));
+        } else {
+          formDataEncoded.append(key, folderData[key]);
         }
       });
 
-      // Handle successful upload
-      xhr.onload = () => {
-        if (xhr.status >= 200 && xhr.status < 300) {
-          try {
-            // Try to parse response as JSON, just like fetch
-            resolve(JSON.parse(xhr.responseText));
-          } catch (e) {
-            resolve(xhr.responseText); // Or just resolve the text
+      const folderResponse = await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formDataEncoded,
+      });
+
+      if (!folderResponse.ok) {
+        throw new Error(
+          `Failed to create folder: HTTP ${folderResponse.status}`
+        );
+      }
+
+      const folderResult = await folderResponse.json();
+
+      if (!folderResult.success) {
+        throw new Error(folderResult.error || "Failed to create folder");
+      }
+
+      console.log("✅ Folder created successfully:", folderResult);
+
+      // Step 2: Upload files one by one
+      setSubmissionDetails({
+        success: false,
+        message: "Uploading files to Google Drive...",
+        processing: true,
+      });
+
+      setUploadProgress(0);
+      const totalFiles = allFiles.length;
+      let successfulUploads = 0;
+
+      // Upload single photos
+      for (let i = 0; i < formData.photos.length; i++) {
+        const file = formData.photos[i];
+        await uploadSingleFile(file, "photo", i + 1, folderResult.folderId);
+        successfulUploads++;
+        setUploadProgress((successfulUploads / totalFiles) * 85);
+        await forceRenderTick();
+      }
+
+      // Upload story photos
+      for (let i = 0; i < formData.photoStory.length; i++) {
+        const file = formData.photoStory[i];
+        await uploadSingleFile(file, "story", i + 1, folderResult.folderId);
+        successfulUploads++;
+        setUploadProgress((successfulUploads / totalFiles) * 85);
+        await forceRenderTick();
+      }
+
+      // Upload text file if exists
+      if (formData.storyTextFile) {
+        await uploadSingleFile(
+          formData.storyTextFile,
+          "text",
+          1,
+          folderResult.folderId
+        );
+        successfulUploads++;
+        setUploadProgress((successfulUploads / totalFiles) * 85);
+        await forceRenderTick();
+      }
+
+      // Step 3: Finalize submission
+      setSubmissionDetails({
+        success: false,
+        message: "Finalizing submission...",
+        processing: true,
+      });
+
+      const finalizeFormData = new URLSearchParams();
+      finalizeFormData.append("action", "finalizeSubmission");
+      finalizeFormData.append("folderId", folderResult.folderId);
+
+      const finalizeResponse = await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: finalizeFormData,
+      });
+
+      if (!finalizeResponse.ok) {
+        throw new Error("Failed to finalize submission");
+      }
+
+      const finalizeResult = await finalizeResponse.json();
+
+      if (!finalizeResult.success) {
+        throw new Error(
+          finalizeResult.error || "Failed to finalize submission"
+        );
+      }
+
+      // Set to 100% when complete
+      setUploadProgress(100);
+      await forceRenderTick();
+
+      // Show success
+      setSubmissionDetails({
+        success: true,
+        message: "All files uploaded successfully!",
+        photosSaved: successfulUploads,
+        folderUrl: folderResult.folderUrl,
+        processing: false,
+        spreadsheetRow: finalizeResult.spreadsheetRow,
+      });
+    } catch (error) {
+      console.error("💥 Upload failed:", error);
+
+      setUploadProgress(100);
+      await forceRenderTick();
+
+      setSubmissionDetails({
+        success: false,
+        message: "Upload Failed",
+        error: error.message,
+        processing: false,
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // Individual file upload helper function using only URL encoded form data (Method 2)
+  const uploadSingleFile = async (file, fileType, index, folderId) => {
+    return new Promise(async (resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = async () => {
+        try {
+          const fileData = {
+            action: "uploadFile",
+            fileData: reader.result.split(",")[1],
+            fileName: file.name,
+            fileType: file.type,
+            fileSize: file.size,
+            folderId: folderId,
+            fileTypeCategory: fileType,
+            fileIndex: index,
+            timestamp: new Date().toISOString(),
+          };
+
+          const formDataEncoded = new URLSearchParams();
+          Object.keys(fileData).forEach((key) => {
+            if (Array.isArray(fileData[key])) {
+              formDataEncoded.append(key, JSON.stringify(fileData[key]));
+            } else {
+              formDataEncoded.append(key, fileData[key]);
+            }
+          });
+
+          const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: formDataEncoded,
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            if (result.success) {
+              console.log(
+                `✅ ${fileType} file ${index} uploaded: ${file.name}`
+              );
+              resolve(result);
+            } else {
+              reject(
+                new Error(`Failed to upload ${file.name}: ${result.error}`)
+              );
+            }
+          } else {
+            reject(
+              new Error(`HTTP error for ${file.name}: ${response.status}`)
+            );
           }
-        } else {
-          reject(new Error(`HTTP ${xhr.status}: ${xhr.statusText}`));
+        } catch (error) {
+          reject(new Error(`Upload failed for ${file.name}: ${error.message}`));
         }
       };
 
-      // Handle network errors
-      xhr.onerror = () => {
-        reject(new Error("Network error occurred during upload."));
+      reader.onerror = () => {
+        reject(new Error(`Failed to read file: ${file.name}`));
       };
 
-      // Set headers (matching your old Method 1)
-      xhr.setRequestHeader("Content-Type", "application/json");
-
-      // Send the data
-      xhr.send(JSON.stringify(data));
+      reader.readAsDataURL(file);
     });
   };
 
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-  setUploading(true);
-  setUploadProgress(0);
-
-  const forceRenderTick = () => new Promise(resolve => setTimeout(resolve, 0));
-
-  try {
-    console.log('🔄 Starting individual file upload process...');
-
-    // Combine all files
-    const allFiles = [
-      ...formData.photos,
-      ...formData.photoStory,
-      ...(formData.storyTextFile ? [formData.storyTextFile] : [])
-    ];
-    
-    if (allFiles.length === 0) {
-      throw new Error("No files to upload.");
-    }
-
-    // Show initial processing message
-    setSubmissionDetails({
-      success: false,
-      message: "Creating submission folder...",
-      processing: true
-    });
-    setSubmitted(true);
-
-    // Step 1: Create folder using URL encoded form data (Method 2)
-    const folderData = {
-      action: 'createFolder',
-      timestamp: new Date().toISOString(),
-      eventId: eventId,
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      institution: formData.institution,
-      category: formData.category,
-      photoCount: formData.photos.length,
-      storyPhotoCount: formData.photoStory.length,
-      hasStoryText: !!formData.storyTextFile,
-      storyTextFileName: formData.storyTextFile ? formData.storyTextFile.name : null
-    };
-
-    console.log('🚀 Creating folder with URL encoded form data...');
-    
-    const formDataEncoded = new URLSearchParams();
-    Object.keys(folderData).forEach(key => {
-      if (Array.isArray(folderData[key])) {
-        formDataEncoded.append(key, JSON.stringify(folderData[key]));
-      } else {
-        formDataEncoded.append(key, folderData[key]);
-      }
-    });
-
-    const folderResponse = await fetch(GOOGLE_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: formDataEncoded
-    });
-
-    if (!folderResponse.ok) {
-      throw new Error(`Failed to create folder: HTTP ${folderResponse.status}`);
-    }
-
-    const folderResult = await folderResponse.json();
-    
-    if (!folderResult.success) {
-      throw new Error(folderResult.error || 'Failed to create folder');
-    }
-
-    console.log('✅ Folder created successfully:', folderResult);
-
-    // Step 2: Upload files one by one
-    setSubmissionDetails({
-      success: false,
-      message: "Uploading files to Google Drive...",
-      processing: true
-    });
-
-    setUploadProgress(0);
-    const totalFiles = allFiles.length;
-    let successfulUploads = 0;
-
-    // Upload single photos
-    for (let i = 0; i < formData.photos.length; i++) {
-      const file = formData.photos[i];
-      await uploadSingleFile(file, 'photo', i + 1, folderResult.folderId);
-      successfulUploads++;
-      setUploadProgress((successfulUploads / totalFiles) * 85);
-      await forceRenderTick();
-    }
-
-    // Upload story photos
-    for (let i = 0; i < formData.photoStory.length; i++) {
-      const file = formData.photoStory[i];
-      await uploadSingleFile(file, 'story', i + 1, folderResult.folderId);
-      successfulUploads++;
-      setUploadProgress((successfulUploads / totalFiles) * 85);
-      await forceRenderTick();
-    }
-
-    // Upload text file if exists
-    if (formData.storyTextFile) {
-      await uploadSingleFile(formData.storyTextFile, 'text', 1, folderResult.folderId);
-      successfulUploads++;
-      setUploadProgress((successfulUploads / totalFiles) * 85);
-      await forceRenderTick();
-    }
-
-    // Step 3: Finalize submission
-    setSubmissionDetails({
-      success: false,
-      message: "Finalizing submission...",
-      processing: true
-    });
-
-    const finalizeFormData = new URLSearchParams();
-    finalizeFormData.append('action', 'finalizeSubmission');
-    finalizeFormData.append('folderId', folderResult.folderId);
-
-    const finalizeResponse = await fetch(GOOGLE_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: finalizeFormData
-    });
-
-    if (!finalizeResponse.ok) {
-      throw new Error('Failed to finalize submission');
-    }
-
-    const finalizeResult = await finalizeResponse.json();
-
-    if (!finalizeResult.success) {
-      throw new Error(finalizeResult.error || 'Failed to finalize submission');
-    }
-
-    // Set to 100% when complete
-    setUploadProgress(100);
-    await forceRenderTick();
-
-    // Show success
-    setSubmissionDetails({
-      success: true,
-      message: "All files uploaded successfully!",
-      photosSaved: successfulUploads,
-      folderUrl: folderResult.folderUrl,
-      processing: false,
-      spreadsheetRow: finalizeResult.spreadsheetRow
-    });
-
-  } catch (error) {
-    console.error('💥 Upload failed:', error);
-    
-    setUploadProgress(100);
-    await forceRenderTick();
-    
-    setSubmissionDetails({
-      success: false,
-      message: "Upload Failed",
-      error: error.message,
-      processing: false
-    });
-    
-  } finally {
-    setUploading(false);
-  }
-};
-
-// Individual file upload helper function using only URL encoded form data (Method 2)
-const uploadSingleFile = async (file, fileType, index, folderId) => {
-  return new Promise(async (resolve, reject) => {
-    const reader = new FileReader();
-    
-    reader.onload = async () => {
-      try {
-        const fileData = {
-          action: 'uploadFile',
-          fileData: reader.result.split(',')[1],
-          fileName: file.name,
-          fileType: file.type,
-          fileSize: file.size,
-          folderId: folderId,
-          fileTypeCategory: fileType,
-          fileIndex: index,
-          timestamp: new Date().toISOString()
-        };
-
-        const formDataEncoded = new URLSearchParams();
-        Object.keys(fileData).forEach(key => {
-          if (Array.isArray(fileData[key])) {
-            formDataEncoded.append(key, JSON.stringify(fileData[key]));
-          } else {
-            formDataEncoded.append(key, fileData[key]);
-          }
-        });
-
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: formDataEncoded
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          if (result.success) {
-            console.log(`✅ ${fileType} file ${index} uploaded: ${file.name}`);
-            resolve(result);
-          } else {
-            reject(new Error(`Failed to upload ${file.name}: ${result.error}`));
-          }
-        } else {
-          reject(new Error(`HTTP error for ${file.name}: ${response.status}`));
-        }
-      } catch (error) {
-        reject(new Error(`Upload failed for ${file.name}: ${error.message}`));
-      }
-    };
-
-    reader.onerror = () => {
-      reject(new Error(`Failed to read file: ${file.name}`));
-    };
-
-    reader.readAsDataURL(file);
-  });
-};
-
   // Success/Processing Screen
-if (submitted) {
-  return (
-    <div className="submission-success">
-      <div className="success-content">
-        {submissionDetails?.processing ? (
-          <>
-            <div className="processing-spinner">
-              <div className="spinner"></div>
-            </div>
-            <h2>Processing Your Submission</h2>
-            <p>{submissionDetails.message}</p>
-            
-            {/* Progress Bar */}
-            <div className="progress-bar">
-              <div 
-                className="progress-fill"
-                style={{ width: `${uploadProgress}%` }}
-              ></div>
-            </div>
-
-            {/* Show different text based on the stage */}
-            {submissionDetails.message.includes("Processing your photos") ? (
-              <>
-                <p className="progress-text">{Math.round(uploadProgress)}% complete</p>
-                <p className="wait-message">
-                  Please wait while we process your {formData.category === 'story' ? 'photos and story' : 'photos'}...
-                </p>
-              </>
-            ) : (
-              <>
-                <p className="progress-text">{Math.round(uploadProgress)}% uploaded</p>
-                <p className="wait-message">
-                  Uploading to Google Drive... This may take a few minutes depending on file sizes.
-                </p>
-              </>
-            )}
-          </>
-        ) : submissionDetails?.success ? (
-          // Success UI
-          <>
-            <div className="success-icon">✅</div>
-            <h2>Submission Successful!</h2>
-            <p>Your {formData.category === 'story' ? 'photo story and text file' : 'photos'} have been saved successfully.</p>
-            
-            {submissionDetails && (
-              <div className="submission-details">
-                <p><strong>Files Saved:</strong> {submissionDetails.photosSaved}</p>
-                {formData.category === 'story' && formData.storyTextFile && (
-                  <p><strong>Story File:</strong> {formData.storyTextFile.name}</p>
-                )}
-                {submissionDetails.folderUrl && (
-                  <p>
-                    <strong>Files Location:</strong>{' '}
-                    <a href={submissionDetails.folderUrl} target="_blank" rel="noopener noreferrer">
-                      View in Google Drive
-                    </a>
-                  </p>
-                )}
+  if (submitted) {
+    return (
+      <div className="submission-success">
+        <div className="success-content">
+          {submissionDetails?.processing ? (
+            <>
+              <div className="processing-spinner">
+                <div className="spinner"></div>
               </div>
-            )}
-            
-            <button onClick={() => navigate('/events')} className="btn-primary">
-              Back to Events
-            </button>
-          </>
-        ) : (
-          // Error UI
-          <>
-            <div className="error-icon">❌</div>
-            <h2>Upload Failed</h2>
-            <p className="error-message">{submissionDetails?.error || 'Failed to upload files to Google Drive.'}</p>
-            <div className="error-suggestions">
-              <p><strong>Suggestions:</strong></p>
-              <ul>
-                <li>Reduce the number of photos</li>
-                <li>Compress your photos to reduce file size</li>
-                <li>Try uploading in smaller batches</li>
-                <li>Check your internet connection</li>
-              </ul>
-            </div>
-            <button onClick={() => setSubmitted(false)} className="btn-primary">
-              Try Again
-            </button>
-          </>
-        )}
+              <h2>Processing Your Submission</h2>
+              <p>{submissionDetails.message}</p>
+
+              {/* Progress Bar */}
+              <div className="progress-bar">
+                <div
+                  className="progress-fill"
+                  style={{ width: `${uploadProgress}%` }}
+                ></div>
+              </div>
+
+              {/* Show different text based on the stage */}
+              {submissionDetails.message.includes("Processing your photos") ? (
+                <>
+                  <p className="progress-text">
+                    {Math.round(uploadProgress)}% complete
+                  </p>
+                  <p className="wait-message">
+                    Please wait while we process your{" "}
+                    {formData.category === "story"
+                      ? "photos and story"
+                      : "photos"}
+                    ...
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="progress-text">
+                    {Math.round(uploadProgress)}% uploaded
+                  </p>
+                  <p className="wait-message">
+                    Uploading to Google Drive... This may take a few minutes
+                    depending on file sizes.
+                  </p>
+                </>
+              )}
+            </>
+          ) : submissionDetails?.success ? (
+            // Success UI
+            <>
+              <div className="success-icon">✅</div>
+              <h2>Submission Successful!</h2>
+              <p>
+                Your{" "}
+                {formData.category === "story"
+                  ? "photo story and text file"
+                  : "photos"}{" "}
+                have been saved successfully.
+              </p>
+
+              {submissionDetails && (
+                <div className="submission-details">
+                  <p>
+                    <strong>Files Saved:</strong>{" "}
+                    {submissionDetails.photosSaved}
+                  </p>
+                  {formData.category === "story" && formData.storyTextFile && (
+                    <p>
+                      <strong>Story File:</strong> {formData.storyTextFile.name}
+                    </p>
+                  )}
+                  {submissionDetails.folderUrl && (
+                    <p>
+                      <strong>Files Location:</strong>{" "}
+                      <a
+                        href={submissionDetails.folderUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View in Google Drive
+                      </a>
+                    </p>
+                  )}
+                </div>
+              )}
+
+              <button
+                onClick={() => navigate("/events")}
+                className="btn-primary"
+              >
+                Back to Events
+              </button>
+            </>
+          ) : (
+            // Error UI
+            <>
+              <div className="error-icon">❌</div>
+              <h2>Upload Failed</h2>
+              <p className="error-message">
+                {submissionDetails?.error ||
+                  "Failed to upload files to Google Drive."}
+              </p>
+              <div className="error-suggestions">
+                <p>
+                  <strong>Suggestions:</strong>
+                </p>
+                <ul>
+                  <li>Reduce the number of photos</li>
+                  <li>Compress your photos to reduce file size</li>
+                  <li>Try uploading in smaller batches</li>
+                  <li>Check your internet connection</li>
+                </ul>
+              </div>
+              <button
+                onClick={() => setSubmitted(false)}
+                className="btn-primary"
+              >
+                Try Again
+              </button>
+            </>
+          )}
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
   return (
     <div className="photo-submission-form">
