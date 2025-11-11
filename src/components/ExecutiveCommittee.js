@@ -1,11 +1,6 @@
 // components/ExecutiveCommittee.js
 import React, { useState, useRef, useEffect } from "react";
 import {
-  FaFacebook,
-  FaInstagram,
-  FaLinkedin,
-  FaBehance,
-  FaGlobe,
   FaChevronLeft,
   FaChevronRight,
 } from "react-icons/fa";
