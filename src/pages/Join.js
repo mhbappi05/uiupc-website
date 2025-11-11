@@ -27,6 +27,7 @@ const Join = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [submitMessage, setSubmitMessage] = useState("");
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false); // Add this line
   const [formData, setFormData] = useState({
     name: "",
     studentId: "",
@@ -193,6 +194,9 @@ const Join = () => {
         setSubmitMessage(
           "Thank you for your application! We will review it and get back to you soon."
         );
+        
+        // Show popup message
+        setShowSuccessPopup(true);
 
         // Reset form
         setFormData({
@@ -654,6 +658,31 @@ const Join = () => {
           </div>
         </div>
       </div>
+
+      {/* Success Popup - Place this at the end of the return statement */}
+      {showSuccessPopup && (
+        <div className="success-popup-overlay">
+          <div className="success-popup">
+            <div className="popup-header">
+              <FaCheck className="popup-icon" />
+              <h3>Application Submitted Successfully!</h3>
+            </div>
+            <div className="popup-content">
+              <p>Thank you for applying to join the UIU Photography Club!</p>
+              <p>We have received your application and will review it shortly.</p>
+              <p>You will receive a confirmation email within 24-48 hours.</p>
+            </div>
+            <div className="popup-actions">
+              <button 
+                className="btn-primary"
+                onClick={() => setShowSuccessPopup(false)}
+              >
+                Got It!
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
