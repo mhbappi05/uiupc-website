@@ -614,6 +614,113 @@ label[for="message"] {
   100% { transform: rotate(360deg); }
 }
 
+/* Payment Section Styles */
+.payment-options {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.payment-option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem;
+  background: rgba(45, 45, 45, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-light);
+}
+
+.payment-option:hover {
+  background: rgba(58, 58, 58, 0.7);
+  border-color: rgba(255, 107, 0, 0.3);
+}
+
+.payment-option.selected {
+  background: rgba(255, 107, 0, 0.1);
+  border-color: var(--uiu-orange);
+  color: var(--white);
+}
+
+.payment-option input[type="radio"] {
+  display: none;
+}
+
+.payment-checkmark {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--text-muted);
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.payment-option input[type="radio"]:checked + .payment-checkmark {
+  background: var(--uiu-orange);
+  border-color: var(--uiu-orange);
+}
+
+.payment-option input[type="radio"]:checked + .payment-checkmark::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+}
+
+.payment-details {
+  margin-top: 1rem;
+  padding: 1.2rem;
+  background: rgba(45, 45, 45, 0.5);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: slideDown 0.3s ease-out;
+}
+
+.payment-details h4 {
+  color: var(--uiu-orange);
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+}
+
+.payment-instructions {
+  background: rgba(255, 107, 0, 0.1);
+  border-left: 3px solid var(--uiu-orange);
+  padding: 0.8rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+}
+
+.payment-instructions p {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.payment-instructions strong {
+  color: var(--uiu-orange);
+}
+
+/* Responsive adjustments for payment section */
+@media (max-width: 768px) {
+  .payment-options {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .payment-option {
+    padding: 0.8rem;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 968px) {
   .join-grid {
