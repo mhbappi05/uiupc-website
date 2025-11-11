@@ -92,6 +92,9 @@ const Home = ({ featuredPhotos }) => {
   }, []);
 
   useEffect(() => {
+    const currentIntroRef = introRef.current;
+    const currentCtaRef = ctaRef.current;
+
     const observerOptions = {
       threshold: 0.2,
       rootMargin: '0px 0px -50px 0px'
@@ -112,12 +115,12 @@ const Home = ({ featuredPhotos }) => {
       });
     }, observerOptions);
 
-    if (introRef.current) observer.observe(introRef.current);
-    if (ctaRef.current) observer.observe(ctaRef.current);
+    if (currentIntroRef) observer.observe(currentIntroRef);
+    if (currentCtaRef) observer.observe(currentCtaRef);
 
     return () => {
-      if (introRef.current) observer.unobserve(introRef.current);
-      if (ctaRef.current) observer.unobserve(ctaRef.current);
+      if (currentIntroRef) observer.observe(currentIntroRef);
+    if (currentCtaRef) observer.observe(currentCtaRef);
     };
   }, []);
 
