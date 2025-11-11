@@ -7,8 +7,8 @@
 .upcoming-events-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .event-card {
@@ -125,7 +125,7 @@
 }
 
 .event-content {
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 .event-title {
@@ -147,8 +147,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  margin-bottom: 1.25rem;
-  padding: 1.25rem;
+  margin-bottom: 0.75rem;
+  padding: 1rem;
   background: rgba(255, 255, 255, 0.03);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.05);
