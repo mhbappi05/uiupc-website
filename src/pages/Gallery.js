@@ -12,6 +12,10 @@ const Gallery = () => {
   const [activeFilter, setActiveFilter] = useState("all");
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [photosPerPage] = useState(12);
 
   // Mock data for demonstration
   useEffect(() => {
@@ -28,11 +32,23 @@ const Gallery = () => {
     // Sort by ID in descending order (newest first)
     const sortedPhotos = [...filtered].sort((a, b) => b.id - a.id);
     setFilteredPhotos(sortedPhotos);
+    setCurrentPage(1); // Reset to first page when filter changes
   }, [activeFilter, photos]);
 
   useEffect(() => {
     filterPhotos();
   }, [filterPhotos]);
+
+  // Get current photos for pagination
+  const indexOfLastPhoto = currentPage * photosPerPage;
+  const indexOfFirstPhoto = indexOfLastPhoto - photosPerPage;
+  const currentPhotos = filteredPhotos.slice(indexOfFirstPhoto, indexOfLastPhoto);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(filteredPhotos.length / photosPerPage);
 
   const fetchMockData = () => {
     // Mock events
@@ -166,7 +182,7 @@ const Gallery = () => {
       },
     ];
 
-    setEvents(mockEvents);
+     setEvents(mockEvents);
     setPhotos(mockPhotos);
     setLoading(false);
   };
@@ -201,9 +217,48 @@ const Gallery = () => {
       />
 
       <PhotoGrid 
-        photos={filteredPhotos} 
+        photos={currentPhotos} 
         onPhotoClick={openLightbox}
       />
+
+      {/* Pagination Component */}
+      {totalPages > 1 && (
+        <div className="pagination-container">
+          <div className="pagination">
+            <button 
+              className={`pagination-btn ${currentPage === 1 ? 'disabled' : ''}`}
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            
+            <div className="pagination-numbers">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(number => (
+                <button
+                  key={number}
+                  className={`pagination-btn ${currentPage === number ? 'active' : ''}`}
+                  onClick={() => paginate(number)}
+                >
+                  {number}
+                </button>
+              ))}
+            </div>
+            
+            <button 
+              className={`pagination-btn ${currentPage === totalPages ? 'disabled' : ''}`}
+              onClick={() => paginate(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+          
+          <div className="pagination-info">
+            Showing {indexOfFirstPhoto + 1}-{Math.min(indexOfLastPhoto, filteredPhotos.length)} of {filteredPhotos.length} photos
+          </div>
+        </div>
+      )}
 
       {selectedPhoto && (
         <Lightbox 
