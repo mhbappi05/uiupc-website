@@ -19,11 +19,10 @@ const PhotoGrid = ({ photos, onPhotoClick }) => {
           className="photo-item"
           onClick={() => onPhotoClick(photo)}
         >
-          <img src={photo.imageUrl} alt={photo.title || 'Photography Club Photo'} />
+          <img src={photo.url} alt={photo.title || 'Photography Club Photo'} />
           <div className="photo-overlay">
             <div className="photo-info">
               <h3>{photo.title || 'Untitled'}</h3>
-              <p>By {photo.photographerName}</p>
             </div>
           </div>
         </div>
