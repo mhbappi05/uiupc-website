@@ -15,7 +15,7 @@ const Stats = () => {
 
   const stats = [
     {
-      number: "50+",
+      number: "100+",
       label: "Active Members",
       icon: FaUsers,
       color: "#FF6B35",

@@ -72,7 +72,7 @@ const Members = () => {
           department: "Computer Science & Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983046/topu_g4zpf6.jpg",
-          role: "Ass. Head of ORG",
+          role: "Ast. Head of ORG",
         },
         {
           id: 7,
@@ -80,7 +80,7 @@ const Members = () => {
           department: "Computer Science & Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/tanvir_cuzdid.jpg",
-          role: "Ass. Head of ORG",
+          role: "Ast. Head of ORG",
         },
         {
           id: 8,
@@ -96,7 +96,7 @@ const Members = () => {
           department: "Electrical & Electronic Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/shuaib_yripkq.jpg",
-          role: "Ass. Head of PR",
+          role: "Ast. Head of PR",
         },
         {
           id: 10,
@@ -104,7 +104,7 @@ const Members = () => {
           department: "Computer Science & Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983043/farhan_z4d9el.jpg",
-          role: "Ass. Head of HR",
+          role: "Ast. Head of HR",
         },
         {
           id: 11,
@@ -112,7 +112,7 @@ const Members = () => {
           department: "Computer Science & Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983041/rabib_dzpawf.jpg",
-          role: "Ass. Head of HR",
+          role: "Ast. Head of HR",
         },
         {
           id: 12,
@@ -208,7 +208,7 @@ const Members = () => {
       {
         id: 4,
         name: "Ahmad Hasan",
-        role: "Ass. General Secretary",
+        role: "Ast. General Secretary",
         department: "Computer Science & Engineering",
         profileImage:
           "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983042/ahmad_enzaam.jpg",
@@ -224,7 +224,7 @@ const Members = () => {
       {
         id: 6,
         name: "Anika Anjum Mona",
-        role: "Ass. Treasurer",
+        role: "Ast. Treasurer",
         department: "Environmental Science",
         profileImage:
           "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/mona_y54t2k.jpg",

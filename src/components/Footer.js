@@ -43,8 +43,8 @@ const Footer = () => {
                 <img src={myLogo} alt="UIUPC Logo" className="logo-icon" />
               </div>
               <div className="logo-text">
-                <span className="logo-title">UIU Photography</span>
-                <span className="logo-subtitle">Club</span>
+                <span className="logo-title">UIU Photography Club</span>
+                <span className="logo-subtitle">UIUPC</span>
               </div>
             </div>
             <p className="brand-description">
