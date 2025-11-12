@@ -549,8 +549,8 @@ const Events = () => {
               world
             </p>
             <div className="cta-actions">
-              <button className="btn-primary cta-btn">View All Events</button>
-              <button className="btn-secondary cta-btn">Become a Member</button>
+              <button className="btn-primary cta-btn" onClick={() => window.location.href = '/events'}>View All Events</button>
+              <button className="btn-secondary cta-btn" onClick={() => window.location.href = '/join'}>Become a Member</button>
             </div>
           </div>
         </div>
