@@ -1,4 +1,4 @@
-// pages/Gallery.js - Simplified photo gallery with filtering
+// pages/Gallery.js
 import React, { useState, useEffect, useCallback } from "react";
 import PhotoGrid from "../components/PhotoGrid";
 import FilterBar from "../components/FilterBar";
@@ -53,6 +53,8 @@ const Gallery = () => {
         description: "Our recent Photowalk was more than just a walk with cameras, it was a journey through the heart of Dhaka. From the buzzing streets of Nilkhet, through the colorful chaos of the city, to the vibrant river life at Sadarghat, every step was filled with stories, laughter and teamwork.Here's a glimpse of the behind the scenes moments, the candid smiles, the rush to capture fleeting moments and the joy of exploring together  that made the day unforgettable.",
         eventId: "3",
         uploadedAt: new Date(),
+        facebookPost: "https://www.facebook.com/share/p/1A3bKMZMei/"
+        
       },
       {
         id: "12",
@@ -61,6 +63,7 @@ const Gallery = () => {
         description: "From the basics of photography as a language to exploring how images speak louder than words, this time Vertex session created a space for creativity, thought and connection. Members shared their ideas, interpretations, and experiences, making it an inspiring and thought-provoking afternoon. A big thank you to everyone who joined and made the event so memorable!",
         eventId: "5",
         uploadedAt: new Date(),
+        facebookPost: "https://www.facebook.com/share/p/17uByGPiXH/"
       },
       {
         id: "11",
@@ -69,6 +72,7 @@ const Gallery = () => {
         description: "Vertex, hosted by the UIU Photography Club, turned out to be a standout success.Everyone enjoyed the session and learned how photography can tell stories, show emotion and capture powerful moments. Through open discussions, attendees explored how to read photographs beyond surface details and understand the deeper message behind each frame.By the end, participants left with a stronger grasp of how to use photography as a tool for expression.UIUPC is grateful to all the attendees for making it such a meaningful event.",
         eventId: "5",
         uploadedAt: new Date(),
+        facebookPost: "https://www.facebook.com/share/p/17VKWLbSbj/"
       },
       {
         id: "10",
@@ -77,6 +81,7 @@ const Gallery = () => {
         description: "We recently hosted Photo Walk Adda, an engaging photography session where students explored the UIU campus and United City, capturing unique perspectives through their lenses.The experience was rich with creativity, experimentation and collaboration. While many impressive shots were taken, there were also a few missteps, each one serving a valuable step in the learning process.Here’s a glimpse behind the scenes, showcasing the spirit of exploration and the candid moments that made this event truly memorable.",
         eventId: "2",
         uploadedAt: new Date(),
+        facebookPost: "https://www.facebook.com/share/p/1Co6wwjH73/"
       },
       {
         id: "9",
@@ -85,6 +90,7 @@ const Gallery = () => {
         description: "This week, we spotlight a captivating photograph by our General Member, Siam Arefin. Titled 'সাড়া দাও' it truly mesmerizes. Congratulations to him for this remarkable contribution!",
         eventId: "1",
         uploadedAt: new Date(),
+        facebookPost: "https://www.facebook.com/share/p/1Fg6t23Jhi/"
       },
       {
         id: "8",
@@ -93,6 +99,7 @@ const Gallery = () => {
         description: "This week, we spotlight a captivating photograph by our General Member, Pratoy Barua. Titled 'অবসর' it truly mesmerizes. Congratulations to him for this remarkable contribution!",
         eventId: "1",
         uploadedAt: new Date(),
+        facebookPost: "https://www.facebook.com/share/p/16FVKqh13T/"
       },
       {
         id: "7",
@@ -101,6 +108,7 @@ const Gallery = () => {
         description: "We had the pleasure of attending the 11th session of the “চর্চা” Lecture Series titled 'নেপথ্যের কথা: A Discourse on Architectural Photography' hosted by Department of Architecture, Bangladesh University. The session featured Asif Salman, renowned architectural photographer, artist and entrepreneur based in Bangladesh.Asif Salman shared his journey of blending architecture with visual storytelling, offering a deeper look into how photography can capture not just buildings, but the emotions, context and human experiences that surround them. From documenting award-winning structures to founding pioneering visual platforms, his work stands as an inspiration to the photography community. UIU Photography Club is grateful to Asif Salman for sharing his insights, experiences and creative philosophy. His words encouraged us to look beyond technique and focus on the meaning behind every shot. Our heartfelt thanks to Department of Architecture, Bangladesh University for hosting such an engaging and thought-provoking discussion. We are glad to have been a part of it!",
         eventId: "4",
         uploadedAt: new Date(),
+        facebookPost: "https://www.facebook.com/share/p/1afTRpcupZ/"
       },
       {
         id: "6",
@@ -109,6 +117,7 @@ const Gallery = () => {
         description: "We had the opportunity to visit Phosphenes – Open Studio, a vibrant showcase of artistic journeys by the participants of Resting Academy Season II of Pathshala South Asian Media Institute. It was inspiring to witness the powerful visual narratives created over six months. Our heartfelt appreciation goes to the artists, curators and everyone involved in making this show a reality. UIU Photography Club is grateful to the organizers and everyone behind the scenes for putting together such a thoughtful and engaging exhibition.",
         eventId: "4",
         uploadedAt: new Date(),
+        facebookPost: "https://www.facebook.com/share/p/1WcwRHnq19/"
       },
       {
         id: "5",
@@ -117,6 +126,7 @@ const Gallery = () => {
         description: "This week, we spotlight a captivating photograph by our General Member, Yashin Arafat Babu. Titled 'The silence of art and the noise of life' it truly mesmerizes. Congratulations to him for this remarkable contribution!",
         eventId: "1",
         uploadedAt: new Date(),
+        facebookPost: "https://www.facebook.com/share/p/1Fz5LqUShq/"
       },
       {
         id: "4",
@@ -125,6 +135,7 @@ const Gallery = () => {
         description: "We had the privilege of visiting the Bangladesh Press Photo Contest 2025 exhibition at DrikPath Bhobon, a powerful showcase of truth, resilience and visual storytelling. The exhibition featured striking works from photojournalists across the country, each frame capturing raw moments that reflect our society’s realities. It was an inspiring experience for our team, reminding us of the impact photography can have in telling untold stories and sparking conversations.",
         eventId: "4",
         uploadedAt: new Date(),
+        facebookPost: "https://www.facebook.com/share/p/1AonqCkDL3/"
       },
       {
         id: "3",
@@ -133,6 +144,7 @@ const Gallery = () => {
         description: "UIU Photography Club recently visited the solo visual art exhibition ‘ক্রমশ’ by renowned photographer Munem Wasif at Bengal Shilpalay. After almost sixteen years, the artist returned with a powerful showcase reflecting two decades of transformation, from the early days of analog photography in Old Dhaka to more experimental and personal visual narratives. The exhibition offered a deep, introspective look into the evolution of both the artist’s journey and medium, leaving the visiting members of UIUPC inspired! ",
         eventId: "4",
         uploadedAt: new Date(),
+        facebookPost: "https://www.facebook.com/share/p/1CbopgC3sc/"
       },
       {
         id: "2",
@@ -141,6 +153,7 @@ const Gallery = () => {
         description: "UIU Photography Club (UIUPC) recently had the privilege of visiting the final venue of the National Photography Exhibition F11 See Sharp Season II, organized by the Independent Photography Club (IPC) of Independent University, Bangladesh. Held at the prestigious Intercontinental Dhaka, showcasing a powerful culmination of visual narratives from talented photographers across the nation.",
         eventId: "4",
         uploadedAt: new Date(),
+        facebookPost: "https://www.facebook.com/share/p/17Lk2fBK9f/"
       },
       {
         id: "1",
@@ -149,6 +162,7 @@ const Gallery = () => {
         description: "This week, we spotlight a captivating photograph by our General Member, Mahin Muntasin Rahul. Titled 'অগ্নি' it truly mesmerizes. Congratulations to him for this remarkable contribution!",
         eventId: "1",
         uploadedAt: new Date(),
+        facebookPost: "https://www.facebook.com/share/p/1CbGFvGcKg/"
       },
     ];
 
@@ -186,10 +200,16 @@ const Gallery = () => {
         onFilterChange={handleFilterChange}
       />
 
-      <PhotoGrid photos={filteredPhotos} onPhotoClick={openLightbox} />
+      <PhotoGrid 
+        photos={filteredPhotos} 
+        onPhotoClick={openLightbox}
+      />
 
       {selectedPhoto && (
-        <Lightbox photo={selectedPhoto} onClose={closeLightbox} />
+        <Lightbox 
+          photo={selectedPhoto} 
+          onClose={closeLightbox}
+        />
       )}
     </div>
   );

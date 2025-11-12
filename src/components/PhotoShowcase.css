@@ -76,6 +76,46 @@
   text-align: center;
 }
 
+/* Facebook icon positioned on top-right of each photo */
+.facebook-icon-overlay {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #1877f2;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.facebook-icon-overlay:hover {
+  background: #166fe5;
+  transform: scale(1.1);
+}
+
+.facebook-text-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.facebook-text-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 1;
+}
+
 @media (max-width: 768px) {
   .showcase-grid {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));

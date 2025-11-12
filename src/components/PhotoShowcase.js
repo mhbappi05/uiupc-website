@@ -17,7 +17,7 @@ const PhotoShowcase = ({ photos }) => {
         <div className="showcase-grid">
           {featuredPhotos.map(photo => (
             <div key={photo.id} className="showcase-item">
-              <img src={photo.imageUrl} alt={photo.title} />
+              <img src={photo.url} alt={photo.title} /> {/* Changed from imageUrl to url */}
               <div className="showcase-overlay">
                 <h4>{photo.title}</h4>
                 <p>By {photo.photographerName}</p>

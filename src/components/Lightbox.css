@@ -380,6 +380,33 @@
   color: var(--gray-dark);
 }
 
+.facebook-link-container {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.facebook-link-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1877f2;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+  justify-content: center;
+}
+
+.facebook-link-btn:hover {
+  background: #166fe5;
+}
+
 @media (max-width: 768px) {
   .lightbox-overlay {
     padding: 1rem;
