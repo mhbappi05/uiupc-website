@@ -508,7 +508,7 @@ const Events = () => {
       </section>
 
       {/* Events Timeline */}
-      <section className="events-timeline">
+      {/* <section className="events-timeline">
         <div className="container">
           <div className="section-header">
             <h2>Event Timeline</h2>
@@ -537,7 +537,7 @@ const Events = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
       <section className="events-cta">

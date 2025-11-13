@@ -9,7 +9,7 @@ const HeroSlider = () => {
   const localSlides = [
     {
       id: 1,
-      imageUrl: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762118110/uiupc_HeroSlider1_dy7fch.jpg",
+      imageUrl: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1763054814/uiupc_HeroSlider1_d9kprm.jpg",
       title: "UIU Photography Club",
       subtitle: "Capturing Moments, Creating Memories"
     },

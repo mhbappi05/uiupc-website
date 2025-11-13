@@ -32,7 +32,7 @@ const Members = () => {
           department: "Computer Science & Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983043/ishrak_yyw6tr.jpg",
-          role: "Head of Designer",
+          role: "Head of Design",
         },
         {
           id: 2,
@@ -72,7 +72,7 @@ const Members = () => {
           department: "Computer Science & Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983046/topu_g4zpf6.jpg",
-          role: "Ast. Head of ORG",
+          role: "Asst. Head of ORG",
         },
         {
           id: 7,
@@ -80,7 +80,7 @@ const Members = () => {
           department: "Computer Science & Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/tanvir_cuzdid.jpg",
-          role: "Ast. Head of ORG",
+          role: "Asst. Head of ORG",
         },
         {
           id: 8,
@@ -96,7 +96,7 @@ const Members = () => {
           department: "Electrical & Electronic Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/shuaib_yripkq.jpg",
-          role: "Ast. Head of PR",
+          role: "Asst. Head of PR",
         },
         {
           id: 10,
@@ -104,7 +104,7 @@ const Members = () => {
           department: "Computer Science & Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983043/farhan_z4d9el.jpg",
-          role: "Ast. Head of HR",
+          role: "Asst. Head of HR",
         },
         {
           id: 11,
@@ -112,7 +112,7 @@ const Members = () => {
           department: "Computer Science & Engineering",
           profileImage:
             "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983041/rabib_dzpawf.jpg",
-          role: "Ast. Head of HR",
+          role: "Asst. Head of HR",
         },
         {
           id: 12,
@@ -208,7 +208,7 @@ const Members = () => {
       {
         id: 4,
         name: "Ahmad Hasan",
-        role: "Ast. General Secretary",
+        role: "Asst. General Secretary",
         department: "Computer Science & Engineering",
         profileImage:
           "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983042/ahmad_enzaam.jpg",
@@ -224,8 +224,8 @@ const Members = () => {
       {
         id: 6,
         name: "Anika Anjum Mona",
-        role: "Ast. Treasurer",
-        department: "Environmental Science",
+        role: "Asst. Treasurer",
+        department: "Environment and Development Studies",
         profileImage:
           "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/mona_y54t2k.jpg",
       },
@@ -646,7 +646,7 @@ const Members = () => {
             className="btn-primary cta-button"
             onClick={() => window.location.href = '/join'}
             >
-              Join Photography Club
+              BECOME A MEMBER
             </button>
           </div>
         </section>
