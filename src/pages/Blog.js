@@ -142,18 +142,30 @@ const Blog = () => {
   const [posts] = useState([
     {
       id: 1,
-      title: "Something is cooking??",
-      description: "Exciting news is on the horizon! UIU Photography Club is thrilled to announce that we are cooking up something special just for you. Stay tuned for an upcoming event that promises to ignite your creativity and passion for photography. Get ready to capture moments, learn new skills, and connect with fellow photography enthusiasts. Keep an eye on our page for more details coming soon!",
+      title: "Photography Day 2025",
+      description: "Photography takes an instant out of time, altering life by holding it still.  -Dorothea Lange, American photographer.Wishing Happy World Photography Day 2025 from UIU Photography Club!",
       media: [
         { 
           type: 'image', 
-          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799836/Blog5_lbkrue.png',  
+          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799155/Blog04_taox6m.jpg',  
         }
       ],
-      date: "November 11, 2025"
+      date: "August 19, 2025"
     },
     {
       id: 2,
+      title: "Vertex : Language discussion",
+      description: "We proudly presents another exciting chapter of Vertex! This time, we dive into Language Discussion, where photography meets the art of storytelling through words, visuals and expressions. Join us for an engaging session filled with creative exchanges, thought-provoking conversations! Date: Saturday, 23 August 2025 Time: 3:10 PM .Let's explore how language and photography blend together!",
+      media: [
+        { 
+          type: 'image', 
+          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762797135/Blog03_jpaqiw.jpg',  
+        }
+      ],
+      date: "August 22, 2025"
+    },
+    {
+      id: 3,
       title: "Media Fest 2025 Achievements",
       description: "UIU Media Fest 2025 celebrated the brightest talents in creativity, storytelling and we are proud to announce that our very own Executive Members shined with their remarkable achievements! Minhaz Hossain Shemul secured the 1st Runner-up in the Photography Segment, capturing powerful stories! Zannatul Amin Anika, Mayesha Tun Nur, and Jonayed Shah Jesun achieved the 1st Runner-up in the Media Quiz Competition, showcasing their sharp knowledge and passion for media studies. Your hard work, creativity and dedication truly reflect the spirit of excellence that defines UIUPC. Keep inspiring and reaching new milestones!",
       media: [
@@ -169,30 +181,30 @@ const Blog = () => {
       date: "September 30, 2025"
     },
     {
-      id: 3,
-      title: "Vertex : Language discussion",
-      description: "We proudly presents another exciting chapter of Vertex! This time, we dive into Language Discussion, where photography meets the art of storytelling through words, visuals and expressions. Join us for an engaging session filled with creative exchanges, thought-provoking conversations! Date: Saturday, 23 August 2025 Time: 3:10 PM .Let's explore how language and photography blend together!",
+      id: 4,
+      title: "Something is cooking??",
+      description: "Exciting news is on the horizon! UIU Photography Club is thrilled to announce that we are cooking up something special just for you. Stay tuned for an upcoming event that promises to ignite your creativity and passion for photography. Get ready to capture moments, learn new skills, and connect with fellow photography enthusiasts. Keep an eye on our page for more details coming soon!",
       media: [
         { 
           type: 'image', 
-          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762797135/Blog03_jpaqiw.jpg',  
+          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799836/Blog5_lbkrue.png',  
         }
       ],
-      date: "August 22, 2025"
+      date: "November 11, 2025"
     },
     {
-      id: 4,
-      title: "Photography Day 2025",
-      description: "Photography takes an instant out of time, altering life by holding it still.  -Dorothea Lange, American photographer.Wishing Happy World Photography Day 2025 from UIU Photography Club!",
+      id: 5,
+      title: "Whats happening at UIUPC?",
+      description: "Happening something crazy or not! Let's See! Stay tune with UIUPC.",
       media: [
         { 
-          type: 'image', 
-          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799155/Blog04_taox6m.jpg',  
+          type: 'image',
+          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1763063064/Blog6_x6ywrm.jpg',
         }
       ],
-      date: "August 19, 2025"
-    },
-  ]);
+      date: "November 14, 2025"
+    }
+  ].sort((a, b) => new Date(b.date) - new Date(a.date))); // Sort posts in descending order
 
   return (
     <div className="blog-page">
