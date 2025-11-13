@@ -20,6 +20,7 @@ import {
   FaMoneyBillWave,
   FaCreditCard,
   FaReceipt,
+  FaFileSignature,
 } from "react-icons/fa";
 import "./Join.css";
 
@@ -27,7 +28,9 @@ const Join = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [submitMessage, setSubmitMessage] = useState("");
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false); // Add this line
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showRulesPopup, setShowRulesPopup] = useState(false); // New state for rules popup
+  const [agreementAccepted, setAgreementAccepted] = useState(false); // New state for agreement checkbox
   const [formData, setFormData] = useState({
     name: "",
     studentId: "",
@@ -120,8 +123,21 @@ const Join = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Show rules popup instead of immediately submitting
+    setShowRulesPopup(true);
+  };
+
+  // New function to handle final submission after agreement
+  const handleFinalSubmit = async () => {
+    if (!agreementAccepted) {
+      alert("Please accept the membership agreement to continue.");
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus(null);
+    setShowRulesPopup(false);
 
     // Validate payment information
     if (formData.paymentMethod === "cash" && !formData.receiverName) {
@@ -170,6 +186,9 @@ const Join = () => {
         submissionData.append("photoType", photoType);
       }
 
+      // Add agreement acceptance
+      submissionData.append("agreementAccepted", "true");
+      
       // Add timestamp
       submissionData.append("timestamp", new Date().toISOString());
 
@@ -213,6 +232,7 @@ const Join = () => {
           transactionId: "",
         });
         setPhoto(null);
+        setAgreementAccepted(false);
         const fileInput = document.getElementById("photo-upload");
         if (fileInput) fileInput.value = "";
       } else {
@@ -659,7 +679,76 @@ const Join = () => {
         </div>
       </div>
 
-      {/* Success Popup - Place this at the end of the return statement */}
+      {/* Rules and Agreement Popup */}
+      {showRulesPopup && (
+        <div className="success-popup-overlay">
+          <div className="success-popup">
+            <div className="popup-header">
+              <FaFileSignature className="popup-icon" />
+              <h3>Membership Agreement & Code of Conduct</h3>
+            </div>
+            <div className="popup-content">
+              <div style={{ textAlign: 'left', maxHeight: '400px', overflowY: 'auto', padding: '10px' }}>
+                <h4 style={{ color: 'var(--uiu-orange)', marginBottom: '1rem' }}>General Rules</h4>
+                <ul style={{ marginBottom: '1.5rem', paddingLeft: '1.5rem' }}>
+                  <li>Members must respect all fellow members, club executives, and event participants.</li>
+                  <li>Members must maintain discipline and professionalism in all club activities.</li>
+                  <li>Any form of misconduct, harassment, or violation of university policies will lead to disciplinary action.</li>
+                  <li>Members should actively engage in club activities and contribute to its growth.</li>
+                  <li>UIUPC ID card can only be used for club purposes or special occasions approved by the club. Any misuse of the ID card is strictly prohibited.</li>
+                </ul>
+
+                <h4 style={{ color: 'var(--uiu-orange)', marginBottom: '1rem' }}>Activity Participation Rules</h4>
+                <ul style={{ marginBottom: '1.5rem', paddingLeft: '1.5rem' }}>
+                  <li><strong>Vertex:</strong> Members must attend at least three Vertex Workshop each year.</li>
+                  <li><strong>Photowalks:</strong> Members should try to join photowalks organized right after Vertex.</li>
+                  <li><strong>PhotoAdda:</strong> Members are encouraged to take part in discussions and creative exchanges in PhotoAdda.</li>
+                  <li><strong>Friday Exposure Contribution:</strong> Members are expected to contribute to the club's weekly showcase.</li>
+                  <li><strong>Club Internal Activities:</strong> Members should be willing to help in club operations, event management, and community engagement.</li>
+                </ul>
+
+                <h4 style={{ color: 'var(--uiu-orange)', marginBottom: '1rem' }}>Agreement & Signature</h4>
+                <p style={{ marginBottom: '1rem' }}>
+                  I confirm that I have read and understood the UIU Photography Club Membership Agreement & Code of Conduct. I agree to abide by these rules and contribute positively to the club's community. I also acknowledge that I have paid 500 BDT as a one-time, non-refundable membership fee for joining UIUPC.
+                </p>
+
+                <div className="form-group" style={{ marginTop: '1.5rem' }}>
+                  <label className="interest-checkbox" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <input
+                      type="checkbox"
+                      checked={agreementAccepted}
+                      onChange={(e) => setAgreementAccepted(e.target.checked)}
+                    />
+                    <span className="checkmark"></span>
+                    <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>
+                      I accept the Membership Agreement & Code of Conduct
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div className="popup-actions" style={{ gap: '1rem' }}>
+              <button 
+                className="btn-primary"
+                onClick={handleFinalSubmit}
+                disabled={!agreementAccepted}
+                style={{ opacity: agreementAccepted ? 1 : 0.6 }}
+              >
+                Confirm & Submit
+              </button>
+              <button 
+                className="btn-primary"
+                onClick={() => setShowRulesPopup(false)}
+                style={{ background: 'var(--light-gray)' }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Popup */}
       {showSuccessPopup && (
         <div className="success-popup-overlay">
           <div className="success-popup">
