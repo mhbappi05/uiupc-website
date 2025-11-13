@@ -100,7 +100,7 @@ const EventDetail = () => {
       highlights: [
         "National-level participation",
         "Expert jury panel from industry leaders",
-        "Cash prizes totaling ₵200,000+",
+        "Cash prizes totaling 50K BDT",
         "Exhibition at prestigious venues",
         "Professional workshops and seminars",
         "Networking with photography community",
@@ -120,6 +120,63 @@ const EventDetail = () => {
         phone: "+8801614886101",
         Head_of_PR: "Abdul Mohsen Rubay",
       },
+    },
+    "Member-Recruitemet": {
+      id: "Member-Recruitemet",
+      title: "Member Recruitment 2025",
+      subtitle: "Join the UIU Photography Club",
+      status: "ongoing",
+      chapter: "Fall'25",
+      date: "Nov 15-16 , 2025",
+      time: "9:00 AM - 4:00 PM",
+      location: "UIU Gallery, 1st Floor",
+      registrationLink: "/join",
+      entryFee: "500BDT",
+      submissionDeadline: "November 16, 2025",
+      announcementDate: "November 15, 2025",
+      description: "Join the vibrant community of photography enthusiasts at UIU Photography Club.",
+      fullDescription: `
+        # Member Recruitment 2025
+        ## Join the UIU Photography Club
+        Are you passionate about photography? Do you want to enhance your skills, participate in exciting events, and connect with fellow photography enthusiasts? The UIU Photography Club is thrilled to announce our Member Recruitment for the year 2024!
+
+        ## 🎯 Why Join Us?
+        By becoming a member of the UIU Photography Club, you'll gain access to:
+        - Exclusive workshops and training sessions
+        - Opportunities to showcase your work in exhibitions
+        - Networking events with industry professionals
+        - Collaborative projects and photo walks
+        - A supportive community to share your passion
+        ## 📝 How to Apply
+        1. Fill out the online application form.
+        2. Pay the membership fee of 500BDT.
+        ## ⏰ Important Dates
+        - **Application Deadline**: November 16, 2025
+        ## 🤝 Contact Us
+        For more information, reach out to us at:
+        - Email: photographyclub@dccsa.uiu.ac.bd
+        - Phone: +8801783503006
+        Don't miss this opportunity to be part of a dynamic and creative community. We look forward to welcoming you to the UIU Photography Club!
+      `,
+
+      highlights: [
+        "Exclusive workshops and training sessions",
+        "Opportunities to showcase your work in exhibitions",
+        "Networking events with industry professionals",
+        "Collaborative projects and photo walks",
+        "Supportive community to share your passion",
+      ],
+      gallery: [
+        "/api/placeholder/600/400",
+        "/api/placeholder/600/400",
+        "/api/placeholder/600/400",
+      ],
+      contact: {
+        email: "photographyclub@dccsa.uiu.ac.bd",
+        phone: "+8801783503006",
+        coordinator: "Md Zobayer Ahmed",
+      },
+      registrationLink: "/join",
     },
     // Add similar detailed data for other events
   };

@@ -37,7 +37,7 @@ const Home = ({ featuredPhotos }) => {
             description: "A prestigious national-level photography exhibition that brings together photography enthusiasts from across the country.",
           },
          {
-            id: "Member-recruit",
+            id: "Member-Recruitemet",
             title: "Member Recruitment Fall 2025",
             subtitle: "Join with Us!",
             status: "upcoming",

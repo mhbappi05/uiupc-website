@@ -55,6 +55,8 @@ const Events = () => {
       window.open("/register/shutter-stories", "_blank");
       // Or use navigate if you want same page
       // navigate('/register/shutter-stories');
+    } else if (eventId === "Member-Recruitemet") {
+      navigate("/register/Member-Recruitemet");
     } else {
       navigate(`/events/${eventId}`);
     }
