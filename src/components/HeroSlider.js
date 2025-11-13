@@ -18,19 +18,19 @@ const HeroSlider = () => {
     {
       id: 2,
       imageUrl:
-        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762121158/uiupc_HeroSlider2_cyl1xw.jpg",
-      title: "Join Our Community",
-      subtitle: "Learn, Share, and Grow Together",
-      eventLink: "/events/shutter-stories",
-    },
-    {
-      id: 3,
-      imageUrl:
         "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799600/uiupc_HeroSlider3_iehvzr.png",
       title: "Shutter Stories - Chapter IV Coming Soon",
       subtitle: "Showcase Your Talent",
       eventLink: "/events/shutter-stories",
     },
+    {
+      id: 3,
+      imageUrl:
+        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762121158/uiupc_HeroSlider2_cyl1xw.jpg",
+      title: "Join Our Community",
+      subtitle: "Learn, Share, and Grow Together",
+      eventLink: "/events/shutter-stories",
+    }
   ];
 
   useEffect(() => {

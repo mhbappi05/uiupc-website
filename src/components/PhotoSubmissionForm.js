@@ -520,7 +520,7 @@ const PhotoSubmissionForm = () => {
             Back to Events
           </button> */}
           <h1>Photo Submission Form</h1>
-          <p>Shutter Stories Chapter 4 - National Photography Exhibition</p>
+          <p>Shutter Stories Chapter IV - National Photography Exhibition</p>
           <p className="form-note">Your photos will be saved to Google Drive</p>
         </header>
 
@@ -637,7 +637,7 @@ const PhotoSubmissionForm = () => {
                 <div className="category-card">
                   <FaFileAlt className="category-icon" />
                   <h4>Photo Story Category</h4>
-                  <p>Submit a series of 5-9 photos telling a story</p>
+                  <p>Submit a series of 5-8 photos telling a story</p>
                   <ul>
                     <li>5-8 photos required</li>
                     <li>10MB per photo limit</li>
@@ -667,6 +667,8 @@ const PhotoSubmissionForm = () => {
                   <span className="upload-hint">
                     You can upload photos one by one
                   </span>
+                  <span>Before submitting, Please check that you have renamed your photo. <br/> 
+                  Otherwise, Your submission wont be counted.</span>
                   <input
                     type="file"
                     multiple
@@ -718,12 +720,10 @@ const PhotoSubmissionForm = () => {
               <div className="upload-section">
                 <label className="upload-area">
                   <FaUpload className="upload-icon" />
-                  <span>
-                    Upload Photo Story (5-8 photos + optional .txt file)
-                  </span>
-                  <span className="upload-hint">
-                    You can upload photos and text file one by one
-                  </span>
+                  <span> Upload Photo Story (5-8 photos + optional .txt file)</span>
+                  <span className="upload-hint">You can upload photos and text file one by one</span>
+                  <span>Before submitting, Please check that you have renamed your photo. <br/> 
+                  Otherwise, Your submission wont be counted.</span>
                   <input
                     type="file"
                     multiple

@@ -26,7 +26,7 @@ const Home = ({ featuredPhotos }) => {
             title: "Shutter Stories Chapter IV",
             subtitle: "National Photography Exhibition",
             status: "upcoming",
-            chapter: "Chapter 4",
+            chapter: "Chapter IV",
             date: "Nov 15 - Dec 20, 2025",
             time: "9:00 AM - 8:00 PM",
             location: "Will be Announced SOON, Stay Tuned!",
