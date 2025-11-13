@@ -30,6 +30,7 @@ const EventDetail = () => {
       entryFee: "Initially Free , 1000BDT per Single Photos & 2000BDT per Photo Story after shortlisting",
       submissionDeadline: "December 15, 2025",
       announcementDate: "November 15, 2025",
+      categories: ["Single Photo", "Photo Story"],
       description:
         "A prestigious national-level photography exhibition that brings together photography enthusiasts from across the country.",
       fullDescription: `
@@ -167,8 +168,6 @@ const EventDetail = () => {
         "Supportive community to share your passion",
       ],
       gallery: [
-        "/api/placeholder/600/400",
-        "/api/placeholder/600/400",
         "/api/placeholder/600/400",
       ],
       contact: {
@@ -362,7 +361,7 @@ const EventDetail = () => {
                   </div>
                   <div className="info-item">
                     <strong>Categories</strong>
-                    <span>Single & Photo Story</span>
+                    <span>{event.categories}</span>
                   </div>
                 </div>
               </div>
@@ -384,14 +383,12 @@ const EventDetail = () => {
                   <div className="contact-item">
                     <strong>Head of PR</strong>
                     <span>{event.contact.coordinator}</span>
-                  </div>
-                  <div className="contact-item">
+                  
                     <strong>Email</strong>
                     <a href={`mailto:${event.contact.email}`}>
                       {event.contact.email}
                     </a>
-                  </div>
-                  <div className="contact-item">
+                  
                     <strong>Phone</strong>
                     <a href={`tel:${event.contact.phone}`}>
                       {event.contact.phone}
