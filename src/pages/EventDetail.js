@@ -159,12 +159,7 @@ const EventDetail = () => {
         "Certificate of participation for all",
       ],
       gallery: [
-        "/api/placeholder/600/400",
-        "/api/placeholder/600/400",
-        "/api/placeholder/600/400",
-        "/api/placeholder/600/400",
-        "/api/placeholder/600/400",
-        "/api/placeholder/600/400",
+        "/api/placeholder/600/400"
       ],
       contact: {
         email: "photographyclub@dccsa.uiu.ac.bd",
