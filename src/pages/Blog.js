@@ -88,23 +88,32 @@ const PostCard = ({ post }) => {
     setIsExpanded(!isExpanded);
   };
 
+  // Generate unique URL for this post
+  const getPostUrl = () => {
+    const baseUrl = window.location.origin + window.location.pathname;
+    const postSlug = post.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    return `${baseUrl}?post=${post.id}&slug=${postSlug}`;
+  };
+
   const handleShare = () => {
+    const postUrl = getPostUrl();
+    
     if (navigator.share) {
       navigator.share({
         title: post.title,
         text: post.description.substring(0, 100) + '...',
-        url: window.location.href,
+        url: postUrl,
       })
       .catch((error) => console.log('Error sharing:', error));
     } else {
       // Fallback: copy to clipboard
-      navigator.clipboard.writeText(window.location.href)
+      navigator.clipboard.writeText(postUrl)
         .then(() => {
-          alert('Link copied to clipboard!');
+          alert('Post link copied to clipboard!');
         })
         .catch((error) => {
           console.log('Error copying to clipboard:', error);
-          alert('Share this page: ' + window.location.href);
+          alert('Share this post: ' + postUrl);
         });
     }
   };
