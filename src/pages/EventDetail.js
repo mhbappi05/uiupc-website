@@ -22,79 +22,129 @@ const EventDetail = () => {
       subtitle: "National Photography Exhibition",
       status: "ongoing",
       chapter: "Chapter IV",
-      date: "Nov 15 - Dec 15, 2025",
+      date: "Nov 15 - Dec 10, 2025",
       time: "9:00 AM - 8:00 PM",
       //   location: 'UIU Campus & National Museum, Dhaka',
       location: "Will be Announced SOON, Stay Tuned!",
-       registrationLink: "/register/shutter-stories",
-      entryFee: "Submission is FREE at first. Shortlisted entries will require 1000 BDT per Single Photo and 2000 BDT per Photo Story.",
-      submissionDeadline: "December 15, 2025",
+      registrationLink: "/register/shutter-stories",
+      entryFee:
+        "There is no fee for submission. Shortlisted entries will be announced later.",
+      submissionDeadline: "December 10, 2025",
       announcementDate: "November 15, 2025",
       categories: ["Single Photo", "Photo Story"],
       description:
-        "A prestigious national-level photography exhibition that brings together photography enthusiasts from across the country.",
+        "United Healthcare Presents Shutter Stories Chapter IV unveils its official identity. The legacy continues as we prepare for yet another national gathering of photographers and storytellers. With fresh energy and limitless possibilities, this chapter is set to define creativity. After many challenges, the moment we’ve all been waiting for has arrived, the Call for Photo is now officially open. This is your opportunity to take part in one of the country’s most celebrated photography exhibitions.",
       fullDescription: `
         # Shutter Stories Chapter IV
         ## National Photography Exhibition
+
+        United Healthcare Presents Shutter Stories Chapter IV unveils its official identity. The legacy continues as we prepare for yet another national gathering of photographers and storytellers. With fresh energy and limitless possibilities, this chapter is set to define creativity. After many challenges, the moment we’ve all been waiting for has arrived, the Call for Photo is now officially open. This is your opportunity to take part in one of the country’s most celebrated photography exhibitions.
         
         Welcome to the most anticipated photography event of the year! Shutter Stories Chapter IV continues our legacy of celebrating visual storytelling through the lens. This national-level exhibition brings together amateur and professional photographers from across Bangladesh.
 
         ## 🎯 Event Overview
         Shutter Stories is more than just a competition; it's a platform for photographers to share their unique perspectives, tell compelling stories, and connect with like-minded individuals. This year, we're expanding our reach with new categories and exciting opportunities.
 
+        *************************************************//////////*************************************************
         ## 📸 Competition Categories
 
-        ### Single Photo Categories:
+        ### Single Photo Categories (Maximum 10 Photos):
             Open Theme (Single Image)
+            Medium: DSLR/Mobile Phone/PNS
+            -> Each participant can submit at most 10 Photos in a single section. A participant can submit in both Colors and Black & White.
+            -> All kinds of HDR, Digital Photo Composite, or Photo Montage are allowed in Single Photos. Only minor burning, dodging and/or color correction is acceptable, as is cropping. In the case of digital photo composite or photo montage, all used photos must be taken by the Photographers. (Proof of capture might be required if it is necessary)
 
-        ### Photo Story Category (3-5 images):
+        ### Photo Story Category (6-12 images):
             Open Theme (Photo Story)
 
-        ## 🏆 Prizes & Recognition
+            -> Number of photographs per story: Minimum 6 to Maximum 12
+            -> Each participant can submit at most 2 Photo Series/Stories in this section. A participant can submit in both Colors and Black & White.
+            -> Photo Stories including (but not restricted to) journalism, personal stories, and creative/conceptual will be accepted. Photographers can use any type of photo manipulation to express his/her creativity. And all the photos should be coherent and share a common theme.
+            -> All forms of HDR, digital composites, and photo montages are allowed in the Breaking Story category. Digital manipulation is permitted only for submissions in the Photo Story category. Any manipulated image that includes composite elements (such as adding clouds, birds, or other objects) must feature content that was originally photographed by the participant. Judges may request proof of authenticity if required.
 
-        ### Grand Prizes: (Single Photo Category)
-        - **Winner**: 15,000BDT + Crest + Certificates + Gift Packs
-        - **1st Runner up**: 10,000BDT + Crest + Certificates + Gift Packs
-        - **2nd Runner up**: 5000BDT + Crest + Certificates + Gift Packs
-        - **Honorable Mention**: 5000BDT + Crest + Certificates + Gift Packs
-
-        ### Grand Prizes: (Photo Story Category)
-        - **Winner**: 15,000BDT + Crest + Certificates + Gift Packs
-
-        - **For All Participantes**: Certificates + Gift Packs
-
-        ## 👥 Jury Panel
-        Our esteemed jury includes:
-        - Will be Announced SOON, Stay Tuned!
-
+        *************************************************//////////*************************************************
         ## 📝 Submission Guidelines
-        1. **Format**: JPEG/PNG, minimum 2000px on longer side
-        2. **Size**: Maximum 10MB per image
-        3. **Editing**: Basic edits allowed, no heavy manipulation
-        4. **Metadata**: Must contain camera and shooting details
-        5. **Originality**: Must be your own work
+            For both Single Photo and Photo Stories you will have to submit photographs via the registration link: https://uiupc.vercel.app/register/shutter-stories
+            ONLY USE GOOGLE FORM IF YOU FAIL TO SUBMIT VIA THE REGISTRATION LINK
+            Google Form: https://forms.gle/x7yqVVc9gwiT6GgE8
+
+            **** Submission Requirements (Single)****
+                    Each photo should follow this naming convention-
+                    [ Institution Name_Participant’s name_Category_Mobile no_Serial no ]
+                    For example:
+                    [ UIU_Ahmad Hasan_Single_0162#######_01 ]
+
+                    **** If you are not a student and you are a job holder or businessman, you will have to mention the name of that institution, if not then you may write as:
+                    [ Freelancer_Participant’s name_Category_Mobile no_Serial no ] ****
+
+          1. **Format**: 
+                         JPEG/JPG/PNG, minimum 3000px on longer side, Minimum 300 dpi (for DSLR/PNS)
+                         JPEG/JPG/PNG, minimum 2400px on longer side
+          2. **Size**: Maximum 10MB per image
+          3. **No Watermarks**: Do not include watermarks or signatures on the images.
+          4.  After the Submission of the email, you have to confirm your submission by posting on this Event’s Discussions. Include the following information in your post: Email Address & Number of Photographs submitted.
+        *************************************************//////////*************************************************
+          **** Submission Requirements (Photo Stories)****
+                    Each photo should follow this naming convention-
+                    [ Institution Name_Participant’s name_Category_Mobile no_Serial no ]
+                    For example:
+                    [ UIU_Ahmad Hasan_Story_0162#######_01 ]
+
+                    **** If you are not a student and you are a job holder or businessman, you will have to mention the name of that institution, if not then you may write as:
+                    [ Freelancer_Participant’s name_Category_Mobile no_Serial no ] ****
+
+                    **** Note: Serial no will be from 01 to 12 depending on the number of photos you are submitting in your Story/Series. ****
+
+                    **** Story Description must be added during Registration. No Photo Story will be accepted without a Story Description. ****
+          1. **Format**: 
+                         JPEG/JPG/PNG, minimum 3000px on longer side, Minimum 300 dpi (for DSLR/PNS)
+                         JPEG/JPG/PNG, minimum 2400px on longer side
+          2. **Size**: Maximum 10MB per image
+          3. **No Watermarks**: Do not include watermarks or signatures on the images.
+          4.  After the Submission of the email, you have to confirm your submission by posting on this Event’s Discussions. Include the following information in your post: Email Address & Number of Photographs submitted.
+        *************************************************//////////*************************************************
+        ## ELIGIBILITY 
+          -> Anyone from Bangladesh is eligible to submit their works.
+          -> Participants must provide proof of eligibility in the form of a Student ID Card/National ID/-> -> Passport no or other necessary documents if required.
+
 
         ## ⏰ Important Dates
-        - **Registration Opens**: November 15, 2025
-        - **Submission Deadline**: December 15, 2025
-        - **Jury Review**: December 6-12, 2025
-        - **Exhibition**: January 10-25, 2026
-        - **Award Ceremony**: January , 2026
+          -> Registration Opens**: November 15, 2025
+          -> Submission Deadline**: December 10, 2025
 
         ## 💰 Registration Fees
-        - **Single Category**: 1000BDT each
-        - **Photo Story**: 2000BDT each
+          -> There is no fee for submission. Shortlisted entries will be announced later.
+
+        ## 🏆 Prizes & Recognition
+          -> Will be Announced SOON, Stay Tuned!
+
+        ## 👥 Jury Panel
+          -> Our esteemed jury includes:
+          -> Will be Announced SOON, Stay Tuned!
 
         ## 🎪 Event Schedule
-
-        Will be Announced SOON, Stay Tuned!
+          -> Will be Announced SOON, Stay Tuned!
 
         ## 📍 Venue Details
-        
-        Will be Announced SOON, Stay Tuned!
+          -> Will be Announced SOON, Stay Tuned!
 
         ## 🤝 Sponsors & Partners
-        - Tittle Sponsor: United Medical
+          -> Tittle Sponsor: United Medical
+
+        *************************************************//////////*************************************************
+        ## TERMS & CONDITION FOR PHOTO SUBMISSION
+        -> By submitting your photographs, you agree to the terms and conditions set forth by the UIU Photography Club.
+        -> All submitted photographs must be original works created by the participant.
+        -> The UIU Photography Club reserves the right to use submitted photographs for promotional purposes, with proper credit given to the photographer.
+        -> Participants are responsible for obtaining any necessary permissions or releases for recognizable individuals or private property featured in their photographs.
+        -> The decision of the jury panel is final and binding. Judges & curators hold the right of altering any selected images. (like, cropping, conversion to black and white, flipping, etc.)
+        -> Submission of photos exhibited previously in any other exhibition is strongly discouraged.
+        -> The organizers reserve the right to disqualify any entry that does not comply with the submission guidelines or terms and conditions.
+        -> Photographs that include sculptures, statues, paintings, and other works of art will be accepted as long as they do not constitute copyright infringement or fraud.
+        -> The photograph must not contain obscene, provocative, defamatory, sexually explicit, or otherwise objectionable or inappropriate content.
+        ->  Photographers will be notified about the registration process, fees, and deadlines after the results are published. If any ‘selected’ photographer fails to complete the registration process within the registration deadline his/her photograph(s) will be disqualified and priority will be given to the waiting list.
+        -> UIUPC holds the right to examine the authenticity of the photograph/source material in order to confirm compliance with these rules.
+        *************************************************//////////*************************************************
 
         Don't miss this incredible opportunity to showcase your talent, learn from experts, and connect with the photography community!
       `,
@@ -118,8 +168,8 @@ const EventDetail = () => {
       ],
       contact: {
         email: "photographyclub@dccsa.uiu.ac.bd",
-        phone: "+8801614886101",
-        Head_of_PR: "Abdul Mohsen Rubay",
+        phone: "+8801679861740",
+        coordinator: "Md Mahmudul Hasan",
       },
     },
     "Member-Recruitemet": {
@@ -135,7 +185,8 @@ const EventDetail = () => {
       entryFee: "500BDT",
       submissionDeadline: "November 16, 2025",
       announcementDate: "November 15, 2025",
-      description: "Join the vibrant community of photography enthusiasts at UIU Photography Club.",
+      description:
+        "Join the vibrant community of photography enthusiasts at UIU Photography Club.",
       fullDescription: `
         # Member Recruitment 2025
         ## Join the UIU Photography Club
@@ -167,9 +218,7 @@ const EventDetail = () => {
         "Collaborative projects and photo walks",
         "Supportive community to share your passion",
       ],
-      gallery: [
-        "/api/placeholder/600/400",
-      ],
+      gallery: ["/api/placeholder/600/400"],
       contact: {
         email: "photographyclub@dccsa.uiu.ac.bd",
         phone: "+8801783503006",
@@ -381,14 +430,14 @@ const EventDetail = () => {
                 <h3>Contact Information</h3>
                 <div className="contact-info">
                   <div className="contact-item">
-                    <strong>Head of PR</strong>
+                    <strong>Coordinator</strong>
                     <span>{event.contact.coordinator}</span>
-                  
+
                     <strong>Email</strong>
                     <a href={`mailto:${event.contact.email}`}>
                       {event.contact.email}
                     </a>
-                  
+
                     <strong>Phone</strong>
                     <a href={`tel:${event.contact.phone}`}>
                       {event.contact.phone}
