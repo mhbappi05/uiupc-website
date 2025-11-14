@@ -20,7 +20,7 @@ const EventDetail = () => {
       id: "shutter-stories",
       title: "Shutter Stories Chapter IV",
       subtitle: "National Photography Exhibition",
-      status: "upcoming",
+      status: "ongoing",
       chapter: "Chapter IV",
       date: "Nov 15 - Dec 15, 2025",
       time: "9:00 AM - 8:00 PM",

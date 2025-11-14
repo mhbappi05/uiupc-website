@@ -203,6 +203,19 @@ const Blog = () => {
         }
       ],
       date: "November 14, 2025"
+    },
+    {
+      id: 6,
+      title: "Shutter Stories Chapter IV Identity Revealed!",
+      description: "The moment has finally arrived; United Healthcare Presents Shutter Stories Chapter IV unveils its official identity. The legacy continues as we prepare for yet another national gathering of photographers and storytellers. With fresh energy and limitless possibilities, this chapter is set to define creativity. The Call for Photo goes live soon. Stay tuned!",
+      media: [
+        { 
+          type: 'video',
+          url: 'https://res.cloudinary.com/do0e8p5d2/video/upload/v1763138349/Shutter_Stories_Chapter_4_-_2025_Promo_glsjvm.mp4',
+          thumbnail: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1763138365/ShutterVThum01_et8lv2.jpg'
+        }
+      ],
+      date: "November 14, 2025" 
     }
   ].sort((a, b) => new Date(b.date) - new Date(a.date))); // Sort posts in descending order
 

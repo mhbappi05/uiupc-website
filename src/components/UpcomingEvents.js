@@ -1,4 +1,4 @@
-// components/UpcomingEvents.js - FIXED VERSION
+// components/UpcomingEvents.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaArrowRight, FaClock, FaImage } from 'react-icons/fa';
