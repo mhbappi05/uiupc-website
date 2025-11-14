@@ -84,9 +84,9 @@ const PhotoSubmissionForm = () => {
 
     // Check total story photos after adding new ones
     const totalStoryPhotos = formData.photoStory.length + imageFiles.length;
-    if (totalStoryPhotos > 8) {
+    if (totalStoryPhotos > 12) {
       alert(
-        `Maximum 8 photos allowed for photo story. You already have ${formData.photoStory.length} photos selected.`
+        `Maximum 12 photos allowed for photo story. You already have ${formData.photoStory.length} photos selected.`
       );
       e.target.value = ""; // Reset input
       return;
@@ -620,7 +620,7 @@ const PhotoSubmissionForm = () => {
                     <li>10MB per photo limit</li>
                     <li>Open theme</li>
                     <li>
-                      Rename Photos: Name_University_PhoneNo._Single_SeNo.
+                      Rename Photos: Institution Name_Participant’s name_Category_Mobile no_Serial no
                     </li>
                   </ul>
                 </div>
@@ -637,13 +637,13 @@ const PhotoSubmissionForm = () => {
                 <div className="category-card">
                   <FaFileAlt className="category-icon" />
                   <h4>Photo Story Category</h4>
-                  <p>Submit a series of 5-8 photos telling a story</p>
+                  <p>Submit a series of 6-12 photos telling a story</p>
                   <ul>
-                    <li>5-8 photos required</li>
+                    <li>6-12 photos required</li>
                     <li>10MB per photo limit</li>
                     <li>Open theme</li>
                     <li>
-                      Rename Photos: Name_University_PhoneNo._Stories_SeNo.
+                      Rename Photos: Institution Name_Participant’s name_Category_Mobile no_Serial no
                     </li>
                     <li>Include a .txt file with your story description</li>
                   </ul>
@@ -720,7 +720,7 @@ const PhotoSubmissionForm = () => {
               <div className="upload-section">
                 <label className="upload-area">
                   <FaUpload className="upload-icon" />
-                  <span> Upload Photo Story (5-8 photos + optional .txt file)</span>
+                  <span> Upload Photo Story (6-12 photos + .txt file)</span>
                   <span className="upload-hint">You can upload photos and text file one by one</span>
                   <span>Before submitting, Please check that you have renamed your photo. <br/> 
                   Otherwise, Your submission wont be counted.</span>
@@ -729,7 +729,7 @@ const PhotoSubmissionForm = () => {
                     multiple
                     accept="image/*,.txt"
                     onChange={handlePhotoStoryUpload}
-                    disabled={uploading || formData.photoStory.length >= 8}
+                    disabled={uploading || formData.photoStory.length >= 12}
                   />
                 </label>
                 {(formData.photoStory.length > 0 || formData.storyTextFile) && (
@@ -752,7 +752,7 @@ const PhotoSubmissionForm = () => {
                     </div>
                     {formData.photoStory.length > 0 && (
                       <>
-                        <h5>Photos ({formData.photoStory.length}/8)</h5>
+                        <h5>Photos ({formData.photoStory.length}/12)</h5>
                         <div className="preview-grid">
                           {formData.photoStory.map((photo, index) => (
                             <div key={index} className="preview-item">
@@ -816,8 +816,8 @@ const PhotoSubmissionForm = () => {
                 (formData.category === "single" &&
                   formData.photos.length === 0) ||
                 (formData.category === "story" &&
-                  (formData.photoStory.length < 5 ||
-                    formData.photoStory.length > 8))
+                  (formData.photoStory.length < 6 ||
+                    formData.photoStory.length > 12))
               }
             >
               {uploading ? "Uploading to Google Drive..." : "Submit Photos"}
