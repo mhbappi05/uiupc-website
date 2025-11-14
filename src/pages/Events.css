@@ -234,8 +234,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(255, 107, 0, 0.2);
-  border: 1px solid rgba(255, 107, 0, 0.5);
+  background: rgba(120, 252, 116, 0.233);
+  border: 1px solid rgba(60, 255, 0, 0.541);
   border-radius: 20px;
   padding: 0.5rem 1rem;
   margin-bottom: 1.5rem;
@@ -243,7 +243,7 @@
 }
 
 .badge-text {
-  color: #FF6B00;
+  color: #71e47b;
   font-weight: 600;
   font-size: 0.9rem;
   text-transform: uppercase;
@@ -253,7 +253,7 @@
 .badge-pulse {
   width: 8px;
   height: 8px;
-  background: #FF6B00;
+  background: #4CAF50;
   border-radius: 50%;
   animation: pulse 2s infinite;
 }
@@ -534,15 +534,15 @@
 }
 
 .status-badge.upcoming {
-  background: rgba(76, 175, 80, 0.2);
-  color: #4CAF50;
-  border: 1px solid rgba(76, 175, 80, 0.5);
-}
-
-.status-badge.ongoing {
   background: rgba(255, 193, 7, 0.2);
   color: #FFC107;
   border: 1px solid rgba(255, 193, 7, 0.5);
+}
+
+.status-badge.ongoing {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4CAF50;
+  border: 1px solid rgba(76, 175, 80, 0.5);
 }
 
 .status-badge.completed {

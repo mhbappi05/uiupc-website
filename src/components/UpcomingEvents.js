@@ -10,9 +10,9 @@ const UpcomingEvents = ({ events }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'upcoming':
-        return '#4CAF50';
-      case 'ongoing':
         return '#FFC107';
+      case 'ongoing':
+        return '#4CAF50';
       case 'completed':
         return '#9E9E9E';
       default:

@@ -289,7 +289,7 @@ const Events = () => {
         <div className="container">
           <div className="banner-content">
             <div className="banner-badge">
-              <span className="badge-text">Upcoming Event</span>
+              <span className="badge-text">Ongoing Event</span>
               <div className="badge-pulse"></div>
             </div>
             <h2 className="banner-title">Shutter Stories</h2>
