@@ -34,9 +34,9 @@ const Navbar = ({ user }) => {
 
   const navItems = [
     { path: '/', label: 'Home' },
-    { path: '/gallery', label: 'Gallery' },
-    { path: '/members', label: 'Committee' },
     { path: '/events', label: 'Events' },
+    { path: '/members', label: 'Committee' },
+    { path: '/gallery', label: 'Gallery' },
     { path: '/blog', label: 'Blog' },
     { path: '/contact', label: 'Contact' },
   ];
