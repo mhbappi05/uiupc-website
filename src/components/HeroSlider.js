@@ -38,6 +38,15 @@ const HeroSlider = () => {
     },
     {
       id: 4,
+      imageUrl: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1763225125/HeroSlider04_zqnypu.jpg",
+      title: "Call for Photo",
+      subtitle: "Submit Now for National Exhibition",
+      eventLink: "/events/shutter-stories",
+      type: "image",
+      duration: 5000 // 5 seconds for images
+    },
+    {
+      id: 5,
       imageUrl: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762121158/uiupc_HeroSlider2_cyl1xw.jpg",
       title: "Join Our Community",
       subtitle: "Learn, Share, and Grow Together",

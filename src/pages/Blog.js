@@ -225,6 +225,18 @@ const Blog = () => {
         }
       ],
       date: "November 14, 2025" 
+    },
+    {
+      id: 7,
+      title: "Shutter Stories Chapter IV Call for Photo",
+      description: "The legacy continues as we prepare for yet another national gathering of photographers and storytellers. United Healthcare Presents Shutter Stories Chapter IV.  Call for Photo is live now! For submission visit: https://uiupc.vercel.app/ Facebook Event: https://www.facebook.com/share/17si8WcNeF/ ",
+      media: [
+        { 
+          type: 'image',
+          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1763223291/Blog_7_suqqrn.jpg',
+        }
+      ],
+      date: "November 15, 2025"
     }
   ].sort((a, b) => new Date(b.date) - new Date(a.date))); // Sort posts in descending order
 

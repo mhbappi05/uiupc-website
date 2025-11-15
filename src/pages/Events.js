@@ -21,7 +21,7 @@ const Events = () => {
 
   // Calculate time until December 15, 2024
   const calculateTimeLeft = () => {
-    const eventDate = new Date("November 15, 2025 11:00:00").getTime();
+    const eventDate = new Date("December 10, 2025 24:00:00").getTime();
     const now = new Date().getTime();
     const difference = eventDate - now;
 
@@ -292,10 +292,10 @@ const Events = () => {
               <span className="badge-text">Ongoing Event</span>
               <div className="badge-pulse"></div>
             </div>
-            <h2 className="banner-title">Shutter Stories</h2>
-            <h2 className="banner-title">Chapter IV</h2>
+            <h2 className="banner-title">Shutter Stories Chapter IV</h2>
+            <h2 className="banner-title">Call for Photo</h2>
             <p className="banner-subtitle">
-              National Photography Exhibition • November 15, 2025
+              Photo Submission Deadline • December 10, 2025
             </p>
 
             {/* Working Countdown Timer */}
@@ -344,7 +344,7 @@ const Events = () => {
           <div className="banner-visual">
             <div className="visual-glow"></div>
             <div className="visual-frame">
-              <img src="https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799836/Blog5_lbkrue.png" alt="Shutter Stories" />
+              <img src="https://res.cloudinary.com/do0e8p5d2/image/upload/v1763223291/Blog_7_suqqrn.jpg" alt="Shutter Stories" />
             </div>
           </div>
         </div>

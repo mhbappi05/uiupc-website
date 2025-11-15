@@ -50,7 +50,7 @@ const UpcomingEvents = ({ events }) => {
     } else if (event.title?.toLowerCase().includes('contest')) {
       return 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80';
     } else if (event.title?.toLowerCase().includes('member')) {
-      return 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762805686/upEvent_vorvje.jpg';
+      return 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1763223516/Member_Recruitment_ocphw1.jpg';
     } else {
       // Default photography event image
       return 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762121162/uiupc_HeroSlider3_wrpuvz.jpg';
