@@ -44,7 +44,7 @@ const UniversalAdmin = () => {
     photos:
       "https://script.google.com/macros/s/AKfycbw4Jg_fVbBYEkHznAn9P3RNtxSBWeiUDVZIF3AM8VhkKHT3GEifO-tEWECEh918PSMJ/exec",
     email:
-      "https://script.google.com/macros/s/AKfycbzjy8Qqaw56eQyPn-gyDwDA4R6aHGkOoVI2Y3-ogcSSINGlTBNJwWYs5zZ98PWgtX4h/exec",
+      "https://script.google.com/macros/s/AKfycbzut9q4kH0cnVhkfM5EKJrlmGp5oO7qNTuKpF8vn_vl4eJcREjfrSZ5P2SFDlllM7AKLw/exec",
   };
 
   // Email templates for photo submissions
@@ -77,7 +77,10 @@ Submission Guidelines:
 
 Please rename your photos and resubmit them as soon as possible. Submissions with improperly named photos may be disqualified.
 
-If you have any questions, please don't hesitate to contact us.
+For Submission: https://uiupc.vercel.app/register/shutter-stories
+Rulebook: https://drive.google.com/drive/u/0/folders/1qwJ7spd1ewaH3RINgSKSf87QMYvcpSZi
+
+If you have any questions, feel free to contact us through this email or message us on our Facebook page.
 
 Best regards,
 UIU Photography Club
