@@ -1,6 +1,6 @@
 // App.js - Main Application Component
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { auth, db } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { collection, getDocs } from 'firebase/firestore';
@@ -19,6 +19,10 @@ import Admin from './pages/Admin';
 import Loading from './components/Loading';
 import EventDetail from './pages/EventDetail';
 import PhotoSubmissionForm from './components/PhotoSubmissionForm';
+import Login from './pages/Login';
+
+// Context
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 // Styles
 import './styles/App.css';
@@ -34,24 +38,41 @@ function ScrollToTop() {
   return null;
 }
 
-function App() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+// Protected Route component
+const ProtectedRoute = ({ children }) => {
+  const { user } = useAuth();
+  return user ? children : <Navigate to="/login" />;
+};
+
+// Public Route component (redirect to admin if already logged in)
+const PublicRoute = ({ children }) => {
+  const { user } = useAuth();
+  return !user ? children : <Navigate to="/admin" />;
+};
+
+// Main app content component
+function AppContent() {
   const [featuredPhotos, setFeaturedPhotos] = useState([]);
   const [events, setEvents] = useState([]);
+  const [dataLoading, setDataLoading] = useState(true);
+  const { user, loading: authLoading } = useAuth();
 
   useEffect(() => {
-    // Authentication state listener
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      setLoading(false);
-    });
-
     // Fetch initial data
-    fetchFeaturedPhotos();
-    fetchUpcomingEvents();
+    const fetchData = async () => {
+      try {
+        await Promise.all([
+          fetchFeaturedPhotos(),
+          fetchUpcomingEvents()
+        ]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setDataLoading(false);
+      }
+    };
 
-    return () => unsubscribe();
+    fetchData();
   }, []);
 
   const fetchFeaturedPhotos = async () => {
@@ -84,7 +105,8 @@ function App() {
     }
   };
 
-  if (loading) {
+  // Show loading screen while auth is initializing
+  if (authLoading) {
     return <Loading />;
   }
 
@@ -92,7 +114,7 @@ function App() {
     <Router>
       <div className="App">
         <ScrollToTop />
-        <Navbar user={user} />
+        <Navbar />
         <main>
           <Routes>
             <Route path="/" element={
@@ -108,13 +130,37 @@ function App() {
             <Route path="/join" element={<Join />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/events/:eventId" element={<EventDetail />} />
-            {user && <Route path="/admin" element={<Admin user={user} />} />}
+            <Route 
+              path="/admin" 
+              element={
+                <ProtectedRoute>
+                  <Admin />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/login" 
+              element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              } 
+            />
             <Route path="/register/:eventId" element={<PhotoSubmissionForm />} />
           </Routes>
         </main>
         <Footer />
       </div>
     </Router>
+  );
+}
+
+// Main App wrapper with AuthProvider
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 

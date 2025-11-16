@@ -3,14 +3,16 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
+import { useAuth } from '../contexts/AuthContext';
 import { FaTimes, FaBars } from 'react-icons/fa';
 import myLogo from '../assests/logo.jpg';
 import './Navbar.css';
 
-const Navbar = ({ user }) => {
+const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const { user } = useAuth(); // Using AuthContext instead of props
 
   useEffect(() => {
     const handleScroll = () => {
@@ -77,9 +79,14 @@ const Navbar = ({ user }) => {
                 Sign Out
               </button>
             ) : (
-              <Link to="/join" className="nav-btn join-btn">
-                Join Us
-              </Link>
+              <>
+                {/* <Link to="/login" className="nav-btn login-btn">
+                  Admin Login
+                </Link> */}
+                <Link to="/join" className="nav-btn join-btn">
+                  Join Us
+                </Link>
+              </>
             )}
           </div>
         </div>
@@ -124,13 +131,22 @@ const Navbar = ({ user }) => {
                 Sign Out
               </button>
             ) : (
-              <Link 
-                to="/join" 
-                className="mobile-btn join-btn"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Join Us
-              </Link>
+              <>
+                <Link 
+                  to="/login" 
+                  className="mobile-btn login-btn"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Admin Login
+                </Link>
+                <Link 
+                  to="/join" 
+                  className="mobile-btn join-btn"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Join Us
+                </Link>
+              </>
             )}
           </div>
         </div>
