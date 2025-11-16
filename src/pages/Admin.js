@@ -12,6 +12,7 @@ import {
   FaExternalLinkAlt,
   FaChevronLeft,
   FaChevronRight,
+  FaEnvelope,
 } from "react-icons/fa";
 import Loading from "../components/Loading";
 import "./Admin.css";
@@ -24,20 +25,114 @@ const UniversalAdmin = () => {
   const [filterStatus, setFilterStatus] = useState("all");
   const [selectedItem, setSelectedItem] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const [dataType, setDataType] = useState("membership"); // 'membership' or 'photos'
-  
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const [selectedEmailItem, setSelectedEmailItem] = useState(null);
+  const [emailSending, setEmailSending] = useState(false);
+  const [dataType, setDataType] = useState("membership");
+  const [connectionTest, setConnectionTest] = useState(null);
+
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
 
   const { user } = useAuth();
 
-  // URLs for different data types
+  // URLs for different data types - MAKE SURE THESE ARE CORRECT
   const SCRIPTS = {
     membership:
       "https://script.google.com/macros/s/AKfycbwf_UmVAhpw7_y9RXbLartxhOwRFZhAg9KMqw4q1wvNTE1DQM_Qq_ryPLAnRWkM25Yd/exec",
     photos:
       "https://script.google.com/macros/s/AKfycbw4Jg_fVbBYEkHznAn9P3RNtxSBWeiUDVZIF3AM8VhkKHT3GEifO-tEWECEh918PSMJ/exec",
+    email:
+      "https://script.google.com/macros/s/AKfycbzjy8Qqaw56eQyPn-gyDwDA4R6aHGkOoVI2Y3-ogcSSINGlTBNJwWYs5zZ98PWgtX4h/exec",
+  };
+
+  // Email templates for photo submissions
+  const EMAIL_TEMPLATES = {
+    confirmation: {
+      subject: "Photo Submission Confirmation - UIU Photography Club",
+      body: `Dear {name},
+
+Thank you for submitting your photos to the Shutter Stories Chapter IV. We have successfully received your submission.
+
+Submission Details:
+- Name: {name}
+- Email: {email}
+- Category: {category}
+- Total Photos Submitted: {photoCount} (Main) + {storyPhotoCount} (Story)
+
+Best regards,
+UIU Photography Club
+photographyclub@dccsa.uiu.ac.bd`,
+    },
+    renameRequest: {
+      subject: "Action Required: Rename Your Photos - UIU Photography Club",
+      body: `Dear {name},
+
+We have received your photo submission for the Shutter Stories Chapter IV. However, we noticed that your photos have not been properly renamed according to our submission guidelines.
+
+Submission Guidelines:
+- Photos must be renamed in this format: "Institution Name_Participant's name_Category_Mobile no_Serial no"
+- For example: "UIU_Ahmad Hasan_Single_0162#######_01"
+
+Please rename your photos and resubmit them as soon as possible. Submissions with improperly named photos may be disqualified.
+
+If you have any questions, please don't hesitate to contact us.
+
+Best regards,
+UIU Photography Club
+photographyclub@dccsa.uiu.ac.bd`,
+    },
+    general: {
+      subject: "Regarding Your Photo Submission - UIU Photography Club",
+      body: `Dear {name},
+
+Thank you for your interest in the Shutter Stories Chapter IV.
+
+We have reviewed your submission and would like to inform you that {custom_message}.
+
+If you have any questions, please feel free to contact us.
+
+Best regards,
+UIU Photography Club
+photographyclub@dccsa.uiu.ac.bd`,
+    },
+  };
+
+  // Test email script connection
+  const testEmailConnection = async () => {
+    try {
+      console.log("Testing email script connection...");
+      setConnectionTest({ status: 'testing', message: 'Testing connection...' });
+      
+      const response = await fetch(`${SCRIPTS.email}?action=testConnection`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      console.log("Connection test response status:", response.status);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("Connection test result:", result);
+
+      if (result.status === 'success') {
+        setConnectionTest({ status: 'success', message: 'Email service is connected and working!' });
+      } else {
+        throw new Error(result.data || 'Connection test failed');
+      }
+    } catch (error) {
+      console.error("Connection test failed:", error);
+      setConnectionTest({ 
+        status: 'error', 
+        message: `Failed to connect: ${error.message}. Please check: 1) Script URL is correct, 2) Script is deployed as web app, 3) Execute permissions are set to "Anyone"` 
+      });
+    }
   };
 
   const fetchData = async () => {
@@ -46,8 +141,7 @@ const UniversalAdmin = () => {
       setError(null);
       console.log(`Fetching ${dataType} data...`);
 
-      const action =
-        dataType === "membership" ? "getApplications" : "getSubmissions";
+      const action = dataType === "membership" ? "getApplications" : "getSubmissions";
       const response = await fetch(`${SCRIPTS[dataType]}?action=${action}`);
 
       if (!response.ok) {
@@ -65,7 +159,6 @@ const UniversalAdmin = () => {
             new Date(a.Timestamp || a.timestamp || a["Timestamp"])
         );
         setData(sortedData);
-        // Reset to first page when data changes
         setCurrentPage(1);
       } else {
         throw new Error(result.message || "Failed to fetch data");
@@ -81,6 +174,11 @@ const UniversalAdmin = () => {
   useEffect(() => {
     fetchData();
   }, [dataType]);
+
+  // Test email connection on component mount
+  useEffect(() => {
+    testEmailConnection();
+  }, []);
 
   // Safe string conversion helper
   const safeToString = (value) => {
@@ -113,14 +211,11 @@ const UniversalAdmin = () => {
 
       return matchesSearch && matchesStatus;
     } else {
-      // Photo submissions - using the actual column names from your spreadsheet
       const name = safeToString(item["Name"] || item["Full Name"] || item.name);
       const email = safeToString(item["Email"] || item.email);
       const phone = safeToString(item["Phone"] || item.phone);
       const institution = safeToString(item["Institution"] || item.institution);
-      const status = safeToString(
-        item["Status"] || item.status || "IN_PROGRESS"
-      );
+      const status = safeToString(item["Status"] || item.status || "IN_PROGRESS");
 
       const matchesSearch =
         name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -142,12 +237,99 @@ const UniversalAdmin = () => {
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-  // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleViewDetails = (item) => {
     setSelectedItem(item);
     setShowDetailsModal(true);
+  };
+
+  const handleEmailReply = (item) => {
+    setSelectedEmailItem(item);
+    setShowEmailModal(true);
+  };
+
+  const sendEmail = async (templateType, customMessage = "") => {
+    if (!selectedEmailItem) return;
+
+    try {
+      setEmailSending(true);
+
+      const recipientEmail = getProperty(selectedEmailItem, "Email");
+      const recipientName = getProperty(selectedEmailItem, "Name");
+
+      let subject = EMAIL_TEMPLATES[templateType].subject;
+      let body = EMAIL_TEMPLATES[templateType].body;
+
+      // Replace template variables
+      body = body
+        .replace(/{name}/g, recipientName)
+        .replace(/{email}/g, recipientEmail)
+        .replace(/{category}/g, getProperty(selectedEmailItem, "Category"))
+        .replace(/{photoCount}/g, getProperty(selectedEmailItem, "Photo Count"))
+        .replace(
+          /{storyPhotoCount}/g,
+          getProperty(selectedEmailItem, "Story Photo Count")
+        )
+        .replace(/{custom_message}/g, customMessage);
+
+      console.log("Sending email with params:", {
+        recipientEmail,
+        subject,
+        bodyLength: body.length,
+        sentBy: user.email
+      });
+
+      // Use GET request with URL parameters as fallback
+      const params = new URLSearchParams({
+        action: "sendEmail",
+        recipientEmail: recipientEmail,
+        subject: subject,
+        body: body,
+        sentBy: user.email,
+        submissionId: selectedEmailItem.Timestamp || selectedEmailItem.timestamp || selectedEmailItem["Timestamp"],
+        type: dataType,
+      });
+
+      const response = await fetch(`${SCRIPTS.email}?${params.toString()}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      console.log("Email response status:", response.status);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("Email response data:", result);
+
+      if (result.status === "success") {
+        alert("Email sent successfully!");
+        setShowEmailModal(false);
+        setSelectedEmailItem(null);
+        // Retest connection after successful send
+        testEmailConnection();
+      } else {
+        throw new Error(result.message || "Failed to send email");
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      
+      let errorMessage = "Failed to send email: ";
+      if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+        errorMessage += "Network error - Cannot connect to email service. Please check the script URL and deployment settings.";
+      } else {
+        errorMessage += error.message;
+      }
+      
+      alert(errorMessage);
+    } finally {
+      setEmailSending(false);
+    }
   };
 
   const handleUpdateStatus = async (item, newStatus) => {
@@ -208,7 +390,6 @@ const UniversalAdmin = () => {
         safeToString(item.Status || item.status || "pending"),
       ]);
     } else {
-      // Photo submissions CSV with correct column names
       headers = [
         "Timestamp",
         "Name",
@@ -249,9 +430,7 @@ const UniversalAdmin = () => {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `uiu-${dataType}-${
-      new Date().toISOString().split("T")[0]
-    }.csv`;
+    a.download = `uiu-${dataType}-${new Date().toISOString().split("T")[0]}.csv`;
     a.click();
     window.URL.revokeObjectURL(url);
   };
@@ -274,7 +453,6 @@ const UniversalAdmin = () => {
   };
 
   const getProperty = (item, property) => {
-    // Try different possible property names and cases
     const possibleKeys = [
       property,
       property.toLowerCase(),
@@ -415,6 +593,14 @@ const UniversalAdmin = () => {
             >
               <FaEye />
             </button>
+            <button
+              onClick={() => handleEmailReply(item)}
+              className="btn-email"
+              title="Send Email"
+              disabled={connectionTest?.status === 'error'}
+            >
+              <FaEnvelope />
+            </button>
           </td>
         </tr>
       );
@@ -551,16 +737,132 @@ const UniversalAdmin = () => {
     }
   };
 
-  // Render pagination controls
+  const renderEmailModal = () => {
+    if (!selectedEmailItem) return null;
+
+    const recipientName = getProperty(selectedEmailItem, "Name");
+    const recipientEmail = getProperty(selectedEmailItem, "Email");
+
+    return (
+      <div className="modal-overlay">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h3>Send Email to Participant</h3>
+            <button
+              onClick={() => {
+                setShowEmailModal(false);
+                setSelectedEmailItem(null);
+              }}
+              className="modal-close"
+            >
+              ×
+            </button>
+          </div>
+          <div className="modal-body">
+            <div className="email-recipient-info">
+              <p>
+                <strong>To:</strong> {recipientName} ({recipientEmail})
+              </p>
+            </div>
+
+            {connectionTest?.status === 'error' && (
+              <div className="error-message" style={{ marginBottom: '1rem' }}>
+                <p><strong>Email Service Issue:</strong> {connectionTest.message}</p>
+                <button 
+                  onClick={testEmailConnection}
+                  className="btn-secondary"
+                  style={{ marginTop: '0.5rem' }}
+                >
+                  Retest Connection
+                </button>
+              </div>
+            )}
+
+            <div className="email-templates">
+              <h4>Select Email Template:</h4>
+
+              <div className="email-template-option">
+                <button
+                  onClick={() => sendEmail("confirmation")}
+                  className="btn-primary email-template-btn"
+                  disabled={emailSending || connectionTest?.status === 'error'}
+                >
+                  Send Confirmation Email
+                </button>
+                <p className="template-description">
+                  Confirms receipt of photo submission and provides basic details.
+                </p>
+              </div>
+
+              <div className="email-template-option">
+                <button
+                  onClick={() => sendEmail("renameRequest")}
+                  className="btn-primary email-template-btn"
+                  disabled={emailSending || connectionTest?.status === 'error'}
+                >
+                  Send Rename Request
+                </button>
+                <p className="template-description">
+                  Requests participant to rename photos according to guidelines.
+                </p>
+              </div>
+
+              <div className="email-template-option">
+                <div className="custom-email-section">
+                  <h5>Custom Email</h5>
+                  <textarea
+                    placeholder="Enter your custom message here..."
+                    className="custom-message-input"
+                    rows="4"
+                    id="customMessageInput"
+                  />
+                  <button
+                    onClick={() => {
+                      const customMessage = document.getElementById('customMessageInput')?.value || "";
+                      sendEmail("general", customMessage);
+                    }}
+                    className="btn-secondary email-template-btn"
+                    disabled={emailSending || connectionTest?.status === 'error'}
+                  >
+                    Send Custom Email
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {emailSending && (
+              <div className="email-sending-indicator">
+                <FaSync className="spinner" />
+                <span>Sending email...</span>
+              </div>
+            )}
+          </div>
+          <div className="modal-footer">
+            <button
+              onClick={() => {
+                setShowEmailModal(false);
+                setSelectedEmailItem(null);
+              }}
+              className="btn-secondary"
+              disabled={emailSending}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const renderPagination = () => {
     if (totalPages <= 1) return null;
 
     const pageNumbers = [];
     const maxVisiblePages = 5;
-    
+
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
     let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-    
+
     if (endPage - startPage + 1 < maxVisiblePages) {
       startPage = Math.max(1, endPage - maxVisiblePages + 1);
     }
@@ -572,7 +874,9 @@ const UniversalAdmin = () => {
     return (
       <div className="pagination-container">
         <div className="pagination-info">
-          Showing {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filteredData.length)} of {filteredData.length} items
+          Showing {indexOfFirstItem + 1}-
+          {Math.min(indexOfLastItem, filteredData.length)} of{" "}
+          {filteredData.length} items
         </div>
         <div className="pagination-controls">
           <button
@@ -582,41 +886,51 @@ const UniversalAdmin = () => {
           >
             <FaChevronLeft />
           </button>
-          
+
           {startPage > 1 && (
             <>
               <button
                 onClick={() => paginate(1)}
-                className={`pagination-btn ${1 === currentPage ? 'active' : ''}`}
+                className={`pagination-btn ${
+                  1 === currentPage ? "active" : ""
+                }`}
               >
                 1
               </button>
-              {startPage > 2 && <span className="pagination-ellipsis">...</span>}
+              {startPage > 2 && (
+                <span className="pagination-ellipsis">...</span>
+              )}
             </>
           )}
-          
-          {pageNumbers.map(number => (
+
+          {pageNumbers.map((number) => (
             <button
               key={number}
               onClick={() => paginate(number)}
-              className={`pagination-btn ${number === currentPage ? 'active' : ''}`}
+              className={`pagination-btn ${
+                number === currentPage ? "active" : ""
+              }`}
             >
               {number}
             </button>
           ))}
-          
+
           {endPage < totalPages && (
             <>
-              {endPage < totalPages - 1 && <span className="pagination-ellipsis">...</span>}
+              {endPage < totalPages - 1 && (
+                <span className="pagination-ellipsis">...</span>
+              )}
               <button
                 onClick={() => paginate(totalPages)}
-                className={`pagination-btn ${totalPages === currentPage ? 'active' : ''}`}
+                className={`pagination-btn ${
+                  totalPages === currentPage ? "active" : ""
+                }`}
               >
                 {totalPages}
               </button>
             </>
           )}
-          
+
           <button
             onClick={() => paginate(currentPage + 1)}
             disabled={currentPage === totalPages}
@@ -647,6 +961,22 @@ const UniversalAdmin = () => {
 
       <div className="container">
         <div className="admin-content">
+          {/* Connection Test Status */}
+          {connectionTest && (
+            <div className={`connection-test ${connectionTest.status}`}>
+              <div className="test-status">
+                <strong>Email Service Status:</strong> {connectionTest.message}
+              </div>
+              <button 
+                onClick={testEmailConnection}
+                className="btn-secondary"
+                style={{ marginLeft: '1rem' }}
+              >
+                <FaSync /> Test Again
+              </button>
+            </div>
+          )}
+
           {/* Data Type Selector */}
           <div className="data-type-selector">
             <button
@@ -669,7 +999,8 @@ const UniversalAdmin = () => {
           <div className="debug-info">
             <strong>Debug Info:</strong>
             Data Type: {dataType} | Total: {data.length} | Filtered:{" "}
-            {filteredData.length} | Error: {error ? "Yes" : "No"} | Page: {currentPage} of {totalPages}
+            {filteredData.length} | Error: {error ? "Yes" : "No"} | Page:{" "}
+            {currentPage} of {totalPages} | Email Service: {connectionTest?.status || 'Testing...'}
           </div>
 
           {/* Welcome Message */}
@@ -810,7 +1141,7 @@ const UniversalAdmin = () => {
                 <div>
                   <p>
                     No{" "}
-                    {dataType === "membership" ? "applications" : "submissions"}{" "}
+                    {dataType === "membership" ? "applications" : "submissions"}{ " "}
                     found matching your search criteria.
                   </p>
                   {(searchTerm || filterStatus !== "all") && (
@@ -861,6 +1192,9 @@ const UniversalAdmin = () => {
           </div>
         </div>
       )}
+
+      {/* Email Modal */}
+      {showEmailModal && renderEmailModal()}
     </div>
   );
 };
