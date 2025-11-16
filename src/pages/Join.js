@@ -53,13 +53,16 @@ const Join = () => {
   const departments = [
     "Computer Science & Engineering",
     "Electrical & Electronic Engineering",
-    "Business Administration",
+    "BBA",
+    "BBA in AIS",
     "Economics",
+    "Data Science",
     "English",
-    "Law",
     "Pharmacy",
-    "Architecture",
-    "Other",
+    "Civil",
+    "EDS",
+    "MSJ",
+    "Others",
   ];
 
   const photographyInterests = [
