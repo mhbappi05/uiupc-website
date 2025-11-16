@@ -58,11 +58,21 @@ const Gallery = () => {
       { id: "3", name: "Photo Walk", slug: "Photo-Walk" },
       { id: "4", name: "Exhibitions Visit", slug: "Exhibitions-Visit" },
       { id: "5", name: "Workshops & Talks", slug: "Workshops-and-Talks" },
+      { id: "6", name: "Shutter Stories", slug: "Shutter-Stories" },
     ];
 
     // Simplified mock photos - note IDs are strings but can be compared numerically
     const mockPhotos = [
       {
+        id: "14",
+        url: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1763290554/g14_ffmlvu.jpg",
+        title: "Shutter Stories Chapter IV Call for Photo Inauguration Ceremony",
+        description: "The Call for Photo Inauguration Ceremony of United Healthcare presents Shutter Stories Chapter IV was held on 15th November, officially marking the beginning of this year’s national photography exhibition. The ceremony began with an opening speech by Mr. Charles Aunkan Gomes, Moderator of UIU Photography Club, who highlighted the effort, dedication, and teamwork UIUPC has invested to bring this event to life. Following his remarks, the Call for Photo was officially inaugurated by Dr. Md. Zulfiqur Rahman, Registrar of UIU, who then delivered an inspiring address appreciating UIUPC’s initiative, creativity, and national-level impact. The event was further honored by the presence of Mr. Nahid Hassan Khan, Director, DCCSA, Dr. Suman Ahmmed, Head, Dept. of CSE & Director, CDIP, Prof. A.S.M. Salahuddin, Director (Coordination), Ms. Zohara Nazneen, Deputy Director, DCCSA, and Mr. Shohel Rana, Senior Executive, DCCSA & Coordinator of UIU Photography Club, all of whom enjoyed the ceremony and shared their encouragement. Toward the end of the program, UIUPC delighted the audience with a surprise reveal, the launch of the club’s brand-new official website, a significant step forward for the club’s digital presence. With this inauguration, the Call for Photo is now officially open, marking the start of a new chapter in the Shutter Stories legacy, one that promises countless stories waiting to be captured.",
+        eventId: "6",
+        uploadedAt: new Date(),
+        facebookPost: "https://www.facebook.com/share/p/1CjEqcYrc5/"
+        
+      },{
         id: "13",
         url: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762984257/g13_pumj44.jpg",
         title: "Sadarghat Photowalk Behind the Scenes",
