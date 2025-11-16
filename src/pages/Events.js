@@ -271,10 +271,10 @@ const Events = () => {
                   <span className="stat-number">2000+</span>
                   <span className="stat-label">Participants</span>
                 </div> */}
-                <div className="stat">
+                {/* <div className="stat">
                   <span className="stat-number">50K+</span>
                   <span className="stat-label">Prize Pools</span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

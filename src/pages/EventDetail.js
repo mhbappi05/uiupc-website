@@ -151,7 +151,6 @@ const EventDetail = () => {
       highlights: [
         "National-level participation",
         "Expert jury panel from industry leaders",
-        "Cash prizes totaling 50K BDT",
         "Exhibition at prestigious venues",
         "Professional workshops and seminars",
         "Networking with photography community",
