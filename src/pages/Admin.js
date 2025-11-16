@@ -10,6 +10,8 @@ import {
   FaUsers,
   FaCamera,
   FaExternalLinkAlt,
+  FaChevronLeft,
+  FaChevronRight,
 } from "react-icons/fa";
 import Loading from "../components/Loading";
 import "./Admin.css";
@@ -23,6 +25,10 @@ const UniversalAdmin = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [dataType, setDataType] = useState("membership"); // 'membership' or 'photos'
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
 
   const { user } = useAuth();
 
@@ -59,6 +65,8 @@ const UniversalAdmin = () => {
             new Date(a.Timestamp || a.timestamp || a["Timestamp"])
         );
         setData(sortedData);
+        // Reset to first page when data changes
+        setCurrentPage(1);
       } else {
         throw new Error(result.message || "Failed to fetch data");
       }
@@ -127,6 +135,15 @@ const UniversalAdmin = () => {
       return matchesSearch && matchesStatus;
     }
   });
+
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleViewDetails = (item) => {
     setSelectedItem(item);
@@ -534,6 +551,84 @@ const UniversalAdmin = () => {
     }
   };
 
+  // Render pagination controls
+  const renderPagination = () => {
+    if (totalPages <= 1) return null;
+
+    const pageNumbers = [];
+    const maxVisiblePages = 5;
+    
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+
+    return (
+      <div className="pagination-container">
+        <div className="pagination-info">
+          Showing {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filteredData.length)} of {filteredData.length} items
+        </div>
+        <div className="pagination-controls">
+          <button
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="pagination-btn"
+          >
+            <FaChevronLeft />
+          </button>
+          
+          {startPage > 1 && (
+            <>
+              <button
+                onClick={() => paginate(1)}
+                className={`pagination-btn ${1 === currentPage ? 'active' : ''}`}
+              >
+                1
+              </button>
+              {startPage > 2 && <span className="pagination-ellipsis">...</span>}
+            </>
+          )}
+          
+          {pageNumbers.map(number => (
+            <button
+              key={number}
+              onClick={() => paginate(number)}
+              className={`pagination-btn ${number === currentPage ? 'active' : ''}`}
+            >
+              {number}
+            </button>
+          ))}
+          
+          {endPage < totalPages && (
+            <>
+              {endPage < totalPages - 1 && <span className="pagination-ellipsis">...</span>}
+              <button
+                onClick={() => paginate(totalPages)}
+                className={`pagination-btn ${totalPages === currentPage ? 'active' : ''}`}
+              >
+                {totalPages}
+              </button>
+            </>
+          )}
+          
+          <button
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="pagination-btn"
+          >
+            <FaChevronRight />
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -574,7 +669,7 @@ const UniversalAdmin = () => {
           <div className="debug-info">
             <strong>Debug Info:</strong>
             Data Type: {dataType} | Total: {data.length} | Filtered:{" "}
-            {filteredData.length} | Error: {error ? "Yes" : "No"}
+            {filteredData.length} | Error: {error ? "Yes" : "No"} | Page: {currentPage} of {totalPages}
           </div>
 
           {/* Welcome Message */}
@@ -677,16 +772,19 @@ const UniversalAdmin = () => {
 
           {/* Data Table */}
           {filteredData.length > 0 ? (
-            <div className="applications-table-container">
-              <table className="applications-table">
-                <thead>{renderTableHeaders()}</thead>
-                <tbody>
-                  {filteredData.map((item, index) =>
-                    renderTableRow(item, index)
-                  )}
-                </tbody>
-              </table>
-            </div>
+            <>
+              <div className="applications-table-container">
+                <table className="applications-table">
+                  <thead>{renderTableHeaders()}</thead>
+                  <tbody>
+                    {currentItems.map((item, index) =>
+                      renderTableRow(item, index)
+                    )}
+                  </tbody>
+                </table>
+              </div>
+              {renderPagination()}
+            </>
           ) : (
             <div className="no-applications">
               {data.length === 0 ? (
