@@ -2,19 +2,13 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import GalleryUpload from "../components/GalleryUpload";
+import MembershipApplications from "../components/MembershipApplications";
+import PhotoSubmissions from "../components/PhotoSubmissions";
 import "../components/GalleryUpload.css";
 import {
   FaSync,
-  FaEye,
-  FaDownload,
-  FaSearch,
-  FaFilter,
   FaUsers,
   FaCamera,
-  FaExternalLinkAlt,
-  FaChevronLeft,
-  FaChevronRight,
-  FaEnvelope,
 } from "react-icons/fa";
 import Loading from "../components/Loading";
 import "./Admin.css";
@@ -33,10 +27,6 @@ const UniversalAdmin = () => {
   const [dataType, setDataType] = useState("membership");
   const [connectionTest, setConnectionTest] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
-
-  // Pagination state
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
 
   const { user } = useAuth();
 
@@ -174,7 +164,6 @@ photographyclub@dccsa.uiu.ac.bd`,
             new Date(a.Timestamp || a.timestamp || a["Timestamp"])
         );
         setData(sortedData);
-        setCurrentPage(1);
       } else {
         throw new Error(result.message || "Failed to fetch data");
       }
@@ -188,7 +177,7 @@ photographyclub@dccsa.uiu.ac.bd`,
 
   useEffect(() => {
     fetchData();
-  }, [dataType]);
+  }, [dataType, refreshTrigger]);
 
   // Test email connection on component mount
   useEffect(() => {
@@ -202,59 +191,6 @@ photographyclub@dccsa.uiu.ac.bd`,
     if (typeof value === "number") return value.toString();
     return String(value);
   };
-
-  // Filter data based on type
-  const filteredData = data.filter((item) => {
-    if (dataType === "membership") {
-      const name = safeToString(item["Full Name"] || item.name);
-      const email = safeToString(item.Email || item.email);
-      const studentId = safeToString(item["Student ID"] || item.studentId);
-      const department = safeToString(item.Department || item.department);
-      const status = safeToString(item.Status || item.status || "pending");
-
-      const matchesSearch =
-        name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        studentId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        department.toLowerCase().includes(searchTerm.toLowerCase());
-
-      const matchesStatus =
-        filterStatus === "all" ||
-        (filterStatus === "pending" && (!status || status === "pending")) ||
-        (filterStatus === "approved" && status === "approved") ||
-        (filterStatus === "rejected" && status === "rejected");
-
-      return matchesSearch && matchesStatus;
-    } else {
-      const name = safeToString(item["Name"] || item["Full Name"] || item.name);
-      const email = safeToString(item["Email"] || item.email);
-      const phone = safeToString(item["Phone"] || item.phone);
-      const institution = safeToString(item["Institution"] || item.institution);
-      const status = safeToString(
-        item["Status"] || item.status || "IN_PROGRESS"
-      );
-
-      const matchesSearch =
-        name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        phone.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        institution.toLowerCase().includes(searchTerm.toLowerCase());
-
-      const matchesStatus =
-        filterStatus === "all" ||
-        status.toLowerCase().includes(filterStatus.toLowerCase());
-
-      return matchesSearch && matchesStatus;
-    }
-  });
-
-  // Pagination logic
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleViewDetails = (item) => {
     setSelectedItem(item);
@@ -405,7 +341,7 @@ photographyclub@dccsa.uiu.ac.bd`,
         "Status",
       ];
 
-      csvData = filteredData.map((item) => [
+      csvData = data.map((item) => [
         item.Timestamp || item.timestamp,
         safeToString(item["Full Name"] || item.name),
         safeToString(item["Student ID"] || item.studentId),
@@ -433,7 +369,7 @@ photographyclub@dccsa.uiu.ac.bd`,
         "Status",
       ];
 
-      csvData = filteredData.map((item) => [
+      csvData = data.map((item) => [
         item.Timestamp || item.timestamp || item["Timestamp"],
         safeToString(item["Name"] || item.name || item["Full Name"]),
         safeToString(item["Email"] || item.email),
@@ -465,23 +401,6 @@ photographyclub@dccsa.uiu.ac.bd`,
     window.URL.revokeObjectURL(url);
   };
 
-  const getStatusBadge = (status) => {
-    const actualStatus = safeToString(status || "pending");
-    const statusConfig = {
-      approved: { class: "status-approved", text: "Approved" },
-      rejected: { class: "status-rejected", text: "Rejected" },
-      pending: { class: "status-pending", text: "Pending" },
-      COMPLETED: { class: "status-approved", text: "Completed" },
-      REJECTED: { class: "status-rejected", text: "Rejected" },
-      IN_PROGRESS: { class: "status-pending", text: "In Progress" },
-    };
-
-    const config = statusConfig[actualStatus] || statusConfig.pending;
-    return (
-      <span className={`status-badge ${config.class}`}>{config.text}</span>
-    );
-  };
-
   const getProperty = (item, property) => {
     const possibleKeys = [
       property,
@@ -499,142 +418,6 @@ photographyclub@dccsa.uiu.ac.bd`,
     }
 
     return "N/A";
-  };
-
-  const renderTableHeaders = () => {
-    if (dataType === "membership") {
-      return (
-        <tr>
-          <th>Timestamp</th>
-          <th>Full Name</th>
-          <th>Student ID</th>
-          <th>Department</th>
-          <th>Experience Level</th>
-          <th>Payment Method</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      );
-    } else {
-      return (
-        <tr>
-          <th>Timestamp</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Institution</th>
-          <th>Category</th>
-          <th>Photos</th>
-          <th>Folder</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      );
-    }
-  };
-
-  const renderTableRow = (item, index) => {
-    if (dataType === "membership") {
-      return (
-        <tr key={index} className="application-row">
-          <td className="timestamp">
-            {new Date(item.Timestamp || item.timestamp).toLocaleDateString()}
-          </td>
-          <td className="name">{getProperty(item, "Full Name")}</td>
-          <td className="student-id">{getProperty(item, "Student ID")}</td>
-          <td className="department">{getProperty(item, "Department")}</td>
-          <td className="experience">
-            {getProperty(item, "Experience Level")}
-          </td>
-          <td className="payment-method">
-            {getProperty(item, "Payment Method")}
-          </td>
-          <td className="status">
-            {getStatusBadge(item.Status || item.status)}
-          </td>
-          <td className="actions">
-            <button
-              onClick={() => handleViewDetails(item)}
-              className="btn-view"
-              title="View Details"
-            >
-              <FaEye />
-            </button>
-            {(!item.Status || item.Status === "pending") && (
-              <div className="status-actions">
-                <button
-                  onClick={() => handleUpdateStatus(item, "approved")}
-                  className="btn-approve"
-                >
-                  Approve
-                </button>
-                <button
-                  onClick={() => handleUpdateStatus(item, "rejected")}
-                  className="btn-reject"
-                >
-                  Reject
-                </button>
-              </div>
-            )}
-          </td>
-        </tr>
-      );
-    } else {
-      return (
-        <tr key={index} className="application-row">
-          <td className="timestamp">
-            {new Date(
-              item.Timestamp || item.timestamp || item["Timestamp"]
-            ).toLocaleDateString()}
-          </td>
-          <td className="name">{getProperty(item, "Name")}</td>
-          <td className="email">{getProperty(item, "Email")}</td>
-          <td className="phone">{getProperty(item, "Phone")}</td>
-          <td className="institution">{getProperty(item, "Institution")}</td>
-          <td className="category">{getProperty(item, "Category")}</td>
-          <td className="photo-count">
-            {getProperty(item, "Photo Count")} /{" "}
-            {getProperty(item, "Story Photo Count")}
-          </td>
-          <td className="folder-url">
-            {getProperty(item, "Folder URL") &&
-            getProperty(item, "Folder URL") !== "N/A" ? (
-              <a
-                href={getProperty(item, "Folder URL")}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-view"
-                title="Open Folder"
-              >
-                <FaExternalLinkAlt />
-              </a>
-            ) : (
-              "N/A"
-            )}
-          </td>
-          <td className="status">
-            {getStatusBadge(item.Status || item.status)}
-          </td>
-          <td className="actions">
-            <button
-              onClick={() => handleViewDetails(item)}
-              className="btn-view"
-              title="View Details"
-            >
-              <FaEye />
-            </button>
-            <button
-              onClick={() => handleEmailReply(item)}
-              className="btn-email"
-              title="Send Email"
-              disabled={connectionTest?.status === "error"}
-            >
-              <FaEnvelope />
-            </button>
-          </td>
-        </tr>
-      );
-    }
   };
 
   const renderModalDetails = () => {
@@ -689,7 +472,7 @@ photographyclub@dccsa.uiu.ac.bd`,
           </div>
           <div className="detail-group">
             <label>Current Status:</label>
-            <span>{getStatusBadge(getProperty(selectedItem, "Status"))}</span>
+            <span>{getProperty(selectedItem, "Status") || "Pending"}</span>
           </div>
         </div>
       );
@@ -760,7 +543,7 @@ photographyclub@dccsa.uiu.ac.bd`,
           </div>
           <div className="detail-group">
             <label>Status:</label>
-            <span>{getStatusBadge(getProperty(selectedItem, "Status"))}</span>
+            <span>{getProperty(selectedItem, "Status") || "IN_PROGRESS"}</span>
           </div>
         </div>
       );
@@ -891,95 +674,6 @@ photographyclub@dccsa.uiu.ac.bd`,
     );
   };
 
-  const renderPagination = () => {
-    if (totalPages <= 1) return null;
-
-    const pageNumbers = [];
-    const maxVisiblePages = 5;
-
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(i);
-    }
-
-    return (
-      <div className="pagination-container">
-        <div className="pagination-info">
-          Showing {indexOfFirstItem + 1}-
-          {Math.min(indexOfLastItem, filteredData.length)} of{" "}
-          {filteredData.length} items
-        </div>
-        <div className="pagination-controls">
-          <button
-            onClick={() => paginate(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="pagination-btn"
-          >
-            <FaChevronLeft />
-          </button>
-
-          {startPage > 1 && (
-            <>
-              <button
-                onClick={() => paginate(1)}
-                className={`pagination-btn ${
-                  1 === currentPage ? "active" : ""
-                }`}
-              >
-                1
-              </button>
-              {startPage > 2 && (
-                <span className="pagination-ellipsis">...</span>
-              )}
-            </>
-          )}
-
-          {pageNumbers.map((number) => (
-            <button
-              key={number}
-              onClick={() => paginate(number)}
-              className={`pagination-btn ${
-                number === currentPage ? "active" : ""
-              }`}
-            >
-              {number}
-            </button>
-          ))}
-
-          {endPage < totalPages && (
-            <>
-              {endPage < totalPages - 1 && (
-                <span className="pagination-ellipsis">...</span>
-              )}
-              <button
-                onClick={() => paginate(totalPages)}
-                className={`pagination-btn ${
-                  totalPages === currentPage ? "active" : ""
-                }`}
-              >
-                {totalPages}
-              </button>
-            </>
-          )}
-
-          <button
-            onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className="pagination-btn"
-          >
-            <FaChevronRight />
-          </button>
-        </div>
-      </div>
-    );
-  };
-
   if (loading) {
     return <Loading />;
   }
@@ -1040,9 +734,7 @@ photographyclub@dccsa.uiu.ac.bd`,
           {/* Debug Info */}
           <div className="debug-info">
             <strong>Debug Info:</strong>
-            Data Type: {dataType} | Total: {data.length} | Filtered:{" "}
-            {filteredData.length} | Error: {error ? "Yes" : "No"} | Page:{" "}
-            {currentPage} of {totalPages} | Email Service:{" "}
+            Data Type: {dataType} | Total: {data.length} | Error: {error ? "Yes" : "No"} | Email Service:{" "}
             {connectionTest?.status || "Testing..."}
           </div>
 
@@ -1055,73 +747,39 @@ photographyclub@dccsa.uiu.ac.bd`,
               Total {dataType === "membership" ? "Applications" : "Submissions"}
               : <strong>{data.length}</strong>
             </p>
-            <p>
-              Showing: <strong>{filteredData.length}</strong> items
-            </p>
           </div>
 
-          {/* Controls */}
-          <div className="admin-controls">
-            <div className="search-filter-container">
-              <div className="search-box">
-                <FaSearch className="search-icon" />
-                <input
-                  type="text"
-                  placeholder={
-                    dataType === "membership"
-                      ? "Search by name, email, student ID..."
-                      : "Search by name, email, phone, institution..."
-                  }
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="search-input"
-                />
-              </div>
-
-              <div className="filter-controls">
-                <FaFilter className="filter-icon" />
-                <select
-                  value={filterStatus}
-                  onChange={(e) => setFilterStatus(e.target.value)}
-                  className="status-filter"
-                >
-                  <option value="all">All Status</option>
-                  {dataType === "membership" ? (
-                    <>
-                      <option value="pending">Pending</option>
-                      <option value="approved">Approved</option>
-                      <option value="rejected">Rejected</option>
-                    </>
-                  ) : (
-                    <>
-                      <option value="completed">Completed</option>
-                      <option value="in_progress">In Progress</option>
-                      <option value="rejected">Rejected</option>
-                    </>
-                  )}
-                </select>
-              </div>
-            </div>
-
-            <div className="action-buttons">
-              <button
-                onClick={fetchData}
-                className="btn-secondary refresh-btn"
-                disabled={loading}
-              >
-                <FaSync className={loading ? "spinner" : ""} />
-                Refresh
-              </button>
-              <button
-                onClick={exportToCSV}
-                className="btn-primary export-btn"
-                disabled={filteredData.length === 0}
-              >
-                <FaDownload />
-                Export CSV
-              </button>
-            </div>
-          </div>
+          {/* Render the appropriate component based on dataType */}
+          {dataType === "membership" ? (
+            <MembershipApplications
+              data={data}
+              loading={loading}
+              searchTerm={searchTerm}
+              filterStatus={filterStatus}
+              onSearchChange={setSearchTerm}
+              onFilterChange={setFilterStatus}
+              onRefresh={fetchData}
+              onExport={exportToCSV}
+              onViewDetails={handleViewDetails}
+              onUpdateStatus={handleUpdateStatus}
+              onEmailReply={handleEmailReply}
+              connectionTest={connectionTest}
+            />
+          ) : (
+            <PhotoSubmissions
+              data={data}
+              loading={loading}
+              searchTerm={searchTerm}
+              filterStatus={filterStatus}
+              onSearchChange={setSearchTerm}
+              onFilterChange={setFilterStatus}
+              onRefresh={fetchData}
+              onExport={exportToCSV}
+              onViewDetails={handleViewDetails}
+              onEmailReply={handleEmailReply}
+              connectionTest={connectionTest}
+            />
+          )}
 
           {/* Error Message */}
           {error && (
@@ -1141,66 +799,6 @@ photographyclub@dccsa.uiu.ac.bd`,
                   Dismiss
                 </button>
               </div>
-            </div>
-          )}
-
-          {/* Data Table */}
-          {filteredData.length > 0 ? (
-            <>
-              <div className="applications-table-container">
-                <table className="applications-table">
-                  <thead>{renderTableHeaders()}</thead>
-                  <tbody>
-                    {currentItems.map((item, index) =>
-                      renderTableRow(item, index)
-                    )}
-                  </tbody>
-                </table>
-              </div>
-              {renderPagination()}
-            </>
-          ) : (
-            <div className="no-applications">
-              {data.length === 0 ? (
-                <div>
-                  <p>
-                    No{" "}
-                    {dataType === "membership" ? "applications" : "submissions"}{" "}
-                    found in the system.
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "0.9rem",
-                      color: "var(--text-muted)",
-                      marginTop: "0.5rem",
-                    }}
-                  >
-                    {dataType === "membership"
-                      ? "Applications will appear here when students submit the join form."
-                      : "Submissions will appear here when participants submit photos."}
-                  </p>
-                </div>
-              ) : (
-                <div>
-                  <p>
-                    No{" "}
-                    {dataType === "membership" ? "applications" : "submissions"}{" "}
-                    found matching your search criteria.
-                  </p>
-                  {(searchTerm || filterStatus !== "all") && (
-                    <button
-                      onClick={() => {
-                        setSearchTerm("");
-                        setFilterStatus("all");
-                      }}
-                      className="btn-secondary"
-                      style={{ marginTop: "1rem" }}
-                    >
-                      Clear Filters
-                    </button>
-                  )}
-                </div>
-              )}
             </div>
           )}
         </div>

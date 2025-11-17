@@ -1036,3 +1036,8 @@
   flex: 1;
   margin-right: 1rem;
 }
+
+.applications-container,
+.submissions-container {
+  margin-bottom: 1rem;
+}
