@@ -1,6 +1,8 @@
 // pages/UniversalAdmin.js
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import GalleryUpload from "../components/GalleryUpload";
+import "../components/GalleryUpload.css";
 import {
   FaSync,
   FaEye,
@@ -30,6 +32,7 @@ const UniversalAdmin = () => {
   const [emailSending, setEmailSending] = useState(false);
   const [dataType, setDataType] = useState("membership");
   const [connectionTest, setConnectionTest] = useState(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,6 +48,8 @@ const UniversalAdmin = () => {
       "https://script.google.com/macros/s/AKfycbw4Jg_fVbBYEkHznAn9P3RNtxSBWeiUDVZIF3AM8VhkKHT3GEifO-tEWECEh918PSMJ/exec",
     email:
       "https://script.google.com/macros/s/AKfycbzut9q4kH0cnVhkfM5EKJrlmGp5oO7qNTuKpF8vn_vl4eJcREjfrSZ5P2SFDlllM7AKLw/exec",
+    gallery:
+      "https://script.google.com/macros/s/AKfycbxgsTUWlUqT0gxhD4Um6RbU9Xre1RJyE0cOyWaJEStKVkFLdIhlMITI1l1bHN4I7XlbaA/exec",
   };
 
   // Email templates for photo submissions
@@ -106,17 +111,20 @@ photographyclub@dccsa.uiu.ac.bd`,
   const testEmailConnection = async () => {
     try {
       console.log("Testing email script connection...");
-      setConnectionTest({ status: 'testing', message: 'Testing connection...' });
-      
+      setConnectionTest({
+        status: "testing",
+        message: "Testing connection...",
+      });
+
       const response = await fetch(`${SCRIPTS.email}?action=testConnection`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       });
 
       console.log("Connection test response status:", response.status);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -124,16 +132,19 @@ photographyclub@dccsa.uiu.ac.bd`,
       const result = await response.json();
       console.log("Connection test result:", result);
 
-      if (result.status === 'success') {
-        setConnectionTest({ status: 'success', message: 'Email service is connected and working!' });
+      if (result.status === "success") {
+        setConnectionTest({
+          status: "success",
+          message: "Email service is connected and working!",
+        });
       } else {
-        throw new Error(result.data || 'Connection test failed');
+        throw new Error(result.data || "Connection test failed");
       }
     } catch (error) {
       console.error("Connection test failed:", error);
-      setConnectionTest({ 
-        status: 'error', 
-        message: `Failed to connect: ${error.message}. Please check: 1) Script URL is correct, 2) Script is deployed as web app, 3) Execute permissions are set to "Anyone"` 
+      setConnectionTest({
+        status: "error",
+        message: `Failed to connect: ${error.message}. Please check: 1) Script URL is correct, 2) Script is deployed as web app, 3) Execute permissions are set to "Anyone"`,
       });
     }
   };
@@ -144,7 +155,8 @@ photographyclub@dccsa.uiu.ac.bd`,
       setError(null);
       console.log(`Fetching ${dataType} data...`);
 
-      const action = dataType === "membership" ? "getApplications" : "getSubmissions";
+      const action =
+        dataType === "membership" ? "getApplications" : "getSubmissions";
       const response = await fetch(`${SCRIPTS[dataType]}?action=${action}`);
 
       if (!response.ok) {
@@ -218,7 +230,9 @@ photographyclub@dccsa.uiu.ac.bd`,
       const email = safeToString(item["Email"] || item.email);
       const phone = safeToString(item["Phone"] || item.phone);
       const institution = safeToString(item["Institution"] || item.institution);
-      const status = safeToString(item["Status"] || item.status || "IN_PROGRESS");
+      const status = safeToString(
+        item["Status"] || item.status || "IN_PROGRESS"
+      );
 
       const matchesSearch =
         name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -280,7 +294,7 @@ photographyclub@dccsa.uiu.ac.bd`,
         recipientEmail,
         subject,
         bodyLength: body.length,
-        sentBy: user.email
+        sentBy: user.email,
       });
 
       // Use GET request with URL parameters as fallback
@@ -290,14 +304,17 @@ photographyclub@dccsa.uiu.ac.bd`,
         subject: subject,
         body: body,
         sentBy: user.email,
-        submissionId: selectedEmailItem.Timestamp || selectedEmailItem.timestamp || selectedEmailItem["Timestamp"],
+        submissionId:
+          selectedEmailItem.Timestamp ||
+          selectedEmailItem.timestamp ||
+          selectedEmailItem["Timestamp"],
         type: dataType,
       });
 
       const response = await fetch(`${SCRIPTS.email}?${params.toString()}`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       });
 
@@ -321,18 +338,26 @@ photographyclub@dccsa.uiu.ac.bd`,
       }
     } catch (error) {
       console.error("Error sending email:", error);
-      
+
       let errorMessage = "Failed to send email: ";
-      if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
-        errorMessage += "Network error - Cannot connect to email service. Please check the script URL and deployment settings.";
+      if (
+        error.name === "TypeError" &&
+        error.message.includes("Failed to fetch")
+      ) {
+        errorMessage +=
+          "Network error - Cannot connect to email service. Please check the script URL and deployment settings.";
       } else {
         errorMessage += error.message;
       }
-      
+
       alert(errorMessage);
     } finally {
       setEmailSending(false);
     }
+  };
+
+  const handleUploadSuccess = () => {
+    setRefreshTrigger((prev) => prev + 1);
   };
 
   const handleUpdateStatus = async (item, newStatus) => {
@@ -433,7 +458,9 @@ photographyclub@dccsa.uiu.ac.bd`,
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `uiu-${dataType}-${new Date().toISOString().split("T")[0]}.csv`;
+    a.download = `uiu-${dataType}-${
+      new Date().toISOString().split("T")[0]
+    }.csv`;
     a.click();
     window.URL.revokeObjectURL(url);
   };
@@ -600,7 +627,7 @@ photographyclub@dccsa.uiu.ac.bd`,
               onClick={() => handleEmailReply(item)}
               className="btn-email"
               title="Send Email"
-              disabled={connectionTest?.status === 'error'}
+              disabled={connectionTest?.status === "error"}
             >
               <FaEnvelope />
             </button>
@@ -768,13 +795,15 @@ photographyclub@dccsa.uiu.ac.bd`,
               </p>
             </div>
 
-            {connectionTest?.status === 'error' && (
-              <div className="error-message" style={{ marginBottom: '1rem' }}>
-                <p><strong>Email Service Issue:</strong> {connectionTest.message}</p>
-                <button 
+            {connectionTest?.status === "error" && (
+              <div className="error-message" style={{ marginBottom: "1rem" }}>
+                <p>
+                  <strong>Email Service Issue:</strong> {connectionTest.message}
+                </p>
+                <button
                   onClick={testEmailConnection}
                   className="btn-secondary"
-                  style={{ marginTop: '0.5rem' }}
+                  style={{ marginTop: "0.5rem" }}
                 >
                   Retest Connection
                 </button>
@@ -788,12 +817,13 @@ photographyclub@dccsa.uiu.ac.bd`,
                 <button
                   onClick={() => sendEmail("confirmation")}
                   className="btn-primary email-template-btn"
-                  disabled={emailSending || connectionTest?.status === 'error'}
+                  disabled={emailSending || connectionTest?.status === "error"}
                 >
                   Send Confirmation Email
                 </button>
                 <p className="template-description">
-                  Confirms receipt of photo submission and provides basic details.
+                  Confirms receipt of photo submission and provides basic
+                  details.
                 </p>
               </div>
 
@@ -801,7 +831,7 @@ photographyclub@dccsa.uiu.ac.bd`,
                 <button
                   onClick={() => sendEmail("renameRequest")}
                   className="btn-primary email-template-btn"
-                  disabled={emailSending || connectionTest?.status === 'error'}
+                  disabled={emailSending || connectionTest?.status === "error"}
                 >
                   Send Rename Request
                 </button>
@@ -821,11 +851,15 @@ photographyclub@dccsa.uiu.ac.bd`,
                   />
                   <button
                     onClick={() => {
-                      const customMessage = document.getElementById('customMessageInput')?.value || "";
+                      const customMessage =
+                        document.getElementById("customMessageInput")?.value ||
+                        "";
                       sendEmail("general", customMessage);
                     }}
                     className="btn-secondary email-template-btn"
-                    disabled={emailSending || connectionTest?.status === 'error'}
+                    disabled={
+                      emailSending || connectionTest?.status === "error"
+                    }
                   >
                     Send Custom Email
                   </button>
@@ -970,10 +1004,10 @@ photographyclub@dccsa.uiu.ac.bd`,
               <div className="test-status">
                 <strong>Email Service Status:</strong> {connectionTest.message}
               </div>
-              <button 
+              <button
                 onClick={testEmailConnection}
                 className="btn-secondary"
-                style={{ marginLeft: '1rem' }}
+                style={{ marginLeft: "1rem" }}
               >
                 <FaSync /> Test Again
               </button>
@@ -996,6 +1030,11 @@ photographyclub@dccsa.uiu.ac.bd`,
             >
               <FaCamera /> Photo Submissions
             </button>
+            <GalleryUpload
+              user={user}
+              scripts={SCRIPTS}
+              onUploadSuccess={handleUploadSuccess}
+            />
           </div>
 
           {/* Debug Info */}
@@ -1003,7 +1042,8 @@ photographyclub@dccsa.uiu.ac.bd`,
             <strong>Debug Info:</strong>
             Data Type: {dataType} | Total: {data.length} | Filtered:{" "}
             {filteredData.length} | Error: {error ? "Yes" : "No"} | Page:{" "}
-            {currentPage} of {totalPages} | Email Service: {connectionTest?.status || 'Testing...'}
+            {currentPage} of {totalPages} | Email Service:{" "}
+            {connectionTest?.status || "Testing..."}
           </div>
 
           {/* Welcome Message */}
@@ -1144,7 +1184,7 @@ photographyclub@dccsa.uiu.ac.bd`,
                 <div>
                   <p>
                     No{" "}
-                    {dataType === "membership" ? "applications" : "submissions"}{ " "}
+                    {dataType === "membership" ? "applications" : "submissions"}{" "}
                     found matching your search criteria.
                   </p>
                   {(searchTerm || filterStatus !== "all") && (
