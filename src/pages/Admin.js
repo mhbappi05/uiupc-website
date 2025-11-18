@@ -12,6 +12,8 @@ import {
   FaCamera,
   FaNewspaper,
   FaImages,
+  FaExclamationTriangle,
+  FaCheck,
 } from "react-icons/fa";
 import Loading from "../components/Loading";
 import "./Admin.css";
@@ -30,13 +32,14 @@ const UniversalAdmin = () => {
   const [dataType, setDataType] = useState("membership");
   const [connectionTest, setConnectionTest] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [joinPageStatus, setJoinPageStatus] = useState("enabled");
 
   const { user } = useAuth();
 
   // URLs for different data types - MAKE SURE THESE ARE CORRECT
   const SCRIPTS = {
     membership:
-      "https://script.google.com/macros/s/AKfycbwf_UmVAhpw7_y9RXbLartxhOwRFZhAg9KMqw4q1wvNTE1DQM_Qq_ryPLAnRWkM25Yd/exec",
+      "https://script.google.com/macros/s/AKfycbyxrpuvRt1kiIyJYVMbEX0QyWACd-zK-uz3aUkED86kIi39g5gHMOVaw8g2VfZICwJX/exec",
     photos:
       "https://script.google.com/macros/s/AKfycbw4Jg_fVbBYEkHznAn9P3RNtxSBWeiUDVZIF3AM8VhkKHT3GEifO-tEWECEh918PSMJ/exec",
     email:
@@ -45,6 +48,66 @@ const UniversalAdmin = () => {
       "https://script.google.com/macros/s/AKfycbyzV-c3PZJtzFbD2A_PmKMIR9V5oiQ1vjKarmruIVsCA3vcDQy8nHQ6fPZnWYa-lvDPoA/exec",
     blog: "https://script.google.com/macros/s/AKfycbydYlnt1AiH6QsicIlyh2cRH2XmfAmwO-ksB4cGQU17Ho7GQBXcx-Fn6u32wkvYp-fDFA/exec",
   };
+
+  const toggleJoinPageStatus = async () => {
+    try {
+      const newStatus = joinPageStatus === "enabled" ? "disabled" : "enabled";
+
+      const response = await fetch(SCRIPTS.membership, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          action: "updateJoinPageStatus",
+          status: newStatus,
+          updatedBy: user.email,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.status === "success") {
+        setJoinPageStatus(newStatus);
+        alert(`Join page submission has been ${newStatus}`);
+      } else {
+        throw new Error(result.message || "Failed to update join page status");
+      }
+    } catch (error) {
+      console.error("Error updating join page status:", error);
+      alert("Failed to update join page status: " + error.message);
+    }
+  };
+
+  // Add this function to fetch the current join page status
+  const fetchJoinPageStatus = async () => {
+    try {
+      const response = await fetch(
+        `${SCRIPTS.membership}?action=getJoinPageStatus`
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.status === "success") {
+        setJoinPageStatus(result.data.status || "enabled");
+      }
+    } catch (error) {
+      console.error("Error fetching join page status:", error);
+      // Default to enabled if there's an error
+      setJoinPageStatus("enabled");
+    }
+  };
+
+  // Call fetchJoinPageStatus when component mounts and when dataType is membership
+  useEffect(() => {
+    if (dataType === "membership") {
+      fetchJoinPageStatus();
+    }
+  }, [dataType]);
 
   // Email templates for photo submissions
   const EMAIL_TEMPLATES = {
@@ -779,20 +842,102 @@ photographyclub@dccsa.uiu.ac.bd`,
 
           {/* Render the appropriate component based on dataType */}
           {dataType === "membership" ? (
-            <MembershipApplications
-              data={data}
-              loading={loading}
-              searchTerm={searchTerm}
-              filterStatus={filterStatus}
-              onSearchChange={setSearchTerm}
-              onFilterChange={setFilterStatus}
-              onRefresh={fetchData}
-              onExport={exportToCSV}
-              onViewDetails={handleViewDetails}
-              onUpdateStatus={handleUpdateStatus}
-              onEmailReply={handleEmailReply}
-              connectionTest={connectionTest}
-            />
+            <div className="applications-container">
+              {/* Join Page Control Section */}
+              <div
+                className="join-page-control"
+                style={{
+                  background: "rgba(30, 30, 30, 0.7)",
+                  padding: "1.5rem",
+                  borderRadius: "12px",
+                  marginBottom: "2rem",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "1rem",
+                }}
+              >
+                <div>
+                  <h3
+                    style={{
+                      color: "var(--white)",
+                      margin: "0 0 0.5rem 0",
+                      fontSize: "1.2rem",
+                    }}
+                  >
+                    Join Page Control
+                  </h3>
+                  <p
+                    style={{
+                      color: "var(--text-muted)",
+                      margin: 0,
+                      fontSize: "0.9rem",
+                    }}
+                  >
+                    Current status:{" "}
+                    <strong
+                      style={{
+                        color:
+                          joinPageStatus === "enabled" ? "#28a745" : "#dc3545",
+                      }}
+                    >
+                      {joinPageStatus === "enabled" ? "ENABLED" : "DISABLED"}
+                    </strong>
+                  </p>
+                  <p
+                    style={{
+                      color: "var(--text-muted)",
+                      margin: "0.25rem 0 0 0",
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    {joinPageStatus === "enabled"
+                      ? "Users can submit membership applications"
+                      : "Membership applications are currently disabled"}
+                  </p>
+                </div>
+                <button
+                  onClick={toggleJoinPageStatus}
+                  className={`btn-primary ${
+                    joinPageStatus === "disabled" ? "" : "btn-secondary"
+                  }`}
+                  style={{
+                    minWidth: "140px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  {joinPageStatus === "enabled" ? (
+                    <>
+                      <FaExclamationTriangle />
+                      Disable Submission
+                    </>
+                  ) : (
+                    <>
+                      <FaCheck />
+                      Enable Submission
+                    </>
+                  )}
+                </button>
+              </div>
+              <MembershipApplications
+                data={data}
+                loading={loading}
+                searchTerm={searchTerm}
+                filterStatus={filterStatus}
+                onSearchChange={setSearchTerm}
+                onFilterChange={setFilterStatus}
+                onRefresh={fetchData}
+                onExport={exportToCSV}
+                onViewDetails={handleViewDetails}
+                onUpdateStatus={handleUpdateStatus}
+                onEmailReply={handleEmailReply}
+                connectionTest={connectionTest}
+              />
+            </div>
           ) : dataType === "photos" ? (
             <PhotoSubmissions
               data={data}

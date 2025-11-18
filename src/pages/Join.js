@@ -48,7 +48,24 @@ const Join = () => {
 
   // Google Apps Script Web App URL - You'll need to create this
   const GOOGLE_SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycbwMYmfHx3Yi6bimQj9WeS-1h9m1OGQtWylX6CFuFq8_h0WaMwBGrA77k6hTrULm-7F3/exec";
+    "https://script.google.com/macros/s/AKfycbx96AB28WcVkMl3wjk5z91Ki6lo4eMcpVl9Ju0VFHypcXwcVukpjv1knbMqhjMDUq6z/exec";
+
+  const checkJoinPageStatus = async () => {
+    try {
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycbx96AB28WcVkMl3wjk5z91Ki6lo4eMcpVl9Ju0VFHypcXwcVukpjv1knbMqhjMDUq6z/exec?action=getJoinPageStatus"
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+        return result.data?.status === "enabled";
+      }
+      return true; // Default to enabled if there's an error
+    } catch (error) {
+      console.error("Error checking join page status:", error);
+      return true; // Default to enabled if there's an error
+    }
+  };
 
   const departments = [
     "Computer Science & Engineering",
@@ -126,12 +143,23 @@ const Join = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
+    // Check if join page submissions are enabled
+    const isEnabled = await checkJoinPageStatus();
+    if (!isEnabled) {
+      setSubmitStatus("error");
+      setSubmitMessage(
+        "Membership applications are currently disabled. Please check back later or contact the photography club for more information."
+      );
+      return;
+    }
+
     // Show rules popup instead of immediately submitting
     setShowRulesPopup(true);
   };
 
   // New function to handle final submission after agreement
+  // In Join.js - Replace the handleFinalSubmit function
   const handleFinalSubmit = async () => {
     if (!agreementAccepted) {
       alert("Please accept the membership agreement to continue.");
@@ -172,7 +200,7 @@ const Join = () => {
         photoType = photo.type;
       }
 
-      // Prepare form data as URL encoded
+      // FIXED: Use URLSearchParams instead of FormData
       const submissionData = new URLSearchParams();
 
       // Add all form fields
@@ -191,18 +219,19 @@ const Join = () => {
 
       // Add agreement acceptance
       submissionData.append("agreementAccepted", "true");
-      
+
       // Add timestamp
       submissionData.append("timestamp", new Date().toISOString());
 
       console.log("Submitting to:", GOOGLE_SCRIPT_URL);
 
+      // FIXED: Use proper headers for URLSearchParams
       const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
         },
-        body: submissionData,
+        body: submissionData.toString(),
       });
 
       console.log("Response status:", response.status);
@@ -216,7 +245,7 @@ const Join = () => {
         setSubmitMessage(
           "Thank you for your application! We will review it and get back to you soon."
         );
-        
+
         // Show popup message
         setShowSuccessPopup(true);
 
@@ -691,47 +720,109 @@ const Join = () => {
               <h3>Membership Agreement & Code of Conduct</h3>
             </div>
             <div className="popup-content">
-              <div style={{ textAlign: 'left', maxHeight: '400px', overflowY: 'auto', padding: '10px' }}>
-                <h4 style={{ color: 'var(--uiu-orange)', marginBottom: '1rem' }}>General Rules</h4>
-                <ul style={{ marginBottom: '1.5rem', paddingLeft: '1.5rem' }}>
-                  <li>Members must respect all fellow members, club executives, and event participants.</li>
-                  <li>Members must maintain discipline and professionalism in all club activities.</li>
-                  <li>Any form of misconduct, harassment, or violation of university policies will lead to disciplinary action.</li>
-                  <li>Members should actively engage in club activities and contribute to its growth.</li>
-                  <li>UIUPC ID card can only be used for club purposes or special occasions approved by the club. Any misuse of the ID card is strictly prohibited.</li>
+              <div
+                style={{
+                  textAlign: "left",
+                  maxHeight: "400px",
+                  overflowY: "auto",
+                  padding: "10px",
+                }}
+              >
+                <h4
+                  style={{ color: "var(--uiu-orange)", marginBottom: "1rem" }}
+                >
+                  General Rules
+                </h4>
+                <ul style={{ marginBottom: "1.5rem", paddingLeft: "1.5rem" }}>
+                  <li>
+                    Members must respect all fellow members, club executives,
+                    and event participants.
+                  </li>
+                  <li>
+                    Members must maintain discipline and professionalism in all
+                    club activities.
+                  </li>
+                  <li>
+                    Any form of misconduct, harassment, or violation of
+                    university policies will lead to disciplinary action.
+                  </li>
+                  <li>
+                    Members should actively engage in club activities and
+                    contribute to its growth.
+                  </li>
+                  <li>
+                    UIUPC ID card can only be used for club purposes or special
+                    occasions approved by the club. Any misuse of the ID card is
+                    strictly prohibited.
+                  </li>
                 </ul>
 
-                <h4 style={{ color: 'var(--uiu-orange)', marginBottom: '1rem' }}>Activity Participation Rules</h4>
-                <ul style={{ marginBottom: '1.5rem', paddingLeft: '1.5rem' }}>
-                  <li><strong>Vertex:</strong> Members must attend at least three Vertex Workshop each year.</li>
-                  <li><strong>Photowalks:</strong> Members should try to join photowalks organized right after Vertex.</li>
-                  <li><strong>PhotoAdda:</strong> Members are encouraged to take part in discussions and creative exchanges in PhotoAdda.</li>
-                  <li><strong>Friday Exposure Contribution:</strong> Members are expected to contribute to the club's weekly showcase.</li>
-                  <li><strong>Club Internal Activities:</strong> Members should be willing to help in club operations, event management, and community engagement.</li>
+                <h4
+                  style={{ color: "var(--uiu-orange)", marginBottom: "1rem" }}
+                >
+                  Activity Participation Rules
+                </h4>
+                <ul style={{ marginBottom: "1.5rem", paddingLeft: "1.5rem" }}>
+                  <li>
+                    <strong>Vertex:</strong> Members must attend at least three
+                    Vertex Workshop each year.
+                  </li>
+                  <li>
+                    <strong>Photowalks:</strong> Members should try to join
+                    photowalks organized right after Vertex.
+                  </li>
+                  <li>
+                    <strong>PhotoAdda:</strong> Members are encouraged to take
+                    part in discussions and creative exchanges in PhotoAdda.
+                  </li>
+                  <li>
+                    <strong>Friday Exposure Contribution:</strong> Members are
+                    expected to contribute to the club's weekly showcase.
+                  </li>
+                  <li>
+                    <strong>Club Internal Activities:</strong> Members should be
+                    willing to help in club operations, event management, and
+                    community engagement.
+                  </li>
                 </ul>
 
-                <h4 style={{ color: 'var(--uiu-orange)', marginBottom: '1rem' }}>Agreement & Signature</h4>
-                <p style={{ marginBottom: '1rem' }}>
-                  I confirm that I have read and understood the UIU Photography Club Membership Agreement & Code of Conduct. I agree to abide by these rules and contribute positively to the club's community. I also acknowledge that I have paid 500 BDT as a one-time, non-refundable membership fee for joining UIUPC.
+                <h4
+                  style={{ color: "var(--uiu-orange)", marginBottom: "1rem" }}
+                >
+                  Agreement & Signature
+                </h4>
+                <p style={{ marginBottom: "1rem" }}>
+                  I confirm that I have read and understood the UIU Photography
+                  Club Membership Agreement & Code of Conduct. I agree to abide
+                  by these rules and contribute positively to the club's
+                  community. I also acknowledge that I have paid 500 BDT as a
+                  one-time, non-refundable membership fee for joining UIUPC.
                 </p>
 
-                <div className="form-group" style={{ marginTop: '1.5rem' }}>
-                  <label className="interest-checkbox" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div className="form-group" style={{ marginTop: "1.5rem" }}>
+                  <label
+                    className="interest-checkbox"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
                     <input
                       type="checkbox"
                       checked={agreementAccepted}
                       onChange={(e) => setAgreementAccepted(e.target.checked)}
                     />
                     <span className="checkmark"></span>
-                    <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>
+                    <span style={{ marginLeft: "10px", fontWeight: "bold" }}>
                       I accept the Membership Agreement & Code of Conduct
                     </span>
                   </label>
                 </div>
               </div>
             </div>
-            <div className="popup-actions" style={{ gap: '1rem' }}>
-              <button 
+            <div className="popup-actions" style={{ gap: "1rem" }}>
+              <button
                 className="btn-primary"
                 onClick={handleFinalSubmit}
                 disabled={!agreementAccepted}
@@ -739,10 +830,10 @@ const Join = () => {
               >
                 Confirm & Submit
               </button>
-              <button 
+              <button
                 className="btn-primary"
                 onClick={() => setShowRulesPopup(false)}
-                style={{ background: 'var(--light-gray)' }}
+                style={{ background: "var(--light-gray)" }}
               >
                 Cancel
               </button>
@@ -761,11 +852,13 @@ const Join = () => {
             </div>
             <div className="popup-content">
               <p>Thank you for applying to join the UIU Photography Club!</p>
-              <p>We have received your application and will review it shortly.</p>
+              <p>
+                We have received your application and will review it shortly.
+              </p>
               <p>You will receive a confirmation email within 24-48 hours.</p>
             </div>
             <div className="popup-actions">
-              <button 
+              <button
                 className="btn-primary"
                 onClick={() => setShowSuccessPopup(false)}
               >
