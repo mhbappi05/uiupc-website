@@ -11,6 +11,7 @@ import {
   //FaArrowLeft,
   FaFileAlt,
   FaTimes,
+  FaExclamationTriangle,
 } from "react-icons/fa";
 import "./PhotoSubmissionForm.css";
 
@@ -31,6 +32,7 @@ const PhotoSubmissionForm = () => {
   const [submitted, setSubmitted] = useState(false);
   const [submissionDetails, setSubmissionDetails] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [showRenameConfirm, setShowRenameConfirm] = useState(false);
 
   // Updated Google Apps Script URL - make sure to deploy as web app
   const GOOGLE_SCRIPT_URL =
@@ -143,6 +145,13 @@ const PhotoSubmissionForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Show rename confirmation dialog first
+    setShowRenameConfirm(true);
+  };
+
+  const handleConfirmSubmission = async () => {
+    setShowRenameConfirm(false);
     setUploading(true);
     setUploadProgress(0);
 
@@ -321,6 +330,10 @@ const PhotoSubmissionForm = () => {
     }
   };
 
+  const handleCancelSubmission = () => {
+    setShowRenameConfirm(false);
+  };
+
   // Individual file upload helper function using only URL encoded form data (Method 2)
   const uploadSingleFile = async (file, fileType, index, folderId) => {
     return new Promise(async (resolve, reject) => {
@@ -384,6 +397,68 @@ const PhotoSubmissionForm = () => {
       reader.readAsDataURL(file);
     });
   };
+
+  // Rename Confirmation Modal
+  const RenameConfirmationModal = () => (
+    <div className="modal-overlay">
+      <div className="rename-confirm-modal">
+        <div className="modal-header">
+          <FaExclamationTriangle className="warning-icon" />
+          <h3>Photo Renaming Confirmation</h3>
+        </div>
+        
+        <div className="modal-content">
+          <h3><strong>Have you renamed your photos?</strong></h3>
+          <p>Otherwise, your submission will be disqualified.</p>
+          
+          <div className="naming-format">
+            <p><strong>Required Format:</strong></p>
+            <code>Institution Name_Participant's name_Category_Mobile no_Serial no</code>
+          </div>
+
+          <div className="event-details">
+            <p><strong>Event Details:</strong></p>
+            <a 
+              href="https://uiupc.vercel.app/events/shutter-stories" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              https://uiupc.vercel.app/events/shutter-stories
+            </a>
+          </div>
+
+          <div className="file-count-info">
+            <p>
+              You are about to submit{" "}
+              <strong>
+                {formData.category === "single" 
+                  ? `${formData.photos.length} photo(s)` 
+                  : `${formData.photoStory.length} photo(s)${formData.storyTextFile ? ' + 1 text file' : ''}`
+                }
+              </strong>
+            </p>
+          </div>
+        </div>
+
+        <div className="modal-actions">
+          <button 
+            className="btn-cancel" 
+            onClick={handleCancelSubmission}
+            disabled={uploading}
+          >
+            No, Go Back
+          </button>
+          <button 
+            className="btn-confirm" 
+            onClick={handleConfirmSubmission}
+            disabled={uploading}
+          >
+            Yes, I've Renamed All Photos
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
   // Success/Processing Screen
   if (submitted) {
@@ -513,6 +588,9 @@ const PhotoSubmissionForm = () => {
 
   return (
     <div className="photo-submission-form">
+      {/* Rename Confirmation Modal */}
+      {showRenameConfirm && <RenameConfirmationModal />}
+
       <div className="form-container">
         <header className="form-header">
           {/* <button onClick={() => navigate("/events")} className="back-button">
@@ -661,6 +739,13 @@ const PhotoSubmissionForm = () => {
 
             {formData.category === "single" ? (
               <div className="upload-section">
+                <div className="rename-warning-banner">
+              <FaExclamationTriangle />
+              <span>
+                <strong>IMPORTANT:</strong> Rename your photos before uploading using the format:{" "}
+                <code>Institution Name_Participant's name_Category_Mobile no_Serial no</code>
+              </span>
+            </div>
                 <label className="upload-area">
                   <FaUpload className="upload-icon" />
                   <span>Upload Single Photos (Max 10, 10MB each)</span>
@@ -718,6 +803,13 @@ const PhotoSubmissionForm = () => {
               </div>
             ) : (
               <div className="upload-section">
+            <div className="rename-warning-banner">
+              <FaExclamationTriangle />
+              <span>
+                <strong>IMPORTANT:</strong> Rename your photos before uploading using the format:{" "}
+                <code>Institution Name_Participant's name_Category_Mobile no_Serial no</code>
+              </span>
+            </div>
                 <label className="upload-area">
                   <FaUpload className="upload-icon" />
                   <span> Upload Photo Story (6-12 photos + .txt file)</span>
