@@ -6,7 +6,13 @@ import MembershipApplications from "../components/MembershipApplications";
 import PhotoSubmissions from "../components/PhotoSubmissions";
 import "../components/GalleryUpload.css";
 import BlogManagement from "../components/BlogManagement";
-import { FaSync, FaUsers, FaCamera, FaNewspaper } from "react-icons/fa";
+import {
+  FaSync,
+  FaUsers,
+  FaCamera,
+  FaNewspaper,
+  FaImages,
+} from "react-icons/fa";
 import Loading from "../components/Loading";
 import "./Admin.css";
 
@@ -36,7 +42,7 @@ const UniversalAdmin = () => {
     email:
       "https://script.google.com/macros/s/AKfycbzut9q4kH0cnVhkfM5EKJrlmGp5oO7qNTuKpF8vn_vl4eJcREjfrSZ5P2SFDlllM7AKLw/exec",
     gallery:
-      "https://script.google.com/macros/s/AKfycbxgsTUWlUqT0gxhD4Um6RbU9Xre1RJyE0cOyWaJEStKVkFLdIhlMITI1l1bHN4I7XlbaA/exec",
+      "https://script.google.com/macros/s/AKfycbyzV-c3PZJtzFbD2A_PmKMIR9V5oiQ1vjKarmruIVsCA3vcDQy8nHQ6fPZnWYa-lvDPoA/exec",
     blog: "https://script.google.com/macros/s/AKfycbydYlnt1AiH6QsicIlyh2cRH2XmfAmwO-ksB4cGQU17Ho7GQBXcx-Fn6u32wkvYp-fDFA/exec",
   };
 
@@ -144,7 +150,7 @@ photographyclub@dccsa.uiu.ac.bd`,
       console.log(`Fetching ${dataType} data...`);
 
       // Don't fetch data for blog type as BlogManagement handles its own data
-      if (dataType === "blog") {
+      if (dataType === "blog" || dataType === "gallery") {
         setData([]);
         setLoading(false);
         return;
@@ -691,7 +697,11 @@ photographyclub@dccsa.uiu.ac.bd`,
           Manage{" "}
           {dataType === "membership"
             ? "Membership Applications"
-            : "Photo Submissions"}
+            : dataType === "photos"
+            ? "Photo Submissions"
+            : dataType === "gallery"
+            ? "Gallery"
+            : "Blog Posts"}
         </p>
       </div>
 
@@ -754,19 +764,18 @@ photographyclub@dccsa.uiu.ac.bd`,
               <FaCamera /> Photo Submissions
             </button>
             <button
+              className={`type-btn ${dataType === "gallery" ? "active" : ""}`}
+              onClick={() => setDataType("gallery")}
+            >
+              <FaImages /> Gallery Management
+            </button>
+            <button
               className={`type-btn ${dataType === "blog" ? "active" : ""}`}
               onClick={() => setDataType("blog")}
             >
               <FaNewspaper /> Blog Management
             </button>
           </div>
-
-          {/* Gallery Upload - Always visible */}
-          <GalleryUpload
-            user={user}
-            scripts={SCRIPTS}
-            onUploadSuccess={handleUploadSuccess}
-          />
 
           {/* Render the appropriate component based on dataType */}
           {dataType === "membership" ? (
@@ -797,6 +806,13 @@ photographyclub@dccsa.uiu.ac.bd`,
               onViewDetails={handleViewDetails}
               onEmailReply={handleEmailReply}
               connectionTest={connectionTest}
+            />
+          ) : dataType === "gallery" ? (
+            // Gallery Management Section - Show GalleryUpload component
+            <GalleryUpload
+              user={user}
+              scripts={SCRIPTS}
+              onUploadSuccess={handleUploadSuccess}
             />
           ) : (
             // Blog Management Section
