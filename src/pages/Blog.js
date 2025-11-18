@@ -1,6 +1,7 @@
 // pages/Blog.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Blog.css';
+import Loading from '../components/Loading'; // Import your custom loader
 
 // --- MediaCarousel Component ---
 const MediaCarousel = ({ media }) => {
@@ -148,97 +149,82 @@ const PostCard = ({ post }) => {
 };
 
 const Blog = () => {
-  const [posts] = useState([
-    {
-      id: 1,
-      title: "Photography Day 2025",
-      description: "Photography takes an instant out of time, altering life by holding it still.  -Dorothea Lange, American photographer.Wishing Happy World Photography Day 2025 from UIU Photography Club!",
-      media: [
-        { 
-          type: 'image', 
-          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799155/Blog04_taox6m.jpg',  
-        }
-      ],
-      date: "August 19, 2025"
-    },
-    {
-      id: 2,
-      title: "Vertex : Language discussion",
-      description: "We proudly presents another exciting chapter of Vertex! This time, we dive into Language Discussion, where photography meets the art of storytelling through words, visuals and expressions. Join us for an engaging session filled with creative exchanges, thought-provoking conversations! Date: Saturday, 23 August 2025 Time: 3:10 PM .Let's explore how language and photography blend together!",
-      media: [
-        { 
-          type: 'image', 
-          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762797135/Blog03_jpaqiw.jpg',  
-        }
-      ],
-      date: "August 22, 2025"
-    },
-    {
-      id: 3,
-      title: "Media Fest 2025 Achievements",
-      description: "UIU Media Fest 2025 celebrated the brightest talents in creativity, storytelling and we are proud to announce that our very own Executive Members shined with their remarkable achievements! Minhaz Hossain Shemul secured the 1st Runner-up in the Photography Segment, capturing powerful stories! Zannatul Amin Anika, Mayesha Tun Nur, and Jonayed Shah Jesun achieved the 1st Runner-up in the Media Quiz Competition, showcasing their sharp knowledge and passion for media studies. Your hard work, creativity and dedication truly reflect the spirit of excellence that defines UIUPC. Keep inspiring and reaching new milestones!",
-      media: [
-        { 
-          type: 'image', 
-          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762796842/Blog01_rcdns7.jpg',  
-        },
-        { 
-          type: 'image', 
-          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762796842/Blog02_r0zkvb.jpg', 
-        }
-      ],
-      date: "September 30, 2025"
-    },
-    {
-      id: 4,
-      title: "Something is cooking??",
-      description: "Exciting news is on the horizon! UIU Photography Club is thrilled to announce that we are cooking up something special just for you. Stay tuned for an upcoming event that promises to ignite your creativity and passion for photography. Get ready to capture moments, learn new skills, and connect with fellow photography enthusiasts. Keep an eye on our page for more details coming soon!",
-      media: [
-        { 
-          type: 'image', 
-          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799836/Blog5_lbkrue.png',  
-        }
-      ],
-      date: "November 11, 2025"
-    },
-    {
-      id: 5,
-      title: "Whats happening at UIUPC?",
-      description: "Happening something crazy or not! Let's See! Stay tune with UIUPC.",
-      media: [
-        { 
-          type: 'image',
-          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1763063064/Blog6_x6ywrm.jpg',
-        }
-      ],
-      date: "November 14, 2025"
-    },
-    {
-      id: 6,
-      title: "Shutter Stories Chapter IV Identity Revealed!",
-      description: "The moment has finally arrived; United Healthcare Presents Shutter Stories Chapter IV unveils its official identity. The legacy continues as we prepare for yet another national gathering of photographers and storytellers. With fresh energy and limitless possibilities, this chapter is set to define creativity. The Call for Photo goes live soon. Stay tuned!",
-      media: [
-        { 
-          type: 'video',
-          url: 'https://res.cloudinary.com/do0e8p5d2/video/upload/v1763138349/Shutter_Stories_Chapter_4_-_2025_Promo_glsjvm.mp4',
-          thumbnail: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1763138365/ShutterVThum01_et8lv2.jpg'
-        }
-      ],
-      date: "November 14, 2025" 
-    },
-    {
-      id: 7,
-      title: "Shutter Stories Chapter IV Call for Photo",
-      description: "The legacy continues as we prepare for yet another national gathering of photographers and storytellers. United Healthcare Presents Shutter Stories Chapter IV.  Call for Photo is live now! For submission visit: https://uiupc.vercel.app/ Facebook Event: https://www.facebook.com/share/17si8WcNeF/ ",
-      media: [
-        { 
-          type: 'image',
-          url: 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1763223291/Blog_7_suqqrn.jpg',
-        }
-      ],
-      date: "November 15, 2025"
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Your Google Apps Script URL for blog
+  const BLOG_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydYlnt1AiH6QsicIlyh2cRH2XmfAmwO-ksB4cGQU17Ho7GQBXcx-Fn6u32wkvYp-fDFA/exec";
+
+  const fetchBlogPosts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await fetch(`${BLOG_SCRIPT_URL}?action=getBlogPosts`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('Blog posts API response:', result);
+
+      if (result.status === 'success') {
+        // Sort posts by date (newest first)
+        const sortedPosts = (result.data || []).sort((a, b) => 
+          new Date(b.date || b.timestamp) - new Date(a.date || a.timestamp)
+        );
+        setPosts(sortedPosts);
+      } else {
+        throw new Error(result.message || 'Failed to fetch blog posts');
+      }
+    } catch (error) {
+      console.error('Error fetching blog posts:', error);
+      setError(error.message);
+      // Fallback to empty array
+      setPosts([]);
+    } finally {
+      setLoading(false);
     }
-  ].sort((a, b) => new Date(b.date) - new Date(a.date))); // Sort posts in descending order
+  };
+
+  useEffect(() => {
+    fetchBlogPosts();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="blog-page">
+        <div className="blog-page-header">
+          <h1>News & Updates</h1>
+          <p>Stories, tutorials, and updates from our photography community</p>
+        </div>
+        <div className="blog-container">
+          <Loading /> {/* Use your custom loader here */}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="blog-page">
+        <div className="blog-page-header">
+          <h1>News & Updates</h1>
+          <p>Stories, tutorials, and updates from our photography community</p>
+        </div>
+        <div className="blog-container">
+          <div className="error-message">
+            <p>Error loading posts: {error}</p>
+            <button onClick={fetchBlogPosts} className="btn-secondary">
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="blog-page">
@@ -249,11 +235,18 @@ const Blog = () => {
       
       <div className="blog-container">
         <div className="blog-content">
-          <div className="blog-posts-grid">
-            {posts.map(post => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </div>
+          {posts.length === 0 ? (
+            <div className="no-posts">
+              <h3>No posts yet</h3>
+              <p>Check back later for updates!</p>
+            </div>
+          ) : (
+            <div className="blog-posts-grid">
+              {posts.map(post => (
+                <PostCard key={post.id} post={post} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

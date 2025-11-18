@@ -5,11 +5,8 @@ import GalleryUpload from "../components/GalleryUpload";
 import MembershipApplications from "../components/MembershipApplications";
 import PhotoSubmissions from "../components/PhotoSubmissions";
 import "../components/GalleryUpload.css";
-import {
-  FaSync,
-  FaUsers,
-  FaCamera,
-} from "react-icons/fa";
+import BlogManagement from "../components/BlogManagement";
+import { FaSync, FaUsers, FaCamera, FaNewspaper } from "react-icons/fa";
 import Loading from "../components/Loading";
 import "./Admin.css";
 
@@ -40,6 +37,7 @@ const UniversalAdmin = () => {
       "https://script.google.com/macros/s/AKfycbzut9q4kH0cnVhkfM5EKJrlmGp5oO7qNTuKpF8vn_vl4eJcREjfrSZ5P2SFDlllM7AKLw/exec",
     gallery:
       "https://script.google.com/macros/s/AKfycbxgsTUWlUqT0gxhD4Um6RbU9Xre1RJyE0cOyWaJEStKVkFLdIhlMITI1l1bHN4I7XlbaA/exec",
+    blog: "https://script.google.com/macros/s/AKfycbydYlnt1AiH6QsicIlyh2cRH2XmfAmwO-ksB4cGQU17Ho7GQBXcx-Fn6u32wkvYp-fDFA/exec",
   };
 
   // Email templates for photo submissions
@@ -144,6 +142,13 @@ photographyclub@dccsa.uiu.ac.bd`,
       setLoading(true);
       setError(null);
       console.log(`Fetching ${dataType} data...`);
+
+      // Don't fetch data for blog type as BlogManagement handles its own data
+      if (dataType === "blog") {
+        setData([]);
+        setLoading(false);
+        return;
+      }
 
       const action =
         dataType === "membership" ? "getApplications" : "getSubmissions";
@@ -708,6 +713,30 @@ photographyclub@dccsa.uiu.ac.bd`,
             </div>
           )}
 
+          {/* Debug Info */}
+          <div className="debug-info">
+            <strong>Debug Info:</strong>
+            Data Type: {dataType} |
+            {dataType !== "blog" && `Total: ${data.length} |`}
+            Error: {error ? "Yes" : "No"} | Email Service:{" "}
+            {connectionTest?.status || "Testing..."}
+          </div>
+
+          {/* Welcome Message */}
+          <div className="admin-welcome">
+            <p>
+              Welcome, <strong>{user.email}</strong>
+            </p>
+            {dataType !== "blog" && (
+              <p>
+                Total{" "}
+                {dataType === "membership" ? "Applications" : "Submissions"}:
+                <strong>{data.length}</strong>
+              </p>
+            )}
+          </div>
+
+          {/* Render the appropriate component based on dataType */}
           {/* Data Type Selector */}
           <div className="data-type-selector">
             <button
@@ -724,30 +753,20 @@ photographyclub@dccsa.uiu.ac.bd`,
             >
               <FaCamera /> Photo Submissions
             </button>
-            <GalleryUpload
-              user={user}
-              scripts={SCRIPTS}
-              onUploadSuccess={handleUploadSuccess}
-            />
+            <button
+              className={`type-btn ${dataType === "blog" ? "active" : ""}`}
+              onClick={() => setDataType("blog")}
+            >
+              <FaNewspaper /> Blog Management
+            </button>
           </div>
 
-          {/* Debug Info */}
-          <div className="debug-info">
-            <strong>Debug Info:</strong>
-            Data Type: {dataType} | Total: {data.length} | Error: {error ? "Yes" : "No"} | Email Service:{" "}
-            {connectionTest?.status || "Testing..."}
-          </div>
-
-          {/* Welcome Message */}
-          <div className="admin-welcome">
-            <p>
-              Welcome, <strong>{user.email}</strong>
-            </p>
-            <p>
-              Total {dataType === "membership" ? "Applications" : "Submissions"}
-              : <strong>{data.length}</strong>
-            </p>
-          </div>
+          {/* Gallery Upload - Always visible */}
+          <GalleryUpload
+            user={user}
+            scripts={SCRIPTS}
+            onUploadSuccess={handleUploadSuccess}
+          />
 
           {/* Render the appropriate component based on dataType */}
           {dataType === "membership" ? (
@@ -765,7 +784,7 @@ photographyclub@dccsa.uiu.ac.bd`,
               onEmailReply={handleEmailReply}
               connectionTest={connectionTest}
             />
-          ) : (
+          ) : dataType === "photos" ? (
             <PhotoSubmissions
               data={data}
               loading={loading}
@@ -778,6 +797,13 @@ photographyclub@dccsa.uiu.ac.bd`,
               onViewDetails={handleViewDetails}
               onEmailReply={handleEmailReply}
               connectionTest={connectionTest}
+            />
+          ) : (
+            // Blog Management Section
+            <BlogManagement
+              user={user}
+              scripts={SCRIPTS}
+              onUploadSuccess={handleUploadSuccess}
             />
           )}
 
