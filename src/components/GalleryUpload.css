@@ -541,3 +541,297 @@
   background: #3b5998;
   transform: scale(1.1);
 }
+
+/* Add these styles to GalleryUpload.css */
+
+/* Custom Scrollbar Styles */
+.gallery-upload {
+  background: rgba(30, 30, 30, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 2rem;
+  max-height: 80vh;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.gallery-upload::-webkit-scrollbar {
+  width: 12px;
+}
+
+.gallery-upload::-webkit-scrollbar-track {
+  background: rgba(30, 30, 30, 0.8);
+  border-radius: 0 12px 12px 0;
+}
+
+.gallery-upload::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #FF6B00 0%, #E55A00 100%);
+  border-radius: 6px;
+  border: 2px solid rgba(30, 30, 30, 0.8);
+}
+
+.gallery-upload::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #FF8C42 0%, #FF6B00 100%);
+}
+
+.gallery-photos-container {
+  max-height: 500px;
+  overflow-y: auto;
+  margin-top: 1rem;
+}
+
+.gallery-photos-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.gallery-photos-container::-webkit-scrollbar-track {
+  background: rgba(30, 30, 30, 0.8);
+  border-radius: 6px;
+}
+
+.gallery-photos-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #FF6B00 0%, #E55A00 100%);
+  border-radius: 5px;
+  border: 2px solid rgba(30, 30, 30, 0.8);
+}
+
+.gallery-photos-container::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #FF8C42 0%, #FF6B00 100%);
+}
+
+/* Firefox scrollbar styles */
+.gallery-upload {
+  scrollbar-width: thin;
+  scrollbar-color: #FF6B00 rgba(30, 30, 30, 0.8);
+}
+
+.gallery-photos-container {
+  scrollbar-width: thin;
+  scrollbar-color: #FF6B00 rgba(30, 30, 30, 0.8);
+}
+
+/* Search Bar Styles */
+.gallery-search {
+  margin-bottom: 2rem;
+}
+
+.search-container {
+  position: relative;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.85rem 1rem 0.85rem 3rem;
+  background: rgba(30, 30, 30, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: white;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #FF6B00;
+  box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.2);
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.search-clear {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.search-clear:hover {
+  background: rgba(255, 107, 0, 0.2);
+  color: #FF6B00;
+}
+
+.search-results-info {
+  text-align: center;
+  margin-top: 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+/* Pagination Styles */
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.pagination-info {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pagination-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: rgba(45, 45, 45, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: rgba(255, 107, 0, 0.2);
+  border-color: rgba(255, 107, 0, 0.3);
+  color: #FF6B00;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-numbers {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.pagination-number {
+  padding: 0.6rem 0.9rem;
+  background: rgba(45, 45, 45, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  min-width: 42px;
+}
+
+.pagination-number:hover {
+  background: rgba(255, 107, 0, 0.2);
+  border-color: rgba(255, 107, 0, 0.3);
+  color: #FF6B00;
+}
+
+.pagination-number.active {
+  background: linear-gradient(135deg, #FF6B00 0%, #E55A00 100%);
+  border-color: #FF6B00;
+  color: white;
+}
+
+/* Responsive Design Updates */
+@media (max-width: 768px) {
+  .gallery-upload {
+    padding: 1.5rem;
+  }
+  
+  .gallery-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .gallery-stats {
+    justify-content: center;
+  }
+  
+  .gallery-actions {
+    justify-content: center;
+  }
+  
+  .pagination-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .pagination-controls {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .pagination-numbers {
+    order: 3;
+    margin-top: 0.5rem;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-upload {
+    padding: 1rem;
+  }
+  
+  .gallery-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .gallery-stats {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .gallery-stats span {
+    text-align: center;
+  }
+  
+  .photo-actions {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 0.5rem;
+    border-radius: 8px;
+  }
+  
+  .pagination-btn {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.8rem;
+  }
+  
+  .pagination-number {
+    padding: 0.5rem 0.7rem;
+    font-size: 0.8rem;
+    min-width: 36px;
+  }
+}

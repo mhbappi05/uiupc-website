@@ -1,6 +1,6 @@
 // components/GalleryUpload.js
 import React, { useState, useEffect } from "react";
-import { FaPlus, FaUpload, FaSync, FaTimes, FaImages, FaCalendar, FaUser, FaEye, FaEdit, FaTrash } from "react-icons/fa";
+import { FaPlus, FaUpload, FaSync, FaTimes, FaImages, FaCalendar, FaUser, FaEye, FaEdit, FaTrash, FaSearch, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Loading from "./Loading";
 import "./GalleryUpload.css";
 
@@ -9,10 +9,18 @@ const GalleryUpload = ({ user, scripts, onUploadSuccess }) => {
   const [uploading, setUploading] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
   const [galleryPhotos, setGalleryPhotos] = useState([]);
+  const [filteredPhotos, setFilteredPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [editingPhoto, setEditingPhoto] = useState(null);
   
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [photosPerPage] = useState(10);
+  
+  // Search state
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [uploadForm, setUploadForm] = useState({
     title: "",
     description: "",
@@ -45,6 +53,7 @@ const GalleryUpload = ({ user, scripts, onUploadSuccess }) => {
           (a, b) => new Date(b.uploadedAt || b.timestamp) - new Date(a.uploadedAt || a.timestamp)
         );
         setGalleryPhotos(sortedPhotos);
+        setFilteredPhotos(sortedPhotos);
       } else {
         throw new Error(result.message || "Failed to fetch gallery photos");
       }
@@ -59,6 +68,32 @@ const GalleryUpload = ({ user, scripts, onUploadSuccess }) => {
   useEffect(() => {
     fetchGalleryPhotos();
   }, []);
+
+  // Filter photos based on search term
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setFilteredPhotos(galleryPhotos);
+    } else {
+      const filtered = galleryPhotos.filter(
+        (photo) =>
+          photo.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          photo.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (photo.tags && photo.tags.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (photo.uploadedBy && photo.uploadedBy.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          getEventName(photo.eventId).toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredPhotos(filtered);
+    }
+    setCurrentPage(1); // Reset to first page when search changes
+  }, [searchTerm, galleryPhotos]);
+
+  // Pagination logic
+  const indexOfLastPhoto = currentPage * photosPerPage;
+  const indexOfFirstPhoto = indexOfLastPhoto - photosPerPage;
+  const currentPhotos = filteredPhotos.slice(indexOfFirstPhoto, indexOfLastPhoto);
+  const totalPages = Math.ceil(filteredPhotos.length / photosPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleImageUrlChange = (url) => {
     setUploadForm({ ...uploadForm, imageUrl: url });
@@ -202,6 +237,35 @@ const GalleryUpload = ({ user, scripts, onUploadSuccess }) => {
     return description.substring(0, maxLength) + "...";
   };
 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const clearSearch = () => {
+    setSearchTerm("");
+  };
+
+  // Generate page numbers for pagination
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      const startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+      const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+      
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+    }
+    
+    return pageNumbers;
+  };
+
   if (loading) {
     return (
       <div className="gallery-upload-container">
@@ -231,6 +295,9 @@ const GalleryUpload = ({ user, scripts, onUploadSuccess }) => {
               Total Photos: <strong>{galleryPhotos.length}</strong>
             </span>
             <span>
+              Showing: <strong>{filteredPhotos.length}</strong>
+            </span>
+            <span>
               Latest Upload: <strong>
                 {galleryPhotos.length > 0 
                   ? new Date(galleryPhotos[0].uploadedAt || galleryPhotos[0].timestamp).toLocaleDateString()
@@ -258,6 +325,30 @@ const GalleryUpload = ({ user, scripts, onUploadSuccess }) => {
           </div>
         </div>
 
+        {/* Search Bar */}
+        <div className="gallery-search">
+          <div className="search-container">
+            <FaSearch className="search-icon" />
+            <input
+              type="text"
+              placeholder="Search photos by title, description, tags, author, or event..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="search-input"
+            />
+            {searchTerm && (
+              <button onClick={clearSearch} className="search-clear">
+                ×
+              </button>
+            )}
+          </div>
+          {searchTerm && (
+            <div className="search-results-info">
+              Found {filteredPhotos.length} photo{filteredPhotos.length !== 1 ? 's' : ''} matching "{searchTerm}"
+            </div>
+          )}
+        </div>
+
         {error && (
           <div className="error-message">
             <p>{error}</p>
@@ -267,94 +358,151 @@ const GalleryUpload = ({ user, scripts, onUploadSuccess }) => {
           </div>
         )}
 
-        {galleryPhotos.length === 0 && !error ? (
+        {filteredPhotos.length === 0 ? (
           <div className="no-photos">
             <FaImages size={48} />
-            <h3>No Photos Yet</h3>
-            <p>Start by uploading your first photo to the gallery!</p>
-            <button onClick={handleNewPhoto} className="btn-primary">
-              <FaPlus /> Upload First Photo
-            </button>
+            <h3>
+              {searchTerm ? "No Matching Photos Found" : "No Photos Yet"}
+            </h3>
+            <p>
+              {searchTerm
+                ? "Try adjusting your search terms or clear the search to see all photos."
+                : "Start by uploading your first photo to the gallery!"}
+            </p>
+            {!searchTerm && (
+              <button onClick={handleNewPhoto} className="btn-primary">
+                <FaPlus /> Upload First Photo
+              </button>
+            )}
+            {searchTerm && (
+              <button onClick={clearSearch} className="btn-secondary">
+                Clear Search
+              </button>
+            )}
           </div>
         ) : (
-          <div className="gallery-photos-grid">
-            {galleryPhotos.map((photo) => (
-              <div key={photo.id} className="gallery-photo-card">
-                <div className="photo-preview">
-                  <img
-                    src={photo.url || photo.imageUrl}
-                    alt={photo.title}
-                    onError={(e) => {
-                      e.target.style.display = "none";
-                      e.target.nextSibling.style.display = "flex";
-                    }}
-                  />
-                  <div className="image-error" style={{ display: 'none' }}>
-                    <FaImages size={24} />
-                    <span>Image not available</span>
+          <>
+            <div className="gallery-photos-container">
+              <div className="gallery-photos-grid">
+                {currentPhotos.map((photo) => (
+                  <div key={photo.id} className="gallery-photo-card">
+                    <div className="photo-preview">
+                      <img
+                        src={photo.url || photo.imageUrl}
+                        alt={photo.title}
+                        onError={(e) => {
+                          e.target.style.display = "none";
+                          e.target.nextSibling.style.display = "flex";
+                        }}
+                      />
+                      <div className="image-error" style={{ display: 'none' }}>
+                        <FaImages size={24} />
+                        <span>Image not available</span>
+                      </div>
+                    </div>
+
+                    <div className="photo-content">
+                      <h3 className="photo-title">{photo.title}</h3>
+                      <p className="photo-description">
+                        {truncateDescription(photo.description)}
+                      </p>
+
+                      <div className="photo-meta">
+                        <span className="photo-event">
+                          <FaCalendar /> {getEventName(photo.eventId)}
+                        </span>
+                        <span className="photo-date">
+                          {new Date(photo.uploadedAt || photo.timestamp).toLocaleDateString()}
+                        </span>
+                      </div>
+
+                      <div className="photo-footer">
+                        <span className="photo-author">
+                          <FaUser /> by {photo.uploadedBy || user.email}
+                        </span>
+                        <span className="photo-id">
+                          ID: {photo.id}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="photo-actions">
+                      <button
+                        onClick={() => window.open(photo.url || photo.imageUrl, '_blank')}
+                        className="btn-view"
+                        title="View Image"
+                      >
+                        <FaEye />
+                      </button>
+                      <button
+                        onClick={() => handleEdit(photo)}
+                        className="btn-edit"
+                        title="Edit Photo"
+                      >
+                        <FaEdit />
+                      </button>
+                      {photo.facebookPost && (
+                        <button
+                          onClick={() => window.open(photo.facebookPost, '_blank')}
+                          className="btn-facebook"
+                          title="View Facebook Post"
+                        >
+                          FB
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleDelete(photo.id)}
+                        className="btn-delete"
+                        title="Delete Photo"
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
                   </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="pagination-container">
+                <div className="pagination-info">
+                  Showing {indexOfFirstPhoto + 1}-{Math.min(indexOfLastPhoto, filteredPhotos.length)} of {filteredPhotos.length} photos
                 </div>
+                <div className="pagination-controls">
+                  <button
+                    onClick={() => paginate(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="pagination-btn"
+                  >
+                    <FaChevronLeft /> Previous
+                  </button>
 
-                <div className="photo-content">
-                  <h3 className="photo-title">{photo.title}</h3>
-                  <p className="photo-description">
-                    {truncateDescription(photo.description)}
-                  </p>
-
-                  <div className="photo-meta">
-                    <span className="photo-event">
-                      <FaCalendar /> {getEventName(photo.eventId)}
-                    </span>
-                    <span className="photo-date">
-                      {new Date(photo.uploadedAt || photo.timestamp).toLocaleDateString()}
-                    </span>
+                  <div className="pagination-numbers">
+                    {getPageNumbers().map((number) => (
+                      <button
+                        key={number}
+                        onClick={() => paginate(number)}
+                        className={`pagination-number ${
+                          currentPage === number ? "active" : ""
+                        }`}
+                      >
+                        {number}
+                      </button>
+                    ))}
                   </div>
 
-                  <div className="photo-footer">
-                    <span className="photo-author">
-                      <FaUser /> by {photo.uploadedBy || user.email}
-                    </span>
-                    <span className="photo-id">
-                      ID: {photo.id}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="photo-actions">
                   <button
-                    onClick={() => window.open(photo.url || photo.imageUrl, '_blank')}
-                    className="btn-view"
-                    title="View Image"
+                    onClick={() => paginate(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="pagination-btn"
                   >
-                    <FaEye />
-                  </button>
-                  <button
-                    onClick={() => handleEdit(photo)}
-                    className="btn-edit"
-                    title="Edit Photo"
-                  >
-                    <FaEdit />
-                  </button>
-                  {photo.facebookPost && (
-                    <button
-                      onClick={() => window.open(photo.facebookPost, '_blank')}
-                      className="btn-facebook"
-                      title="View Facebook Post"
-                    >
-                      FB
-                    </button>
-                  )}
-                  <button
-                    onClick={() => handleDelete(photo.id)}
-                    className="btn-delete"
-                    title="Delete Photo"
-                  >
-                    <FaTrash />
+                    Next <FaChevronRight />
                   </button>
                 </div>
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
 
         {/* Upload/Edit Modal */}

@@ -9,12 +9,16 @@ import {
   FaSync,
   FaCalendar,
   FaTag,
+  FaSearch,
+  FaChevronLeft,
+  FaChevronRight,
 } from "react-icons/fa";
 import Loading from "./Loading";
 import "./BlogManagement.css";
 
 const BlogManagement = ({ user, scripts, onUploadSuccess }) => {
   const [blogPosts, setBlogPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showPostModal, setShowPostModal] = useState(false);
@@ -22,6 +26,13 @@ const BlogManagement = ({ user, scripts, onUploadSuccess }) => {
   const [editingPost, setEditingPost] = useState(null);
   const [previewPost, setPreviewPost] = useState(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
+
+  // Search state
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Form state
   const [formData, setFormData] = useState({
@@ -52,6 +63,7 @@ const BlogManagement = ({ user, scripts, onUploadSuccess }) => {
             new Date(b.date || b.timestamp) - new Date(a.date || a.timestamp)
         );
         setBlogPosts(sortedPosts);
+        setFilteredPosts(sortedPosts);
       } else {
         throw new Error(result.message || "Failed to fetch blog posts");
       }
@@ -66,6 +78,33 @@ const BlogManagement = ({ user, scripts, onUploadSuccess }) => {
   useEffect(() => {
     fetchBlogPosts();
   }, []);
+
+  // Filter posts based on search term
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setFilteredPosts(blogPosts);
+    } else {
+      const filtered = blogPosts.filter(
+        (post) =>
+          post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          post.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (post.tags &&
+            post.tags.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (post.author &&
+            post.author.toLowerCase().includes(searchTerm.toLowerCase()))
+      );
+      setFilteredPosts(filtered);
+    }
+    setCurrentPage(1); // Reset to first page when search changes
+  }, [searchTerm, blogPosts]);
+
+  // Pagination logic
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -256,6 +295,38 @@ const BlogManagement = ({ user, scripts, onUploadSuccess }) => {
     return description.substring(0, maxLength) + "...";
   };
 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const clearSearch = () => {
+    setSearchTerm("");
+  };
+
+  // Generate page numbers for pagination
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxVisiblePages = 5;
+
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      const startPage = Math.max(
+        1,
+        currentPage - Math.floor(maxVisiblePages / 2)
+      );
+      const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+    }
+
+    return pageNumbers;
+  };
+
   if (loading) {
     return (
       <div className="blog-management">
@@ -283,6 +354,9 @@ const BlogManagement = ({ user, scripts, onUploadSuccess }) => {
               Total Posts: <strong>{blogPosts.length}</strong>
             </span>
             <span>
+              Showing: <strong>{filteredPosts.length}</strong>
+            </span>
+            <span>
               Latest Post:{" "}
               <strong>
                 {blogPosts.length > 0
@@ -306,6 +380,31 @@ const BlogManagement = ({ user, scripts, onUploadSuccess }) => {
           </div>
         </div>
 
+        {/* Search Bar */}
+        <div className="blog-search">
+          <div className="search-container">
+            <FaSearch className="search-icon" />
+            <input
+              type="text"
+              placeholder="Search posts by title, description, tags, or author..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="search-input"
+            />
+            {searchTerm && (
+              <button onClick={clearSearch} className="search-clear">
+                ×
+              </button>
+            )}
+          </div>
+          {searchTerm && (
+            <div className="search-results-info">
+              Found {filteredPosts.length} post
+              {filteredPosts.length !== 1 ? "s" : ""} matching "{searchTerm}"
+            </div>
+          )}
+        </div>
+
         {error && (
           <div className="error-message">
             <p>Error loading blog posts: {error}</p>
@@ -315,86 +414,146 @@ const BlogManagement = ({ user, scripts, onUploadSuccess }) => {
           </div>
         )}
 
-        {blogPosts.length === 0 ? (
+        {filteredPosts.length === 0 ? (
           <div className="no-posts">
             <FaNewspaper size={48} />
-            <h3>No Blog Posts Yet</h3>
-            <p>Start by creating your first blog post!</p>
-            <button onClick={handleNewPost} className="btn-primary">
-              <FaPlus /> Create First Post
-            </button>
+            <h3>
+              {searchTerm ? "No Matching Posts Found" : "No Blog Posts Yet"}
+            </h3>
+            <p>
+              {searchTerm
+                ? "Try adjusting your search terms or clear the search to see all posts."
+                : "Start by creating your first blog post!"}
+            </p>
+            {!searchTerm && (
+              <button onClick={handleNewPost} className="btn-primary">
+                <FaPlus /> Create First Post
+              </button>
+            )}
+            {searchTerm && (
+              <button onClick={clearSearch} className="btn-secondary">
+                Clear Search
+              </button>
+            )}
           </div>
         ) : (
-          <div className="blog-posts-grid">
-            {blogPosts.map((post) => (
-              <div key={post.id} className="blog-post-card">
-                {post.media && post.media.length > 0 && (
-                  <div className="post-media-preview">
-                    <img
-                      src={post.media[0].url}
-                      alt={post.media[0].caption || post.title}
-                      onClick={() => handlePreview(post)}
-                    />
-                    <div className="media-count">
-                      {post.media.length}{" "}
-                      {post.media.length === 1 ? "media" : "media"}
+          <>
+            <div className="blog-posts-grid-container">
+              <div className="blog-posts-grid">
+                {currentPosts.map((post) => (
+                  <div key={post.id} className="blog-post-card">
+                    {post.media && post.media.length > 0 && (
+                      <div className="post-media-preview">
+                        <img
+                          src={post.media[0].url}
+                          alt={post.media[0].caption || post.title}
+                          onClick={() => handlePreview(post)}
+                        />
+                        <div className="media-count">
+                          {post.media.length}{" "}
+                          {post.media.length === 1 ? "media" : "media"}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="post-content">
+                      <h3 className="post-title">{post.title}</h3>
+                      <p className="post-description">
+                        {truncateDescription(post.description)}
+                      </p>
+
+                      <div className="post-meta">
+                        <span className="post-date">
+                          <FaCalendar />{" "}
+                          {new Date(post.date).toLocaleDateString()}
+                        </span>
+                        {post.tags && (
+                          <span className="post-tags">
+                            <FaTag /> {post.tags}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="post-footer">
+                        <span className="post-author">
+                          by {post.author || user.email}
+                        </span>
+                        <span className="post-id">
+                          ID: {post.id.substring(0, 8)}...
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="post-actions">
+                      <button
+                        onClick={() => handlePreview(post)}
+                        className="btn-view"
+                        title="Preview Post"
+                      >
+                        <FaEye />
+                      </button>
+                      <button
+                        onClick={() => handleEdit(post)}
+                        className="btn-edit"
+                        title="Edit Post"
+                      >
+                        <FaEdit />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(post.id)}
+                        className="btn-delete"
+                        title="Delete Post"
+                      >
+                        <FaTrash />
+                      </button>
                     </div>
                   </div>
-                )}
+                ))}
+              </div>
+            </div>
 
-                <div className="post-content">
-                  <h3 className="post-title">{post.title}</h3>
-                  <p className="post-description">
-                    {truncateDescription(post.description)}
-                  </p>
-
-                  <div className="post-meta">
-                    <span className="post-date">
-                      <FaCalendar /> {new Date(post.date).toLocaleDateString()}
-                    </span>
-                    {post.tags && (
-                      <span className="post-tags">
-                        <FaTag /> {post.tags}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="post-footer">
-                    <span className="post-author">
-                      by {post.author || user.email}
-                    </span>
-                    <span className="post-id">
-                      ID: {post.id.substring(0, 8)}...
-                    </span>
-                  </div>
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="pagination-container">
+                <div className="pagination-info">
+                  Showing {indexOfFirstPost + 1}-
+                  {Math.min(indexOfLastPost, filteredPosts.length)} of{" "}
+                  {filteredPosts.length} posts
                 </div>
+                <div className="pagination-controls">
+                  <button
+                    onClick={() => paginate(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="pagination-btn"
+                  >
+                    <FaChevronLeft /> Previous
+                  </button>
 
-                <div className="post-actions">
+                  <div className="pagination-numbers">
+                    {getPageNumbers().map((number) => (
+                      <button
+                        key={number}
+                        onClick={() => paginate(number)}
+                        className={`pagination-number ${
+                          currentPage === number ? "active" : ""
+                        }`}
+                      >
+                        {number}
+                      </button>
+                    ))}
+                  </div>
+
                   <button
-                    onClick={() => handlePreview(post)}
-                    className="btn-view"
-                    title="Preview Post"
+                    onClick={() => paginate(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="pagination-btn"
                   >
-                    <FaEye />
-                  </button>
-                  <button
-                    onClick={() => handleEdit(post)}
-                    className="btn-edit"
-                    title="Edit Post"
-                  >
-                    <FaEdit />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(post.id)}
-                    className="btn-delete"
-                    title="Delete Post"
-                  >
-                    <FaTrash />
+                    Next <FaChevronRight />
                   </button>
                 </div>
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
 
         {/* Blog Post Modal */}
