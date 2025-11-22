@@ -116,11 +116,12 @@ const EventDetail = () => {
           -> There is no fee for submission. Shortlisted entries will be announced later.
 
         ## 🏆 Prizes & Recognition
-          -> Will be Announced SOON, Stay Tuned!
+          -> 50k BDT Cash Prize.
 
         ## 👥 Jury Panel
-          -> Our esteemed jury includes:
-          -> Will be Announced SOON, Stay Tuned!
+          -> Hasan Chandan
+          -> MR Hasan
+          -> Mahmud Hossain Opu
 
         ## 🎪 Event Schedule
           -> Will be Announced SOON, Stay Tuned!

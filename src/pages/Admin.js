@@ -39,7 +39,7 @@ const UniversalAdmin = () => {
   // URLs for different data types - MAKE SURE THESE ARE CORRECT
   const SCRIPTS = {
     membership:
-      "https://script.google.com/macros/s/AKfycbyxrpuvRt1kiIyJYVMbEX0QyWACd-zK-uz3aUkED86kIi39g5gHMOVaw8g2VfZICwJX/exec",
+      "https://script.google.com/macros/s/AKfycbyhePEFndFhGdTlDdClsRpWAAEVvEB9OJAe0lzx67tFiK4Ej9SUkMo0GoWAJ3MsUUB5/exec",
     photos:
       "https://script.google.com/macros/s/AKfycbw4Jg_fVbBYEkHznAn9P3RNtxSBWeiUDVZIF3AM8VhkKHT3GEifO-tEWECEh918PSMJ/exec",
     email:
@@ -372,6 +372,11 @@ photographyclub@dccsa.uiu.ac.bd`,
 
   const handleUpdateStatus = async (item, newStatus) => {
     try {
+      console.log("Updating status:", { item, newStatus });
+
+      const applicationId = item.Timestamp || item.timestamp;
+      console.log("Application ID:", applicationId);
+
       const response = await fetch(SCRIPTS[dataType], {
         method: "POST",
         headers: {
@@ -379,16 +384,20 @@ photographyclub@dccsa.uiu.ac.bd`,
         },
         body: new URLSearchParams({
           action: "updateStatus",
-          applicationId: item.Timestamp || item.timestamp,
+          applicationId: applicationId,
           status: newStatus,
           updatedBy: user.email,
         }),
       });
 
+      console.log("Update status response:", response);
+
       const result = await response.json();
+      console.log("Update status result:", result);
 
       if (result.status === "success") {
-        fetchData();
+        alert(`Application status updated to ${newStatus}`);
+        fetchData(); // Refresh the data
       } else {
         throw new Error(result.message || "Failed to update status");
       }
@@ -519,6 +528,59 @@ photographyclub@dccsa.uiu.ac.bd`,
           <div className="detail-group">
             <label>Department:</label>
             <span>{getProperty(selectedItem, "Department")}</span>
+          </div>
+          <div className="detail-group">
+            <label>Facebook Profile:</label>
+            <span>
+              {(() => {
+                // Use the same logic as in MembershipApplications.js
+                const facebookLink =
+                  selectedItem["Facebook Profile Link"] ||
+                  selectedItem["Facebook Link"] ||
+                  selectedItem["facebookLink"] ||
+                  selectedItem["Facebook"] ||
+                  selectedItem["facebook"] ||
+                  selectedItem["Facebook Profile"] ||
+                  selectedItem["facebookProfile"] ||
+                  selectedItem["FB Link"] ||
+                  selectedItem["fbLink"];
+
+                console.log("Modal Facebook link:", facebookLink); // Debug
+
+                if (
+                  !facebookLink ||
+                  facebookLink === "N/A" ||
+                  facebookLink === "" ||
+                  facebookLink === "Not provided"
+                ) {
+                  return "Not provided";
+                }
+
+                let formattedLink = facebookLink.trim();
+                formattedLink = formattedLink.replace(/['"]/g, "");
+
+                if (
+                  !formattedLink.startsWith("http://") &&
+                  !formattedLink.startsWith("https://")
+                ) {
+                  formattedLink = "https://" + formattedLink;
+                }
+
+                return (
+                  <a
+                    href={formattedLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      color: "var(--uiu-orange)",
+                      wordBreak: "break-all",
+                    }}
+                  >
+                    {formattedLink}
+                  </a>
+                );
+              })()}
+            </span>
           </div>
           <div className="detail-group">
             <label>Experience Level:</label>

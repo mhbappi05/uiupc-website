@@ -7,6 +7,7 @@ import {
   FaSearch,
   FaFilter,
   FaDownload,
+  FaFacebook,
 } from "react-icons/fa";
 
 const MembershipApplications = ({
@@ -40,13 +41,17 @@ const MembershipApplications = ({
     const email = safeToString(item.Email || item.email);
     const studentId = safeToString(item["Student ID"] || item.studentId);
     const department = safeToString(item.Department || item.department);
+    const facebookLink = safeToString(
+      item["Facebook Link"] || item.facebookLink
+    );
     const status = safeToString(item.Status || item.status || "pending");
 
     const matchesSearch =
       name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       studentId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      department.toLowerCase().includes(searchTerm.toLowerCase());
+      department.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      facebookLink.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesStatus =
       filterStatus === "all" ||
@@ -98,6 +103,70 @@ const MembershipApplications = ({
     );
   };
 
+  // In MembershipApplications.js - Replace the renderFacebookLink function
+  const renderFacebookLink = (item) => {
+    // Try multiple possible property names for Facebook link, including the exact header from your sheet
+    const facebookLink =
+      item["Facebook Profile Link"] || // This is the exact header from your sheet
+      item["Facebook Link"] ||
+      item["facebookLink"] ||
+      item["Facebook"] ||
+      item["facebook"] ||
+      item["Facebook Profile"] ||
+      item["facebookProfile"] ||
+      item["FB Link"] ||
+      item["fbLink"];
+
+    console.log("Facebook link data:", { facebookLink, item }); // Debug log
+
+    if (
+      !facebookLink ||
+      facebookLink === "N/A" ||
+      facebookLink === "" ||
+      facebookLink === "Not provided"
+    ) {
+      return "Not provided";
+    }
+
+    // Ensure the link has proper protocol and is a valid URL
+    let formattedLink = facebookLink.trim();
+
+    // Remove any extra quotes or spaces
+    formattedLink = formattedLink.replace(/['"]/g, "");
+
+    if (
+      !formattedLink.startsWith("http://") &&
+      !formattedLink.startsWith("https://")
+    ) {
+      formattedLink = "https://" + formattedLink;
+    }
+
+    // Validate it's actually a Facebook URL
+    if (
+      !formattedLink.includes("facebook.com") &&
+      !formattedLink.includes("fb.com")
+    ) {
+      // If it doesn't look like a Facebook URL, show it as text instead of link
+      return (
+        <span className="facebook-text" title={formattedLink}>
+          {formattedLink}
+        </span>
+      );
+    }
+
+    return (
+      <a
+        href={formattedLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="facebook-link"
+        title={formattedLink}
+      >
+        <FaFacebook /> View Profile
+      </a>
+    );
+  };
+
   const renderPagination = () => {
     if (totalPages <= 1) return null;
 
@@ -135,11 +204,15 @@ const MembershipApplications = ({
             <>
               <button
                 onClick={() => paginate(1)}
-                className={`pagination-btn ${1 === currentPage ? "active" : ""}`}
+                className={`pagination-btn ${
+                  1 === currentPage ? "active" : ""
+                }`}
               >
                 1
               </button>
-              {startPage > 2 && <span className="pagination-ellipsis">...</span>}
+              {startPage > 2 && (
+                <span className="pagination-ellipsis">...</span>
+              )}
             </>
           )}
 
@@ -147,7 +220,9 @@ const MembershipApplications = ({
             <button
               key={number}
               onClick={() => paginate(number)}
-              className={`pagination-btn ${number === currentPage ? "active" : ""}`}
+              className={`pagination-btn ${
+                number === currentPage ? "active" : ""
+              }`}
             >
               {number}
             </button>
@@ -190,7 +265,7 @@ const MembershipApplications = ({
             <FaSearch className="search-icon" />
             <input
               type="text"
-              placeholder="Search by name, email, student ID..."
+              placeholder="Search by name, email, student ID, Facebook..."
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
               className="search-input"
@@ -243,6 +318,7 @@ const MembershipApplications = ({
                   <th>Full Name</th>
                   <th>Student ID</th>
                   <th>Department</th>
+                  <th>Facebook Link</th>
                   <th>Experience Level</th>
                   <th>Payment Method</th>
                   <th>Status</th>
@@ -253,7 +329,9 @@ const MembershipApplications = ({
                 {currentItems.map((item, index) => (
                   <tr key={index} className="application-row">
                     <td className="timestamp">
-                      {new Date(item.Timestamp || item.timestamp).toLocaleDateString()}
+                      {new Date(
+                        item.Timestamp || item.timestamp
+                      ).toLocaleDateString()}
                     </td>
                     <td className="name">{getProperty(item, "Full Name")}</td>
                     <td className="student-id">
@@ -261,6 +339,9 @@ const MembershipApplications = ({
                     </td>
                     <td className="department">
                       {getProperty(item, "Department")}
+                    </td>
+                    <td className="facebook-link">
+                      {renderFacebookLink(item)}
                     </td>
                     <td className="experience">
                       {getProperty(item, "Experience Level")}
@@ -315,7 +396,8 @@ const MembershipApplications = ({
                   marginTop: "0.5rem",
                 }}
               >
-                Applications will appear here when students submit the join form.
+                Applications will appear here when students submit the join
+                form.
               </p>
             </div>
           ) : (
