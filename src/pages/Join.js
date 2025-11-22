@@ -21,6 +21,7 @@ import {
   FaCreditCard,
   FaReceipt,
   FaFileSignature,
+  FaFacebook,
 } from "react-icons/fa";
 import "./Join.css";
 
@@ -48,12 +49,12 @@ const Join = () => {
 
   // Google Apps Script Web App URL - You'll need to create this
   const GOOGLE_SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycbx96AB28WcVkMl3wjk5z91Ki6lo4eMcpVl9Ju0VFHypcXwcVukpjv1knbMqhjMDUq6z/exec";
+    "https://script.google.com/macros/s/AKfycbz8kL7baJCadXaw35npWd6Aa_dYjZlP44xjttgh7WCcUQI-hioy9EI4Utf22yqsu5jv/exec";
 
   const checkJoinPageStatus = async () => {
     try {
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbx96AB28WcVkMl3wjk5z91Ki6lo4eMcpVl9Ju0VFHypcXwcVukpjv1knbMqhjMDUq6z/exec?action=getJoinPageStatus"
+        "https://script.google.com/macros/s/AKfycbz8kL7baJCadXaw35npWd6Aa_dYjZlP44xjttgh7WCcUQI-hioy9EI4Utf22yqsu5jv/exec?action=getJoinPageStatus"
       );
 
       if (response.ok) {
@@ -262,6 +263,7 @@ const Join = () => {
           paymentMethod: "",
           receiverName: "",
           transactionId: "",
+          facebookLink: "",
         });
         setPhoto(null);
         setAgreementAccepted(false);
@@ -456,9 +458,27 @@ const Join = () => {
                           value={formData.phone}
                           onChange={handleInputChange}
                           placeholder="Enter your phone number"
+                          required
                           disabled={isSubmitting}
                         />
                       </div>
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="facebookLink">
+                        <FaFacebook className="input-icon" />
+                        Facebook Profile Link
+                      </label>
+                      <input
+                        type="url"
+                        id="facebookLink"
+                        name="facebookLink"
+                        value={formData.facebookLink}
+                        onChange={handleInputChange}
+                        placeholder="https://facebook.com/yourprofile"
+                        required
+                        disabled={isSubmitting}
+                      />
                     </div>
 
                     <div className="form-group">
