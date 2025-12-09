@@ -1,5 +1,5 @@
 // components/ResultsPage.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   FaTrophy,
@@ -8,6 +8,11 @@ import {
   FaCamera,
   FaImages,
   FaSpinner,
+  FaSearch,
+  FaAngleLeft,
+  FaAngleRight,
+  FaAngleDoubleLeft,
+  FaAngleDoubleRight,
 } from "react-icons/fa";
 import Loading from "./Loading";
 import "./ResultsPage.css";
@@ -21,6 +26,11 @@ const ResultsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  
+  // Pagination & Search State
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
 
   // Google Apps Script Web App URL - FIXED URL (remove any trailing slashes)
   const GOOGLE_SCRIPT_URL =
@@ -43,13 +53,11 @@ const ResultsPage = () => {
 
   // Fetch results from Google Sheets
   useEffect(() => {
-    // In your fetchResults function in ResultsPage.js
     const fetchResults = async () => {
       try {
         setLoading(true);
 
-        // Build the URL with parameters - IMPORTANT: use the correct format
-        // Method 1: Direct URL construction (most reliable)
+        // Build the URL with parameters
         const baseUrl = GOOGLE_SCRIPT_URL;
         const url = `${baseUrl}?action=getResults&eventId=${
           eventId || "shutter-stories"
@@ -57,27 +65,22 @@ const ResultsPage = () => {
 
         console.log("Fetching from URL:", url);
 
-        // For Google Apps Script, use mode: 'cors' and handle errors differently
         const response = await fetch(url, {
           method: "GET",
-          // Don't set Content-Type for GET requests
           headers: {
             Accept: "application/json",
           },
           mode: "cors",
-          // Add credentials if needed
           credentials: "omit",
         });
 
         console.log("Response status:", response.status, response.statusText);
 
-        // Try to get response text first
         const responseText = await response.text();
         console.log("Response text:", responseText);
 
         if (!response.ok) {
           console.error("HTTP error:", response.status);
-          // Even if there's an HTTP error, try to parse the response
           if (responseText) {
             try {
               const errorData = JSON.parse(responseText);
@@ -96,7 +99,6 @@ const ResultsPage = () => {
           }
         }
 
-        // Parse the JSON response
         let data;
         try {
           data = JSON.parse(responseText);
@@ -110,13 +112,11 @@ const ResultsPage = () => {
           throw new Error("Invalid JSON response from server");
         }
 
-        // Check for API-level errors
         if (data.error) {
           console.error("API error:", data.error);
           throw new Error(data.error);
         }
 
-        // Success - set the data
         console.log("Data received successfully:", data);
         setResults(data);
         setError(null);
@@ -147,6 +147,86 @@ const ResultsPage = () => {
                 selected: true,
                 category: "single",
               },
+              {
+                id: 3,
+                name: "Alex Johnson",
+                institute: "DU",
+                photos: 4,
+                selected: true,
+                category: "single",
+              },
+              {
+                id: 4,
+                name: "Sarah Williams",
+                institute: "UIU",
+                photos: 2,
+                selected: true,
+                category: "single",
+              },
+              {
+                id: 5,
+                name: "Michael Brown",
+                institute: "NSU",
+                photos: 1,
+                selected: true,
+                category: "single",
+              },
+              {
+                id: 6,
+                name: "Emily Davis",
+                institute: "BRAC",
+                photos: 3,
+                selected: true,
+                category: "single",
+              },
+              {
+                id: 7,
+                name: "David Wilson",
+                institute: "IUB",
+                photos: 2,
+                selected: true,
+                category: "single",
+              },
+              {
+                id: 8,
+                name: "Lisa Anderson",
+                institute: "UIU",
+                photos: 4,
+                selected: true,
+                category: "single",
+              },
+              {
+                id: 9,
+                name: "Robert Taylor",
+                institute: "BUET",
+                photos: 1,
+                selected: true,
+                category: "single",
+              },
+              {
+                id: 10,
+                name: "Maria Garcia",
+                institute: "DU",
+                photos: 3,
+                selected: true,
+                category: "single",
+              },
+              {
+                id: 11,
+                name: "James Miller",
+                institute: "NSU",
+                photos: 2,
+                selected: true,
+                category: "single",
+              },
+              {
+                id: 12,
+                name: "Patricia Lee",
+                institute: "BRAC",
+                photos: 5,
+                selected: true,
+                category: "single",
+              },
             ],
             stories: [
               {
@@ -173,6 +253,22 @@ const ResultsPage = () => {
                 selected: true,
                 category: "story",
               },
+              {
+                id: 4,
+                name: "William Chen",
+                institute: "BUET",
+                photos: 6,
+                selected: true,
+                category: "story",
+              },
+              {
+                id: 5,
+                name: "Olivia Martinez",
+                institute: "UIU",
+                photos: 4,
+                selected: true,
+                category: "story",
+              },
             ],
           });
         }
@@ -181,94 +277,66 @@ const ResultsPage = () => {
       }
     };
 
-    // Helper function for fallback data
-    const useFallbackData = () => {
-      if (!results) {
-        console.log("Using fallback mock data");
-        setResults({
-          success: true,
-          title: "Shutter Stories Chapter IV - Selected Participants",
-          singlePhotos: [
-            {
-              id: 1,
-              name: "John Doe",
-              institute: "UIU",
-              photos: 3,
-              selected: true,
-              category: "single",
-            },
-            {
-              id: 2,
-              name: "Jane Smith",
-              institute: "BUET",
-              photos: 2,
-              selected: true,
-              category: "single",
-            },
-            {
-              id: 3,
-              name: "Alex Johnson",
-              institute: "DU",
-              photos: 4,
-              selected: true,
-              category: "single",
-            },
-            {
-              id: 4,
-              name: "Sarah Williams",
-              institute: "UIU",
-              photos: 2,
-              selected: true,
-              category: "single",
-            },
-            {
-              id: 5,
-              name: "Michael Brown",
-              institute: "NSU",
-              photos: 1,
-              selected: true,
-              category: "single",
-            },
-          ],
-          stories: [
-            {
-              id: 1,
-              name: "Emma Wilson",
-              institute: "UIU",
-              photos: 5,
-              selected: true,
-              category: "story",
-            },
-            {
-              id: 2,
-              name: "David Lee",
-              institute: "BUP",
-              photos: 4,
-              selected: true,
-              category: "story",
-            },
-            {
-              id: 3,
-              name: "Sophia Garcia",
-              institute: "IUB",
-              photos: 3,
-              selected: true,
-              category: "story",
-            },
-          ],
-        });
-      }
-    };
-
     fetchResults();
   }, [eventId]);
+
+  // Filter and pagination logic
+  const displayResults = useMemo(() => {
+    if (!results) return [];
+    
+    const categoryResults = selectedCategory === "single" 
+      ? results.singlePhotos || [] 
+      : results.stories || [];
+    
+    // Filter by search query
+    const filtered = categoryResults.filter(item => {
+      if (!searchQuery.trim()) return true;
+      
+      const query = searchQuery.toLowerCase();
+      return (
+        item.name.toLowerCase().includes(query) ||
+        item.institute.toLowerCase().includes(query) ||
+        item.photos.toString().includes(query) ||
+        (item.selected ? "selected" : "not selected").includes(query)
+      );
+    });
+    
+    return filtered;
+  }, [results, selectedCategory, searchQuery]);
+
+  // Calculate pagination
+  const totalItems = displayResults.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  
+  // Get current page items
+  const currentItems = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return displayResults.slice(startIndex, endIndex);
+  }, [displayResults, currentPage, itemsPerPage]);
+
+  // Handle page change
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber < 1 || pageNumber > totalPages) return;
+    setCurrentPage(pageNumber);
+    // Scroll to top of table
+    const tableContainer = document.querySelector('.results-table-container');
+    if (tableContainer) {
+      tableContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  // Handle search
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(1); // Reset to first page when searching
+  };
 
   const handlePaymentSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
 
     try {
-      // Calculate total amount
       const unitPrice = paymentData.category === "single" ? 1020 : 3060;
       const totalAmount = unitPrice * paymentData.photoCount;
 
@@ -289,16 +357,9 @@ const ResultsPage = () => {
 
       console.log("Submitting payment:", paymentPayload);
 
-      // Method 1: Using GET (for testing)
-      // const url = `${GOOGLE_SCRIPT_URL}?action=submitPayment&data=${encodeURIComponent(JSON.stringify(paymentPayload))}`;
-
-      // Method 2: Using POST (recommended)
       const url = GOOGLE_SCRIPT_URL;
       const response = await fetch(url, {
         method: "POST",
-        // headers: {
-        //   'Content-Type': 'application/json',
-        // },
         body: JSON.stringify({
           action: "submitPayment",
           data: paymentPayload,
@@ -313,7 +374,6 @@ const ResultsPage = () => {
           `✅ Payment submitted successfully!\nPayment ID: ${result.paymentId}\nWe will verify your transaction.`
         );
 
-        // Reset form
         setPaymentData({
           name: "",
           email: "",
@@ -337,55 +397,6 @@ const ResultsPage = () => {
       alert(
         `❌ Error: ${err.message}\n\nPlease save your details and contact support.`
       );
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  // Alternative method for payment submission (if you need to read response)
-  const handlePaymentSubmitAlternative = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-
-    try {
-      // Calculate total amount
-      const unitPrice = paymentData.category === "single" ? 1020 : 3060;
-      const totalAmount = unitPrice * paymentData.photoCount;
-
-      const paymentPayload = {
-        ...paymentData,
-        totalAmount,
-      };
-
-      // For demo purposes, show success without actually calling API
-      console.log("Payment data:", paymentPayload);
-
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      alert(
-        "Payment submitted successfully! We will verify your transaction within 24 hours.\n\nDemo Mode: In production, this would save to Google Sheets."
-      );
-
-      // Reset form
-      setPaymentData({
-        name: "",
-        email: "",
-        phone: "",
-        institute: "",
-        category: "single",
-        photoCount: 1,
-        tshirtSize: "M",
-        address: "",
-        paymentMethod: "bkash01",
-        transactionId: "",
-        eventId: eventId || "shutter-stories",
-      });
-
-      setShowPaymentForm(false);
-    } catch (err) {
-      console.error("Payment submission error:", err);
-      alert("Error: " + err.message);
     } finally {
       setSubmitting(false);
     }
@@ -426,12 +437,6 @@ const ResultsPage = () => {
     );
   }
 
-  // Filter results based on selected category
-  const displayResults =
-    selectedCategory === "single"
-      ? results?.singlePhotos || []
-      : results?.stories || [];
-
   return (
     <div className="results-page">
       <div className="container">
@@ -455,7 +460,11 @@ const ResultsPage = () => {
             className={`category-tab ${
               selectedCategory === "single" ? "active" : ""
             }`}
-            onClick={() => setSelectedCategory("single")}
+            onClick={() => {
+              setSelectedCategory("single");
+              setCurrentPage(1);
+              setSearchQuery("");
+            }}
           >
             <FaCamera /> Single Photos
           </button>
@@ -463,10 +472,45 @@ const ResultsPage = () => {
             className={`category-tab ${
               selectedCategory === "stories" ? "active" : ""
             }`}
-            onClick={() => setSelectedCategory("stories")}
+            onClick={() => {
+              setSelectedCategory("stories");
+              setCurrentPage(1);
+              setSearchQuery("");
+            }}
           >
             <FaImages /> Photo Stories
           </button>
+        </div>
+
+        {/* Search Bar */}
+        <div className="search-container">
+          <div className="search-input-wrapper">
+            <FaSearch className="search-icon" />
+            <input
+              type="text"
+              placeholder={`Search ${
+                selectedCategory === "single" ? "Single Photos" : "Photo Stories"
+              } by name, institute, or status...`}
+              value={searchQuery}
+              onChange={handleSearch}
+              className="search-input"
+            />
+            {searchQuery && (
+              <button 
+                className="clear-search-btn"
+                onClick={() => setSearchQuery("")}
+                aria-label="Clear search"
+              >
+                &times;
+              </button>
+            )}
+          </div>
+          <div className="search-info">
+            <span className="results-count">
+              Showing {currentItems.length} of {totalItems} results
+              {searchQuery && ` for "${searchQuery}"`}
+            </span>
+          </div>
         </div>
 
         <div className="results-table-container">
@@ -481,44 +525,113 @@ const ResultsPage = () => {
               </tr>
             </thead>
             <tbody>
-              {displayResults.length > 0 ? (
-                displayResults.map((result, index) => (
-                  <tr
-                    key={result.id}
-                    className={result.selected ? "selected-row" : ""}
-                  >
-                    <td className="index-cell">{index + 1}</td>
-                    <td>{result.name}</td>
-                    <td>{result.institute}</td>
-                    <td>{result.photos}</td>
-                    <td className="status-cell">
-                      <span
-                        className={`status-badge ${
-                          result.selected ? "selected" : "not-selected"
-                        }`}
-                      >
-                        {result.selected ? "Selected" : "Not Selected"}
-                      </span>
-                    </td>
-                  </tr>
-                ))
+              {currentItems.length > 0 ? (
+                currentItems.map((result, index) => {
+                  const globalIndex = (currentPage - 1) * itemsPerPage + index + 1;
+                  return (
+                    <tr
+                      key={result.id}
+                      className={result.selected ? "selected-row" : ""}
+                    >
+                      <td className="index-cell">{globalIndex}</td>
+                      <td>{result.name}</td>
+                      <td>{result.institute}</td>
+                      <td>{result.photos}</td>
+                      <td className="status-cell">
+                        <span
+                          className={`status-badge ${
+                            result.selected ? "selected" : "not-selected"
+                          }`}
+                        >
+                          {result.selected ? "Selected" : "Not Selected"}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })
               ) : (
                 <tr>
                   <td
                     colSpan="5"
                     style={{ textAlign: "center", padding: "2rem" }}
                   >
-                    No results found for this category.
+                    {searchQuery
+                      ? `No results found for "${searchQuery}"`
+                      : "No results found for this category."}
                   </td>
                 </tr>
               )}
             </tbody>
           </table>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="pagination-controls">
+              <button
+                className="pagination-btn first-page"
+                onClick={() => handlePageChange(1)}
+                disabled={currentPage === 1}
+                aria-label="First page"
+              >
+                <FaAngleDoubleLeft />
+              </button>
+              <button
+                className="pagination-btn prev-page"
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                aria-label="Previous page"
+              >
+                <FaAngleLeft /> Prev
+              </button>
+              
+              <div className="page-numbers">
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter(page => {
+                    // Show first, last, current, and pages around current
+                    if (page === 1 || page === totalPages) return true;
+                    if (Math.abs(page - currentPage) <= 2) return true;
+                    return false;
+                  })
+                  .map((page, index, array) => {
+                    // Add ellipsis for gaps
+                    const showEllipsis = index > 0 && page - array[index - 1] > 1;
+                    return (
+                      <React.Fragment key={page}>
+                        {showEllipsis && <span className="page-ellipsis">...</span>}
+                        <button
+                          className={`page-number ${currentPage === page ? "active" : ""}`}
+                          onClick={() => handlePageChange(page)}
+                        >
+                          {page}
+                        </button>
+                      </React.Fragment>
+                    );
+                  })}
+              </div>
+              
+              <button
+                className="pagination-btn next-page"
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                aria-label="Next page"
+              >
+                Next <FaAngleRight />
+              </button>
+              <button
+                className="pagination-btn last-page"
+                onClick={() => handlePageChange(totalPages)}
+                disabled={currentPage === totalPages}
+                aria-label="Last page"
+              >
+                <FaAngleDoubleRight />
+              </button>
+            </div>
+          )}
         </div>
 
-        {/* Rest of your component remains the same */}
-        {/* Payment Section */}
+        {/* Payment Section - Remains the same */}
         <div className="payment-section">
+          {/* ... (payment section code remains exactly as you have it) ... */}
           <div className="payment-header">
             <h2>Registration for Exhibition</h2>
             <p className="payment-subtitle">
