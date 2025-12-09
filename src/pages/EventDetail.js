@@ -171,7 +171,7 @@ const EventDetail = () => {
       id: "Member-Recruitemet",
       title: "Member Recruitment 2025",
       subtitle: "Join the UIU Photography Club",
-      status: "ongoing",
+      status: "completed",
       chapter: "Fall'25",
       date: "Nov 15-16 , 2025",
       time: "9:00 AM - 4:00 PM",
