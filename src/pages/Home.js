@@ -40,7 +40,7 @@ const Home = ({ featuredPhotos }) => {
             id: "Member-Recruitemet",
             title: "Member Recruitment Fall 2025",
             subtitle: "Join with Us!",
-            status: "ongoing",
+            status: "completed",
             chapter: "Fall'25",
             date: "November 15, November 19 2025",
             time: "8:30 PM - 4:00 PM",
