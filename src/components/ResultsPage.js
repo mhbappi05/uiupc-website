@@ -654,7 +654,10 @@ const ResultsPage = () => {
                   <FaCheckCircle /> Participation Certificate
                 </li>
                 <li>
-                  <FaCheckCircle /> Event T-Shirt + Goodies
+                  <FaCheckCircle /> Photo Frame + Event T-Shirt + Goodies
+                </li>
+                <li>
+                  <FaCheckCircle /> Prize Money for Winners
                 </li>
               </ul>
             </div>
@@ -667,10 +670,13 @@ const ResultsPage = () => {
                   <FaCheckCircle /> Full Story Display
                 </li>
                 <li>
-                  <FaCheckCircle /> Premium Certificate
+                  <FaCheckCircle /> Participation Certificate
                 </li>
                 <li>
-                  <FaCheckCircle /> Event T-Shirt + Goodies
+                  <FaCheckCircle /> Photo Frame + Event T-Shirt + Goodies
+                </li>
+                <li>
+                  <FaCheckCircle /> Prize Money for Winners
                 </li>
               </ul>
             </div>
@@ -816,10 +822,10 @@ const ResultsPage = () => {
                     disabled={submitting}
                   >
                     <option value="bkash01">
-                      Bkash: 01885661159 (Personal)
+                      Bkash01: 01885661159 (Personal)
                     </option>
                     <option value="bkash02">
-                      Bkash: 01679861740 (Personal)
+                      Bkash02: 01679861740 (Personal)
                     </option>
                     <option value="nagad">Nagad: 01679861740 (Personal)</option>
                     <option value="rocket">Rocket: 01679861740 (Personal)</option>
