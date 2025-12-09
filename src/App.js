@@ -1,31 +1,38 @@
 // App.js - Main Application Component
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
-import { auth, db } from './firebase';
-import { onAuthStateChanged } from 'firebase/auth';
-import { collection, getDocs } from 'firebase/firestore';
+import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
+import { auth, db } from "./firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { collection, getDocs } from "firebase/firestore";
 
 // Components
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import Home from './pages/Home';
-import Gallery from './pages/Gallery';
-import Members from './pages/Members';
-import Events from './pages/Events';
-import Blog from './pages/Blog';
-import Join from './pages/Join';
-import Contact from './pages/Contact';
-import Admin from './pages/Admin';
-import Loading from './components/Loading';
-import EventDetail from './pages/EventDetail';
-import PhotoSubmissionForm from './components/PhotoSubmissionForm';
-import Login from './pages/Login';
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import Gallery from "./pages/Gallery";
+import Members from "./pages/Members";
+import Events from "./pages/Events";
+import Blog from "./pages/Blog";
+import Join from "./pages/Join";
+import Contact from "./pages/Contact";
+import Admin from "./pages/Admin";
+import Loading from "./components/Loading";
+import EventDetail from "./pages/EventDetail";
+import PhotoSubmissionForm from "./components/PhotoSubmissionForm";
+import Login from "./pages/Login";
+import ResultsPage from "./components/ResultsPage";
 
 // Context
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
 // Styles
-import './styles/App.css';
+import "./styles/App.css";
 
 // Scroll to top component
 function ScrollToTop() {
@@ -61,10 +68,7 @@ function AppContent() {
     // Fetch initial data
     const fetchData = async () => {
       try {
-        await Promise.all([
-          fetchFeaturedPhotos(),
-          fetchUpcomingEvents()
-        ]);
+        await Promise.all([fetchFeaturedPhotos(), fetchUpcomingEvents()]);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -77,10 +81,10 @@ function AppContent() {
 
   const fetchFeaturedPhotos = async () => {
     try {
-      const querySnapshot = await getDocs(collection(db, 'featuredPhotos'));
-      const photos = querySnapshot.docs.map(doc => ({
+      const querySnapshot = await getDocs(collection(db, "featuredPhotos"));
+      const photos = querySnapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       }));
       setFeaturedPhotos(photos);
     } catch (error) {
@@ -90,15 +94,15 @@ function AppContent() {
 
   const fetchUpcomingEvents = async () => {
     try {
-      const querySnapshot = await getDocs(collection(db, 'events'));
-      const eventsData = querySnapshot.docs.map(doc => ({
+      const querySnapshot = await getDocs(collection(db, "events"));
+      const eventsData = querySnapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       }));
       // Filter upcoming events
-      const upcoming = eventsData.filter(event => 
-        new Date(event.date) >= new Date()
-      ).sort((a, b) => new Date(a.date) - new Date(b.date));
+      const upcoming = eventsData
+        .filter((event) => new Date(event.date) >= new Date())
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
       setEvents(upcoming);
     } catch (error) {
       console.error("Error fetching events:", error);
@@ -117,12 +121,10 @@ function AppContent() {
         <Navbar />
         <main>
           <Routes>
-            <Route path="/" element={
-              <Home 
-                featuredPhotos={featuredPhotos} 
-                events={events} 
-              />
-            } />
+            <Route
+              path="/"
+              element={<Home featuredPhotos={featuredPhotos} events={events} />}
+            />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/members" element={<Members />} />
             <Route path="/events" element={<Events />} />
@@ -130,23 +132,27 @@ function AppContent() {
             <Route path="/join" element={<Join />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/events/:eventId" element={<EventDetail />} />
-            <Route 
-              path="/admin" 
+            <Route
+              path="/admin"
               element={
                 <ProtectedRoute>
                   <Admin />
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/login" 
+            <Route
+              path="/login"
               element={
                 <PublicRoute>
                   <Login />
                 </PublicRoute>
-              } 
+              }
             />
-            <Route path="/register/:eventId" element={<PhotoSubmissionForm />} />
+            <Route
+              path="/register/:eventId"
+              element={<PhotoSubmissionForm />}
+            />
+            <Route path="/results" element={<ResultsPage />} />
           </Routes>
         </main>
         <Footer />

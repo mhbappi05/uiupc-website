@@ -10,6 +10,7 @@ import {
   FaPlay,
   FaPause,
   FaEye,
+  FaTrophy,
 } from "react-icons/fa";
 import "./Events.css";
 
@@ -67,20 +68,21 @@ const Events = () => {
     navigate(`/events/${eventId}`);
   };
 
-  const signatureEvents = useMemo(() => ({
-    "shutter-stories": {
-      id: "shutter-stories",
-      title: "Shutter Stories",
-      subtitle: "National Photography Exhibition",
-      status: "ongoing",
-      chapter: "Chapter IV",
-      date: " Photo Submission Started from November 15, 2025",
-      // time: "9:00 AM - 8:00 PM",
-      // location: "UIU Campus & National Museum",
-      location: "Will be Announced SOON, Stay Tuned!",
-      description:
-        "A prestigious national-level photography exhibition that brings together photography enthusiasts from across the country. Featuring both single photographs and compelling photo stories that narrate powerful visual tales.",
-      fullDescription: `
+  const signatureEvents = useMemo(
+    () => ({
+      "shutter-stories": {
+        id: "shutter-stories",
+        title: "Shutter Stories",
+        subtitle: "National Photography Exhibition",
+        status: "ongoing",
+        chapter: "Chapter IV",
+        date: " Photo Submission Started from November 15, 2025",
+        // time: "9:00 AM - 8:00 PM",
+        // location: "UIU Campus & National Museum",
+        location: "Will be Announced SOON, Stay Tuned!",
+        description:
+          "A prestigious national-level photography exhibition that brings together photography enthusiasts from across the country. Featuring both single photographs and compelling photo stories that narrate powerful visual tales.",
+        fullDescription: `
         Shutter Stories Chapter IV is our flagship national photography exhibition that celebrates the art of visual storytelling. This year, we're taking it to new heights with expanded categories, prestigious jury members, and exciting prizes.
 
         ## Event Highlights:
@@ -103,121 +105,124 @@ const Events = () => {
 
         Don't miss this opportunity to showcase your talent on a national platform!
       `,
-      // registrationLink: "https://forms.gle/your-registration-link",
-      entryFee: "Initially Free entry",
-      submissionDeadline: "December 20, 2025",
-      highlights: [
-        "National-level participation",
-        "Photo story competitions",
-        "Expert jury panel",
-        "Cash prizes & awards",
-        "Exhibition at National Museum",
-        "Professional workshops",
-      ],
-      stats: {
-        participants: "500+",
-        photos: "2000+",
-        chapters: "3",
-        awards: "50+",
+        // registrationLink: "https://forms.gle/your-registration-link",
+        entryFee: "Initially Free entry",
+        submissionDeadline: "December 20, 2025",
+        highlights: [
+          "National-level participation",
+          "Photo story competitions",
+          "Expert jury panel",
+          "Cash prizes & awards",
+          "Exhibition at National Museum",
+          "Professional workshops",
+        ],
+        stats: {
+          participants: "500+",
+          photos: "2000+",
+          chapters: "3",
+          awards: "50+",
+        },
+        image:
+          "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799836/Blog5_lbkrue.png",
+        gallery: [
+          "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114875/ss2_lmeeau.jpg",
+          "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114876/ss3_cn8xru.jpg",
+          "/api/placeholder/400/300",
+        ],
       },
-      image: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799836/Blog5_lbkrue.png",
-      gallery: [
-        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114875/ss2_lmeeau.jpg",
-        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114876/ss3_cn8xru.jpg",
-        "/api/placeholder/400/300",
-      ],
-    },
-    muthography: {
-      id: "muthography",
-      title: "মুঠোgraphy",
-      subtitle: "Intra-University Mobile Photography",
-      status: "completed",
-      chapter: "Chapter 3 Completed",
-      date: "March 20-22, 2022",
-      location: "UIU Permanent Campus",
-      description:
-        "An exclusive intra-university mobile photography exhibition celebrating the art of smartphone photography. Three successful chapters completed with overwhelming participation from UIU students.",
-      highlights: [
-        "Mobile photography only",
-        "UIU students exclusive",
-        "Three successful chapters",
-        "Creative theme-based competitions",
-      ],
-      stats: {
-        participants: "300+",
-        photos: "800+",
-        chapters: "3",
-        awards: "30+",
+      muthography: {
+        id: "muthography",
+        title: "মুঠোgraphy",
+        subtitle: "Intra-University Mobile Photography",
+        status: "completed",
+        chapter: "Chapter 3 Completed",
+        date: "March 20-22, 2022",
+        location: "UIU Permanent Campus",
+        description:
+          "An exclusive intra-university mobile photography exhibition celebrating the art of smartphone photography. Three successful chapters completed with overwhelming participation from UIU students.",
+        highlights: [
+          "Mobile photography only",
+          "UIU students exclusive",
+          "Three successful chapters",
+          "Creative theme-based competitions",
+        ],
+        stats: {
+          participants: "300+",
+          photos: "800+",
+          chapters: "3",
+          awards: "30+",
+        },
+        image:
+          "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762113860/muthography2_rvnrai.jpg",
+        gallery: [
+          "/api/placeholder/400/300",
+          "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762113860/muthography2_rvnrai.jpg",
+          "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114587/muthography3_tri0zz.jpg",
+        ],
       },
-      image:
-        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762113860/muthography2_rvnrai.jpg",
-      gallery: [
-        "/api/placeholder/400/300",
-        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762113860/muthography2_rvnrai.jpg",
-        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114587/muthography3_tri0zz.jpg",
-      ],
-    },
-    "photo-carnival": {
-      id: "photo-carnival",
-      title: "Photo Carnival",
-      subtitle: "Intra-University Photography Festival",
-      status: "completed",
-      chapter: "3 Phase Completed",
-      date: "August 26, 2023",
-      location: "UIU Permanent Campus",
-      description:
-        "A vibrant intra-university photography festival welcoming both mobile and camera photography. A celebration of visual storytelling through diverse photographic mediums.",
-      highlights: [
-        "Mobile & Camera photography",
-        "Multiple categories",
-        "Workshops & seminars",
-        "Live photography contests",
-      ],
-      stats: {
-        participants: "400+",
-        photos: "1200+",
-        chapters: "Annual",
-        awards: "40+",
+      "photo-carnival": {
+        id: "photo-carnival",
+        title: "Photo Carnival",
+        subtitle: "Intra-University Photography Festival",
+        status: "completed",
+        chapter: "3 Phase Completed",
+        date: "August 26, 2023",
+        location: "UIU Permanent Campus",
+        description:
+          "A vibrant intra-university photography festival welcoming both mobile and camera photography. A celebration of visual storytelling through diverse photographic mediums.",
+        highlights: [
+          "Mobile & Camera photography",
+          "Multiple categories",
+          "Workshops & seminars",
+          "Live photography contests",
+        ],
+        stats: {
+          participants: "400+",
+          photos: "1200+",
+          chapters: "Annual",
+          awards: "40+",
+        },
+        image:
+          "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114645/Carnival23_wqmjw6.jpg",
+        gallery: [
+          "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114645/Carnival01_frfe4k.jpg",
+          "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114645/Carnival22_firfhw.jpg",
+          "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114645/Carnival23_wqmjw6.jpg",
+        ],
       },
-      image:
-        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114645/Carnival23_wqmjw6.jpg",
-      gallery: [
-        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114645/Carnival01_frfe4k.jpg",
-        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114645/Carnival22_firfhw.jpg",
-        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114645/Carnival23_wqmjw6.jpg",
-      ],
-    },
-    "friday-exposures": {
-      id: "friday-exposures",
-      title: "Friday Exposures",
-      subtitle: "Year-Round Photography Exhibition",
-      status: "ongoing",
-      chapter: "Weekly Selections",
-      date: "Every Friday",
-      location: "UIU Photography Club Gallery",
-      description:
-        "A continuous exhibition showcasing the 52 best photographs selected throughout the year. Each week features new selections from our talented club members.",
-      highlights: [
-        "52 selected photos annually",
-        "Weekly new selections",
-        "Member exclusive",
-        "Year-round exhibition",
-      ],
-      stats: {
-        participants: "Club Members",
-        photos: "52 selected",
-        frequency: "Weekly",
-        duration: "Year-round",
+      "friday-exposures": {
+        id: "friday-exposures",
+        title: "Friday Exposures",
+        subtitle: "Year-Round Photography Exhibition",
+        status: "ongoing",
+        chapter: "Weekly Selections",
+        date: "Every Friday",
+        location: "UIU Photography Club Gallery",
+        description:
+          "A continuous exhibition showcasing the 52 best photographs selected throughout the year. Each week features new selections from our talented club members.",
+        highlights: [
+          "52 selected photos annually",
+          "Weekly new selections",
+          "Member exclusive",
+          "Year-round exhibition",
+        ],
+        stats: {
+          participants: "Club Members",
+          photos: "52 selected",
+          frequency: "Weekly",
+          duration: "Year-round",
+        },
+        image:
+          "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114757/FE01_sav4cs.jpg",
+        gallery: [
+          "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114757/FE01_sav4cs.jpg",
+          "/api/placeholder/400/300",
+          "/api/placeholder/400/300",
+        ],
       },
-      image:
-        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114757/FE01_sav4cs.jpg",
-      gallery: [
-        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762114757/FE01_sav4cs.jpg",
-        "/api/placeholder/400/300",
-        "/api/placeholder/400/300",
-      ],
-    },
-   }), []);
+    }),
+    []
+  );
 
   const handleAutoPlay = useCallback(() => {
     if (isPlaying) {
@@ -234,7 +239,7 @@ const Events = () => {
       interval = setInterval(handleAutoPlay, 5000);
     }
     return () => clearInterval(interval);
-  }, [handleAutoPlay, isPlaying])
+  }, [handleAutoPlay, isPlaying]);
 
   const currentEvent = signatureEvents[activeEvent];
 
@@ -274,7 +279,7 @@ const Events = () => {
                 <div className="stat">
                   <span className="stat-number">50K+</span>
                   <span className="stat-label">Prize Pools</span>
-                </div> 
+                </div>
               </div>
             </div>
           </div>
@@ -339,12 +344,21 @@ const Events = () => {
               >
                 <FaEye /> View Details
               </button>
+              {/* <button
+                className="btn-secondary banner-btn"
+                onClick={() => navigate("/results")}
+              >
+                <FaTrophy /> View Results
+              </button> */}
             </div>
           </div>
           <div className="banner-visual">
             <div className="visual-glow"></div>
             <div className="visual-frame">
-              <img src="https://res.cloudinary.com/do0e8p5d2/image/upload/v1763223291/Blog_7_suqqrn.jpg" alt="Shutter Stories" />
+              <img
+                src="https://res.cloudinary.com/do0e8p5d2/image/upload/v1763223291/Blog_7_suqqrn.jpg"
+                alt="Shutter Stories"
+              />
             </div>
           </div>
         </div>
@@ -551,8 +565,18 @@ const Events = () => {
               world
             </p>
             <div className="cta-actions">
-              <button className="btn-primary cta-btn" onClick={() => window.location.href = '/events'}>View All Events</button>
-              <button className="btn-secondary cta-btn" onClick={() => window.location.href = '/join'}>Become a Member</button>
+              <button
+                className="btn-primary cta-btn"
+                onClick={() => (window.location.href = "/events")}
+              >
+                View All Events
+              </button>
+              <button
+                className="btn-secondary cta-btn"
+                onClick={() => (window.location.href = "/join")}
+              >
+                Become a Member
+              </button>
             </div>
           </div>
         </div>
