@@ -899,7 +899,7 @@ const PhotoSubmissionForm = () => {
           </div>
 
           {/* Submission Button */}
-          <div className="form-actions">
+          {/* <div className="form-actions">
             <button
               type="submit"
               className="btn-primary submit-btn"
@@ -920,7 +920,7 @@ const PhotoSubmissionForm = () => {
                 few minutes...
               </p>
             )}
-          </div>
+          </div> */}
         </form>
       </div>
     </div>
