@@ -1,5 +1,5 @@
 // components/PhotoSubmissionForm.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   FaUpload,
@@ -33,10 +33,12 @@ const PhotoSubmissionForm = () => {
   const [submissionDetails, setSubmissionDetails] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [showRenameConfirm, setShowRenameConfirm] = useState(false);
+  const [submissionsEnabled, setSubmissionsEnabled] = useState(true);
+const [checkingStatus, setCheckingStatus] = useState(true);
 
   // Updated Google Apps Script URL - make sure to deploy as web app
   const GOOGLE_SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycbz1Z7-aa6oYd4vNV18MLAN9k1wFSZqjbReLihkFhWUCAP2mXhFh3FAaSaKrVbMUO6ti/exec";
+    "https://script.google.com/macros/s/AKfycbxgKSgkJqFM8SufLijVGHyJm8zJ-2pzXkbWZxkKU6iy8p-PDH7mHBkbmvNMPzFkCQw/exec";
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -45,6 +47,61 @@ const PhotoSubmissionForm = () => {
       [name]: value,
     }));
   };
+
+useEffect(() => {
+    const checkSubmissionStatus = async () => {
+      try {
+        console.log("🔄 Checking photo submission status...");
+        
+        // Ensure this matches the 'photos' URL in UniversalAdmin.js exactly
+        const adminScriptUrl = "https://script.google.com/macros/s/AKfycbyUQVpwn4yvn4PJ6FXoai7hh-KC8jSGYooJD5-UcHvrsFraEpBmpUanUmskHn6i4I7i/exec";
+        
+        // Add timestamp to prevent caching
+        const url = `${adminScriptUrl}?action=getSubmissionStatus&timestamp=${new Date().getTime()}`;
+        
+        const response = await fetch(url, {
+          method: 'GET',
+          redirect: 'follow', // Explicitly follow GAS redirects
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8',
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        console.log("📊 Status Result:", result);
+        
+        if (result.success && result.enabled !== undefined) {
+           setSubmissionsEnabled(result.enabled);
+        } else if (result.status === 'success' && result.data) {
+           // Handle legacy wrapper if structure changes
+           setSubmissionsEnabled(result.data.enabled !== false);
+        } else {
+           // If JSON is valid but success is false, respect the 'enabled' flag if present
+           console.warn("⚠️ API returned success:false");
+           if (result.enabled !== undefined) setSubmissionsEnabled(result.enabled);
+        }
+        
+      } catch (error) {
+        console.error("❌ Error checking submission status:", error);
+        
+        // SAFETY CHECK: 
+        // If we cannot contact the server, should we allow submissions?
+        // Defaulting to TRUE is "Fail Open" (User friendly, but ignores Admin)
+        // Defaulting to FALSE is "Fail Safe" (Secure, but might block users if internet is bad)
+        
+        // Keep true for UX, but ensure the error isn't caused by permissions (See Step 3 below)
+        setSubmissionsEnabled(true); 
+      } finally {
+        setCheckingStatus(false);
+      }
+    };
+    
+    checkSubmissionStatus();
+  }, []);
 
   const handleSinglePhotoUpload = (e) => {
     const files = Array.from(e.target.files);
@@ -592,6 +649,28 @@ const PhotoSubmissionForm = () => {
       {showRenameConfirm && <RenameConfirmationModal />}
 
       <div className="form-container">
+        {/* Check submission status FIRST */}
+        {checkingStatus ? (
+          <div className="submission-status-checking">
+            <div className="spinner"></div>
+            <p>Checking submission status...</p>
+          </div>
+        ) : !submissionsEnabled ? (
+          <div className="submission-disabled-message">
+            <FaExclamationTriangle className="warning-icon" />
+            <h3>Submissions Temporarily Disabled</h3>
+            <p>Photo submissions for Shutter Stories Chapter IV are currently disabled.</p>
+            <p>Please check back later or contact the organizers for more information.</p>
+            <button
+              onClick={() => navigate("/events")}
+              className="btn-primary"
+            >
+              Back to Events
+            </button>
+          </div>
+        ) : (
+          // Your existing form content here - WRAP EVERYTHING FROM form-header to form-actions in this fragment
+          <>
         <header className="form-header">
           {/* <button onClick={() => navigate("/events")} className="back-button">
             <FaArrowLeft />
@@ -899,12 +978,13 @@ const PhotoSubmissionForm = () => {
           </div>
 
           {/* Submission Button */}
-          {/* <div className="form-actions">
+          <div className="form-actions">
             <button
               type="submit"
               className="btn-primary submit-btn"
               disabled={
                 uploading ||
+                 !submissionsEnabled ||
                 (formData.category === "single" &&
                   formData.photos.length === 0) ||
                 (formData.category === "story" &&
@@ -920,8 +1000,10 @@ const PhotoSubmissionForm = () => {
                 few minutes...
               </p>
             )}
-          </div> */}
+          </div>
         </form>
+        </>
+        )}
       </div>
     </div>
   );
