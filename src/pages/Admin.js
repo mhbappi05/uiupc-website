@@ -33,7 +33,7 @@ const UniversalAdmin = () => {
   const [connectionTest, setConnectionTest] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [joinPageStatus, setJoinPageStatus] = useState("enabled");
-const [photoSubmissionStatus, setPhotoSubmissionStatus] = useState("enabled");
+  const [photoSubmissionStatus, setPhotoSubmissionStatus] = useState("enabled");
 
   const { user } = useAuth();
 
@@ -111,66 +111,67 @@ const [photoSubmissionStatus, setPhotoSubmissionStatus] = useState("enabled");
   }, [dataType]);
 
   const fetchPhotoSubmissionStatus = async () => {
-  try {
-    const response = await fetch(
-      `${SCRIPTS.photos}?action=getSubmissionStatus`
-    );
+    try {
+      const response = await fetch(
+        `${SCRIPTS.photos}?action=getSubmissionStatus`
+      );
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.success) {
+        setPhotoSubmissionStatus(result.enabled ? "enabled" : "disabled");
+      }
+    } catch (error) {
+      console.error("Error fetching photo submission status:", error);
+      // Default to enabled if there's an error
+      setPhotoSubmissionStatus("enabled");
     }
+  };
 
-    const result = await response.json();
+  // Add this function to toggle photo submission status
+  const togglePhotoSubmissionStatus = async () => {
+    try {
+      const newStatus =
+        photoSubmissionStatus === "enabled" ? "disabled" : "enabled";
 
-    if (result.success) {
-      setPhotoSubmissionStatus(result.enabled ? "enabled" : "disabled");
+      const response = await fetch(SCRIPTS.photos, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          action: "updateSubmissionStatus",
+          enabled: newStatus === "enabled" ? "true" : "false",
+          updatedBy: user.email,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setPhotoSubmissionStatus(newStatus);
+        alert(`Photo submissions have been ${newStatus}`);
+        // Refresh data to show updated status
+        fetchData();
+      } else {
+        throw new Error(result.message || "Failed to update submission status");
+      }
+    } catch (error) {
+      console.error("Error updating photo submission status:", error);
+      alert("Failed to update photo submission status: " + error.message);
     }
-  } catch (error) {
-    console.error("Error fetching photo submission status:", error);
-    // Default to enabled if there's an error
-    setPhotoSubmissionStatus("enabled");
-  }
-};
+  };
 
-// Add this function to toggle photo submission status
-const togglePhotoSubmissionStatus = async () => {
-  try {
-    const newStatus = photoSubmissionStatus === "enabled" ? "disabled" : "enabled";
-
-    const response = await fetch(SCRIPTS.photos, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        action: "updateSubmissionStatus",
-        enabled: newStatus === "enabled" ? "true" : "false",
-        updatedBy: user.email,
-      }),
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      setPhotoSubmissionStatus(newStatus);
-      alert(`Photo submissions have been ${newStatus}`);
-      // Refresh data to show updated status
-      fetchData();
-    } else {
-      throw new Error(result.message || "Failed to update submission status");
+  // Call fetchPhotoSubmissionStatus when component mounts and when dataType is photos
+  useEffect(() => {
+    if (dataType === "photos") {
+      fetchPhotoSubmissionStatus();
     }
-  } catch (error) {
-    console.error("Error updating photo submission status:", error);
-    alert("Failed to update photo submission status: " + error.message);
-  }
-};
-
-// Call fetchPhotoSubmissionStatus when component mounts and when dataType is photos
-useEffect(() => {
-  if (dataType === "photos") {
-    fetchPhotoSubmissionStatus();
-  }
-}, [dataType]);
+  }, [dataType]);
 
   // Email templates for photo submissions
   const EMAIL_TEMPLATES = {
@@ -925,11 +926,64 @@ photographyclub@dccsa.uiu.ac.bd`,
             <p>
               Welcome, <strong>{user.email}</strong>
             </p>
-            {dataType !== "blog" && (
+
+            {dataType === "membership" && data.length > 0 && (
+              <>
+                <p>
+                  Total Applications: <strong>{data.length}</strong>
+                </p>
+                <p
+                  style={{
+                    marginTop: "0.5rem",
+                    fontSize: "0.9rem",
+                    color: "var(--text-muted)",
+                  }}
+                >
+                  <a
+                    href="https://docs.google.com/spreadsheets/d/1rY992dVdc83CVBTTycd9t3gLf6H-_Za_ZHtDTcepkvE/edit?gid=0#gid=0"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      color: "var(--uiu-orange)",
+                      textDecoration: "none",
+                    }}
+                  >
+                    📋 Club Members List
+                  </a>
+                </p>
+              </>
+            )}
+
+            {dataType === "photos" && data.length > 0 && (
+              <>
+                <p>
+                  Total Submissions: <strong>{data.length}</strong>
+                </p>
+                <p
+                  style={{
+                    marginTop: "0.5rem",
+                    fontSize: "0.9rem",
+                    color: "var(--text-muted)",
+                  }}
+                >
+                  <a
+                    href="https://docs.google.com/spreadsheets/d/1b72pSbP2zz5siLnAdCO0zDFFAq66ZcPzwywR51ZoEKw/edit?gid=0#gid=0"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      color: "var(--uiu-orange)",
+                      textDecoration: "none",
+                    }}
+                  >
+                    📊 Participates full details
+                  </a>
+                </p>
+              </>
+            )}
+
+            {(dataType === "gallery" || dataType === "blog") && (
               <p>
-                Total{" "}
-                {dataType === "membership" ? "Applications" : "Submissions"}:
-                <strong>{data.length}</strong>
+                {dataType === "gallery" ? "Gallery" : "Blog"} Management Panel
               </p>
             )}
           </div>
@@ -966,213 +1020,218 @@ photographyclub@dccsa.uiu.ac.bd`,
           </div>
 
           {/* Render the appropriate component based on dataType */}
-{dataType === "membership" ? (
-  <div className="applications-container">
-    {/* Join Page Control Section */}
-    <div
-      className="join-page-control"
-      style={{
-        background: "rgba(30, 30, 30, 0.7)",
-        padding: "1.5rem",
-        borderRadius: "12px",
-        marginBottom: "2rem",
-        border: "1px solid rgba(255, 255, 255, 0.1)",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        flexWrap: "wrap",
-        gap: "1rem",
-      }}
-    >
-      <div>
-        <h3
-          style={{
-            color: "var(--white)",
-            margin: "0 0 0.5rem 0",
-            fontSize: "1.2rem",
-          }}
-        >
-          Join Page Control
-        </h3>
-        <p
-          style={{
-            color: "var(--text-muted)",
-            margin: 0,
-            fontSize: "0.9rem",
-          }}
-        >
-          Current status:{" "}
-          <strong
-            style={{
-              color:
-                joinPageStatus === "enabled" ? "#28a745" : "#dc3545",
-            }}
-          >
-            {joinPageStatus === "enabled" ? "ENABLED" : "DISABLED"}
-          </strong>
-        </p>
-        <p
-          style={{
-            color: "var(--text-muted)",
-            margin: "0.25rem 0 0 0",
-            fontSize: "0.8rem",
-          }}
-        >
-          {joinPageStatus === "enabled"
-            ? "Users can submit membership applications"
-            : "Membership applications are currently disabled"}
-        </p>
-      </div>
-      <button
-        onClick={toggleJoinPageStatus}
-        className={`btn-primary ${
-          joinPageStatus === "disabled" ? "" : "btn-secondary"
-        }`}
-        style={{
-          minWidth: "140px",
-          display: "flex",
-          alignItems: "center",
-          gap: "0.5rem",
-        }}
-      >
-        {joinPageStatus === "enabled" ? (
-          <>
-            <FaExclamationTriangle />
-            Disable Submission
-          </>
-        ) : (
-          <>
-            <FaCheck />
-            Enable Submission
-          </>
-        )}
-      </button>
-    </div>
-    <MembershipApplications
-      data={data}
-      loading={loading}
-      searchTerm={searchTerm}
-      filterStatus={filterStatus}
-      onSearchChange={setSearchTerm}
-      onFilterChange={setFilterStatus}
-      onRefresh={fetchData}
-      onExport={exportToCSV}
-      onViewDetails={handleViewDetails}
-      onUpdateStatus={handleUpdateStatus}
-      onEmailReply={handleEmailReply}
-      connectionTest={connectionTest}
-    />
-  </div>
-) : dataType === "photos" ? (
-  <>
-    {/* Photo Submission Control Section */}
-    <div
-      className="join-page-control"
-      style={{
-        background: "rgba(30, 30, 30, 0.7)",
-        padding: "1.5rem",
-        borderRadius: "12px",
-        marginBottom: "2rem",
-        border: "1px solid rgba(255, 255, 255, 0.1)",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        flexWrap: "wrap",
-        gap: "1rem",
-      }}
-    >
-      <div>
-        <h3
-          style={{
-            color: "var(--white)",
-            margin: "0 0 0.5rem 0",
-            fontSize: "1.2rem",
-          }}
-        >
-          Photo Submission Control
-        </h3>
-        <p
-          style={{
-            color: "var(--text-muted)",
-            margin: 0,
-            fontSize: "0.9rem",
-          }}
-        >
-          Current status:{" "}
-          <strong
-            style={{
-              color: photoSubmissionStatus === "enabled" ? "#28a745" : "#dc3545",
-            }}
-          >
-            {photoSubmissionStatus === "enabled" ? "ENABLED" : "DISABLED"}
-          </strong>
-        </p>
-        <p
-          style={{
-            color: "var(--text-muted)",
-            margin: "0.25rem 0 0 0",
-            fontSize: "0.8rem",
-          }}
-        >
-          {photoSubmissionStatus === "enabled"
-            ? "Users can submit photos to Shutter Stories Chapter IV"
-            : "Photo submissions are currently disabled"}
-        </p>
-      </div>
-      <button
-        onClick={togglePhotoSubmissionStatus}
-        className={`btn-primary ${
-          photoSubmissionStatus === "disabled" ? "" : "btn-secondary"
-        }`}
-        style={{
-          minWidth: "140px",
-          display: "flex",
-          alignItems: "center",
-          gap: "0.5rem",
-        }}
-      >
-        {photoSubmissionStatus === "enabled" ? (
-          <>
-            <FaExclamationTriangle />
-            Disable Submission
-          </>
-        ) : (
-          <>
-            <FaCheck />
-            Enable Submission
-          </>
-        )}
-      </button>
-    </div>
-    <PhotoSubmissions
-      data={data}
-      loading={loading}
-      searchTerm={searchTerm}
-      filterStatus={filterStatus}
-      onSearchChange={setSearchTerm}
-      onFilterChange={setFilterStatus}
-      onRefresh={fetchData}
-      onExport={exportToCSV}
-      onViewDetails={handleViewDetails}
-      onEmailReply={handleEmailReply}
-      connectionTest={connectionTest}
-    />
-  </>
-) : dataType === "gallery" ? (
-  // Gallery Management Section - Show GalleryUpload component
-  <GalleryUpload
-    user={user}
-    scripts={SCRIPTS}
-    onUploadSuccess={handleUploadSuccess}
-  />
-) : (
-  // Blog Management Section
-  <BlogManagement
-    user={user}
-    scripts={SCRIPTS}
-    onUploadSuccess={handleUploadSuccess}
-  />
-)}
+          {dataType === "membership" ? (
+            <div className="applications-container">
+              {/* Join Page Control Section */}
+              <div
+                className="join-page-control"
+                style={{
+                  background: "rgba(30, 30, 30, 0.7)",
+                  padding: "1.5rem",
+                  borderRadius: "12px",
+                  marginBottom: "2rem",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "1rem",
+                }}
+              >
+                <div>
+                  <h3
+                    style={{
+                      color: "var(--white)",
+                      margin: "0 0 0.5rem 0",
+                      fontSize: "1.2rem",
+                    }}
+                  >
+                    Join Page Control
+                  </h3>
+                  <p
+                    style={{
+                      color: "var(--text-muted)",
+                      margin: 0,
+                      fontSize: "0.9rem",
+                    }}
+                  >
+                    Current status:{" "}
+                    <strong
+                      style={{
+                        color:
+                          joinPageStatus === "enabled" ? "#28a745" : "#dc3545",
+                      }}
+                    >
+                      {joinPageStatus === "enabled" ? "ENABLED" : "DISABLED"}
+                    </strong>
+                  </p>
+                  <p
+                    style={{
+                      color: "var(--text-muted)",
+                      margin: "0.25rem 0 0 0",
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    {joinPageStatus === "enabled"
+                      ? "Users can submit membership applications"
+                      : "Membership applications are currently disabled"}
+                  </p>
+                </div>
+                <button
+                  onClick={toggleJoinPageStatus}
+                  className={`btn-primary ${
+                    joinPageStatus === "disabled" ? "" : "btn-secondary"
+                  }`}
+                  style={{
+                    minWidth: "140px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  {joinPageStatus === "enabled" ? (
+                    <>
+                      <FaExclamationTriangle />
+                      Disable Submission
+                    </>
+                  ) : (
+                    <>
+                      <FaCheck />
+                      Enable Submission
+                    </>
+                  )}
+                </button>
+              </div>
+              <MembershipApplications
+                data={data}
+                loading={loading}
+                searchTerm={searchTerm}
+                filterStatus={filterStatus}
+                onSearchChange={setSearchTerm}
+                onFilterChange={setFilterStatus}
+                onRefresh={fetchData}
+                onExport={exportToCSV}
+                onViewDetails={handleViewDetails}
+                onUpdateStatus={handleUpdateStatus}
+                onEmailReply={handleEmailReply}
+                connectionTest={connectionTest}
+              />
+            </div>
+          ) : dataType === "photos" ? (
+            <>
+              {/* Photo Submission Control Section */}
+              <div
+                className="join-page-control"
+                style={{
+                  background: "rgba(30, 30, 30, 0.7)",
+                  padding: "1.5rem",
+                  borderRadius: "12px",
+                  marginBottom: "2rem",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "1rem",
+                }}
+              >
+                <div>
+                  <h3
+                    style={{
+                      color: "var(--white)",
+                      margin: "0 0 0.5rem 0",
+                      fontSize: "1.2rem",
+                    }}
+                  >
+                    Photo Submission Control
+                  </h3>
+                  <p
+                    style={{
+                      color: "var(--text-muted)",
+                      margin: 0,
+                      fontSize: "0.9rem",
+                    }}
+                  >
+                    Current status:{" "}
+                    <strong
+                      style={{
+                        color:
+                          photoSubmissionStatus === "enabled"
+                            ? "#28a745"
+                            : "#dc3545",
+                      }}
+                    >
+                      {photoSubmissionStatus === "enabled"
+                        ? "ENABLED"
+                        : "DISABLED"}
+                    </strong>
+                  </p>
+                  <p
+                    style={{
+                      color: "var(--text-muted)",
+                      margin: "0.25rem 0 0 0",
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    {photoSubmissionStatus === "enabled"
+                      ? "Users can submit photos to Shutter Stories Chapter IV"
+                      : "Photo submissions are currently disabled"}
+                  </p>
+                </div>
+                <button
+                  onClick={togglePhotoSubmissionStatus}
+                  className={`btn-primary ${
+                    photoSubmissionStatus === "disabled" ? "" : "btn-secondary"
+                  }`}
+                  style={{
+                    minWidth: "140px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  {photoSubmissionStatus === "enabled" ? (
+                    <>
+                      <FaExclamationTriangle />
+                      Disable Submission
+                    </>
+                  ) : (
+                    <>
+                      <FaCheck />
+                      Enable Submission
+                    </>
+                  )}
+                </button>
+              </div>
+              <PhotoSubmissions
+                data={data}
+                loading={loading}
+                searchTerm={searchTerm}
+                filterStatus={filterStatus}
+                onSearchChange={setSearchTerm}
+                onFilterChange={setFilterStatus}
+                onRefresh={fetchData}
+                onExport={exportToCSV}
+                onViewDetails={handleViewDetails}
+                onEmailReply={handleEmailReply}
+                connectionTest={connectionTest}
+              />
+            </>
+          ) : dataType === "gallery" ? (
+            // Gallery Management Section - Show GalleryUpload component
+            <GalleryUpload
+              user={user}
+              scripts={SCRIPTS}
+              onUploadSuccess={handleUploadSuccess}
+            />
+          ) : (
+            // Blog Management Section
+            <BlogManagement
+              user={user}
+              scripts={SCRIPTS}
+              onUploadSuccess={handleUploadSuccess}
+            />
+          )}
         </div>
       </div>
 
