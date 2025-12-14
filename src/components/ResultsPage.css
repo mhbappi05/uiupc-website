@@ -31,28 +31,6 @@
   z-index: 2;
 }
 
-/* 2. BUTTONS - Matching Events Theme */
-.back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 107, 0, 0.3);
-  color: #FF6B00;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
-}
-
-.back-btn:hover {
-  background: rgba(255, 107, 0, 0.1);
-  transform: translateX(-5px);
-  border-color: #FF6B00;
-}
-
 /* 3. HEADERS - Text Gradients like Events Hero */
 .results-header {
   text-align: center;
@@ -857,5 +835,93 @@
     min-width: 30px;
     height: 30px;
     font-size: 0.8rem;
+  }
+}
+
+/* --- Quick Navigation Buttons --- */
+.quick-nav-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  align-items: center; /* Ensure buttons align vertically */
+}
+
+.back-btn, .jump-to-registration-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center; /* Center content horizontally */
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  border: 1px solid rgba(255, 107, 0, 0.3);
+  height: 46px; /* Fixed height for both buttons */
+  min-height: 46px; /* Ensure minimum height */
+  box-sizing: border-box; /* Include padding in height calculation */
+  line-height: 1; /* Reset line height */
+}
+
+.back-btn {
+  background: rgba(255, 255, 255, 0.05);
+  color: #FF6B00;
+}
+
+.back-btn:hover {
+  background: rgba(255, 107, 0, 0.1);
+  transform: translateX(-5px);
+  border-color: #FF6B00;
+}
+
+.jump-to-registration-btn {
+  background: linear-gradient(135deg, #FF6B00, #FF8C42);
+  border: 1px solid #FF6B00;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 5px 15px rgba(255, 107, 0, 0.2);
+}
+
+.jump-to-registration-btn:hover {
+  background: linear-gradient(135deg, #FF8C42, #FF6B00);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 107, 0, 0.3);
+}
+
+/* Mobile Responsiveness for Quick Nav */
+@media (max-width: 768px) {
+  .quick-nav-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .back-btn,
+  .jump-to-registration-btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    height: 46px; /* Maintain same height on mobile */
+    min-height: 46px;
+  }
+  
+  .back-btn:hover {
+    transform: translateX(0);
+  }
+  
+  .jump-to-registration-btn:hover {
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .back-btn,
+  .jump-to-registration-btn {
+    font-size: 0.95rem;
+    padding: 0.7rem 0.9rem;
+    height: 44px; /* Slightly smaller on very small screens */
+    min-height: 44px;
   }
 }

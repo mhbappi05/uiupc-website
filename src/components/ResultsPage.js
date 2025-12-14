@@ -440,12 +440,35 @@ const ResultsPage = () => {
   return (
     <div className="results-page">
       <div className="container">
-        <button
-          className="btn-secondary back-btn"
-          onClick={() => navigate("/events")}
-        >
-          <FaArrowLeft /> Back to Events
-        </button>
+        <div className="quick-nav-buttons">
+  <button
+    className="back-btn"
+    onClick={() => navigate("/events")}
+  >
+    <FaArrowLeft /> Back to Events
+  </button>
+  
+  <button
+    className="jump-to-registration-btn"
+    onClick={() => {
+      const paymentSection = document.querySelector('.payment-section');
+      if (paymentSection) {
+        paymentSection.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
+        // Optionally open the registration form automatically
+        if (!showPaymentForm) {
+          setTimeout(() => {
+            setShowPaymentForm(true);
+          }, 500);
+        }
+      }
+    }}
+  >
+    <FaCheckCircle /> Jump to Registration
+  </button>
+</div>
 
         <div className="results-header">
           <FaTrophy className="trophy-icon" />
