@@ -22,7 +22,7 @@ const Events = () => {
 
   // Calculate time until December 15, 2024
   const calculateTimeLeft = () => {
-    const eventDate = new Date("December 10, 2025 24:00:00").getTime();
+    const eventDate = new Date("December 17, 2025 24:00:00").getTime();
     const now = new Date().getTime();
     const difference = eventDate - now;
 
@@ -298,9 +298,12 @@ const Events = () => {
               <div className="badge-pulse"></div>
             </div>
             <h2 className="banner-title">Shutter Stories Chapter IV</h2>
-            <h2 className="banner-title">Call for Photo</h2>
             <p className="banner-subtitle">
-              Photo Submission Deadline • December 10, 2025
+              Result Have Been Published • December 14, 2025
+            </p>
+            <h2 className="banner-title">Registration Going On</h2>
+            <p className="banner-subtitle">
+              Registration Deadline • December 17, 2025
             </p>
 
             {/* Working Countdown Timer */}
@@ -333,10 +336,10 @@ const Events = () => {
 
             <div className="banner-actions">
               <button
-                className="btn-primary banner-btn"
-                onClick={() => handleRegisterClick("shutter-stories")}
+                className="btn-primary  banner-btn"
+                onClick={() => navigate("/results")}
               >
-                Submit Now <FaArrowRight />
+                <FaTrophy /> View Results
               </button>
               <button
                 className="btn-secondary banner-btn"
@@ -344,12 +347,12 @@ const Events = () => {
               >
                 <FaEye /> View Details
               </button>
-              {/* <button
+              <button
                 className="btn-secondary banner-btn"
-                onClick={() => navigate("/results")}
+                onClick={() => handleRegisterClick("shutter-stories")}
               >
-                <FaTrophy /> View Results
-              </button> */}
+                Submit Now <FaArrowRight />
+              </button>
             </div>
           </div>
           <div className="banner-visual">

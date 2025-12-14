@@ -885,6 +885,7 @@ const ResultsPage = () => {
                   <li>Enter the transaction ID in the form</li>
                   <li>Submit the form after payment</li>
                   <li>We will verify payment within 24 hours</li>
+                  <li>For any queries: 01783503006 (Md Zobaer Ahmed - Act. Head of HR, UIU)</li>
                 </ol>
               </div>
 

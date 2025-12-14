@@ -15,7 +15,7 @@ const HeroSlider = () => {
         "https://res.cloudinary.com/do0e8p5d2/video/upload/v1763138349/Shutter_Stories_Chapter_4_-_2025_Promo_glsjvm.mp4",
       title: "Shutter Stories - Chapter IV",
       subtitle: "Showcase Your Talent",
-      //eventLink: "/results",
+      eventLink: "/results",
       type: "video",
       duration: 74000, // 74 seconds for video (1 min 14 sec)
     },
@@ -25,7 +25,7 @@ const HeroSlider = () => {
         "https://res.cloudinary.com/do0e8p5d2/image/upload/v1763054814/uiupc_HeroSlider1_d9kprm.jpg",
       title: "UIU Photography Club",
       subtitle: "Capturing Moments, Creating Memories",
-      //eventLink: "/results",
+      eventLink: "/results",
       type: "image",
       duration: 5000, // 5 seconds for images
     },
@@ -35,7 +35,7 @@ const HeroSlider = () => {
         "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799600/uiupc_HeroSlider3_iehvzr.png",
       title: "Shutter Stories - Chapter IV",
       subtitle: "Submit Your Photos",
-      //eventLink: "/results",
+      eventLink: "/results",
       type: "image",
       duration: 5000, // 5 seconds for images
     },
@@ -45,7 +45,7 @@ const HeroSlider = () => {
         "https://res.cloudinary.com/do0e8p5d2/image/upload/v1763225125/HeroSlider04_zqnypu.jpg",
       title: "Call for Photo",
       subtitle: "Submit Now for National Exhibition",
-      //eventLink: "/results",
+      eventLink: "/results",
       type: "image",
       duration: 5000, // 5 seconds for images
     },
@@ -55,7 +55,7 @@ const HeroSlider = () => {
         "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762121158/uiupc_HeroSlider2_cyl1xw.jpg",
       title: "Join Our Community",
       subtitle: "Learn, Share, and Grow Together",
-      //eventLink: "/results",
+      eventLink: "/results",
       type: "image",
       duration: 5000, // 5 seconds for images
     },
@@ -169,13 +169,13 @@ const HeroSlider = () => {
           <div className="slide-content">
             <h1>{slide.title}</h1>
             <p>{slide.subtitle}</p>
-            {/* <div className="cta-buttons">
+            <div className="cta-buttons">
               <a href={slide.eventLink} className="btn btn-secondary">
                 Shutter Stories - Chapter IV <br/>
                 View Results
               </a>
-            </div> */}
-            <div className="cta-buttons">
+            </div>
+            {/* <div className="cta-buttons">
               <button
                 onClick={() => {
                   if (
@@ -191,7 +191,7 @@ const HeroSlider = () => {
                 Shutter Stories - Chapter IV <br />
                 View Results
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       ))}

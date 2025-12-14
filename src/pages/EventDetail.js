@@ -7,6 +7,7 @@ import {
   FaMoneyBillWave,
   FaClock,
   FaExternalLinkAlt,
+  FaTrophy,
 } from "react-icons/fa";
 import "./EventDetail.css";
 
@@ -22,13 +23,13 @@ const EventDetail = () => {
       subtitle: "National Photography Exhibition",
       status: "ongoing",
       chapter: "Chapter IV",
-      date: "Nov 15 - Dec 10, 2025",
+      date: "Dec 14 - Dec 17, 2025",
       time: "9:00 AM - 8:00 PM",
       //   location: 'UIU Campus & National Museum, Dhaka',
       location: "Will be Announced SOON, Stay Tuned!",
       registrationLink: "/register/shutter-stories",
       entryFee:
-        "There is no fee for submission. Shortlisted entries will be announced later.",
+        "Single Photo: 1020BDT  Photo Story: 3060BDT",
       submissionDeadline: "December 10, 2025",
       announcementDate: "November 15, 2025",
       categories: ["Single Photo", "Photo Story"],
@@ -111,9 +112,13 @@ const EventDetail = () => {
         ## ⏰ Important Dates
           -> Registration Opens**: November 15, 2025
           -> Submission Deadline**: December 10, 2025
+          -> Results Announcement**: December 20, 2025
+          -> Registration Open**: December 14, 2025
+          -> Registration Closes**: December 17, 2025
 
         ## 💰 Registration Fees
-          -> There is no fee for submission. Shortlisted entries will be announced later.
+          -> Single Photo: 1020BDT per photo
+          -> Photo Story: 3060BDT per story
 
         ## 🏆 Prizes & Recognition
           -> 50k BDT Cash Prize.
@@ -303,7 +308,7 @@ const EventDetail = () => {
               <div className="meta-item">
                 <FaCalendarAlt className="meta-icon" />
                 <div>
-                  <strong>Submission Dates</strong>
+                  <strong>Registration Dates</strong>
                   <span>{event.date}</span>
                 </div>
               </div>
@@ -336,6 +341,12 @@ const EventDetail = () => {
                 className="btn-primary register-btn"
               >
                 Register Now <FaExternalLinkAlt />
+              </button>
+              <button
+                className="btn-secondary banner-btn"
+                onClick={() => navigate("/results")}
+              >
+                <FaTrophy /> View Results
               </button>
               {/* <button className="btn-secondary">Add to Calendar</button> */}
             </div>
