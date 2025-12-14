@@ -6,6 +6,8 @@ import MembershipApplications from "../components/MembershipApplications";
 import PhotoSubmissions from "../components/PhotoSubmissions";
 import "../components/GalleryUpload.css";
 import BlogManagement from "../components/BlogManagement";
+import ResultsManagement from "../components/ResultsManagement";
+
 import {
   FaSync,
   FaUsers,
@@ -14,6 +16,7 @@ import {
   FaImages,
   FaExclamationTriangle,
   FaCheck,
+  FaChartBar,
 } from "react-icons/fa";
 import Loading from "../components/Loading";
 import "./Admin.css";
@@ -48,6 +51,8 @@ const UniversalAdmin = () => {
     gallery:
       "https://script.google.com/macros/s/AKfycbyzV-c3PZJtzFbD2A_PmKMIR9V5oiQ1vjKarmruIVsCA3vcDQy8nHQ6fPZnWYa-lvDPoA/exec",
     blog: "https://script.google.com/macros/s/AKfycbydYlnt1AiH6QsicIlyh2cRH2XmfAmwO-ksB4cGQU17Ho7GQBXcx-Fn6u32wkvYp-fDFA/exec",
+    results:
+      "https://script.google.com/macros/s/AKfycbz2HkE1V8bMHwonhgyn-Mx0_XOMHHjBoqNbgo1DnO502dM3ndnhxW7WmZczM94c8wvssw/exec",
   };
 
   const toggleJoinPageStatus = async () => {
@@ -1017,10 +1022,21 @@ photographyclub@dccsa.uiu.ac.bd`,
             >
               <FaNewspaper /> Blog Management
             </button>
+            <button
+              className={`type-btn ${dataType === "results" ? "active" : ""}`}
+              onClick={() => setDataType("results")}
+            >
+              <FaChartBar /> Results & Payments
+            </button>
           </div>
 
           {/* Render the appropriate component based on dataType */}
-          {dataType === "membership" ? (
+          {dataType === "results" ? (
+            <ResultsManagement
+              scripts={SCRIPTS}
+              onUpdate={() => setRefreshTrigger((prev) => prev + 1)}
+            />
+          ) : dataType === "membership" ? (
             <div className="applications-container">
               {/* Join Page Control Section */}
               <div
