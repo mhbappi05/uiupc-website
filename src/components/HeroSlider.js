@@ -11,49 +11,54 @@ const HeroSlider = () => {
   const localSlides = [
     {
       id: 1,
-      videoUrl: "https://res.cloudinary.com/do0e8p5d2/video/upload/v1763138349/Shutter_Stories_Chapter_4_-_2025_Promo_glsjvm.mp4",
+      videoUrl:
+        "https://res.cloudinary.com/do0e8p5d2/video/upload/v1763138349/Shutter_Stories_Chapter_4_-_2025_Promo_glsjvm.mp4",
       title: "Shutter Stories - Chapter IV",
       subtitle: "Showcase Your Talent",
-      eventLink: "/events/shutter-stories",
+      //eventLink: "/results",
       type: "video",
-      duration: 74000 // 74 seconds for video (1 min 14 sec)
+      duration: 74000, // 74 seconds for video (1 min 14 sec)
     },
     {
       id: 2,
-      imageUrl: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1763054814/uiupc_HeroSlider1_d9kprm.jpg",
+      imageUrl:
+        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1763054814/uiupc_HeroSlider1_d9kprm.jpg",
       title: "UIU Photography Club",
       subtitle: "Capturing Moments, Creating Memories",
-      eventLink: "/events/shutter-stories",
+      //eventLink: "/results",
       type: "image",
-      duration: 5000 // 5 seconds for images
+      duration: 5000, // 5 seconds for images
     },
     {
       id: 3,
-      imageUrl: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799600/uiupc_HeroSlider3_iehvzr.png",
+      imageUrl:
+        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799600/uiupc_HeroSlider3_iehvzr.png",
       title: "Shutter Stories - Chapter IV",
       subtitle: "Submit Your Photos",
-      eventLink: "/events/shutter-stories",
+      //eventLink: "/results",
       type: "image",
-      duration: 5000 // 5 seconds for images
+      duration: 5000, // 5 seconds for images
     },
     {
       id: 4,
-      imageUrl: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1763225125/HeroSlider04_zqnypu.jpg",
+      imageUrl:
+        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1763225125/HeroSlider04_zqnypu.jpg",
       title: "Call for Photo",
       subtitle: "Submit Now for National Exhibition",
-      eventLink: "/events/shutter-stories",
+      //eventLink: "/results",
       type: "image",
-      duration: 5000 // 5 seconds for images
+      duration: 5000, // 5 seconds for images
     },
     {
       id: 5,
-      imageUrl: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762121158/uiupc_HeroSlider2_cyl1xw.jpg",
+      imageUrl:
+        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762121158/uiupc_HeroSlider2_cyl1xw.jpg",
       title: "Join Our Community",
       subtitle: "Learn, Share, and Grow Together",
-      eventLink: "/events/shutter-stories",
+      //eventLink: "/results",
       type: "image",
-      duration: 5000 // 5 seconds for images
-    }
+      duration: 5000, // 5 seconds for images
+    },
   ];
 
   // Function to start slide timer
@@ -61,7 +66,7 @@ const HeroSlider = () => {
     if (slideTimerRef.current) {
       clearTimeout(slideTimerRef.current);
     }
-    
+
     slideTimerRef.current = setTimeout(() => {
       setCurrentSlide((prev) => (prev + 1) % localSlides.length);
     }, duration);
@@ -70,13 +75,13 @@ const HeroSlider = () => {
   // Handle slide changes
   useEffect(() => {
     const currentSlideData = localSlides[currentSlide];
-    
+
     if (currentSlideData.type === "image") {
       // For images, use the timer
       startSlideTimer(currentSlideData.duration);
     }
     // For videos, we rely on the video end event
-    
+
     // Handle video playback
     localSlides.forEach((slide, index) => {
       const videoRef = videoRefs.current[index];
@@ -84,7 +89,7 @@ const HeroSlider = () => {
         if (index === currentSlide && slide.type === "video") {
           // Reset and play the video from beginning
           videoRef.currentTime = 0;
-          videoRef.play().catch(error => {
+          videoRef.play().catch((error) => {
             console.log("Video autoplay failed:", error);
             // If video fails to autoplay, fall back to timer
             startSlideTimer(slide.duration);
@@ -111,7 +116,7 @@ const HeroSlider = () => {
   const addVideoRef = (el, index) => {
     videoRefs.current[index] = el;
     if (el) {
-      el.addEventListener('ended', handleVideoEnd);
+      el.addEventListener("ended", handleVideoEnd);
     }
   };
 
@@ -128,7 +133,7 @@ const HeroSlider = () => {
     return () => {
       videoRefs.current.forEach((videoRef) => {
         if (videoRef) {
-          videoRef.removeEventListener('ended', handleVideoEnd);
+          videoRef.removeEventListener("ended", handleVideoEnd);
         }
       });
       if (slideTimerRef.current) {
@@ -143,7 +148,11 @@ const HeroSlider = () => {
         <div
           key={slide.id}
           className={`slide ${index === currentSlide ? "active" : ""}`}
-          style={slide.type === "image" ? { backgroundImage: `url(${slide.imageUrl})` } : {}}
+          style={
+            slide.type === "image"
+              ? { backgroundImage: `url(${slide.imageUrl})` }
+              : {}
+          }
         >
           {slide.type === "video" && (
             <video
@@ -160,11 +169,28 @@ const HeroSlider = () => {
           <div className="slide-content">
             <h1>{slide.title}</h1>
             <p>{slide.subtitle}</p>
-            <div className="cta-buttons">
+            {/* <div className="cta-buttons">
               <a href={slide.eventLink} className="btn btn-secondary">
-                Participate in <br/>
-                Shutter Stories - Chapter IV
+                Shutter Stories - Chapter IV <br/>
+                View Results
               </a>
+            </div> */}
+            <div className="cta-buttons">
+              <button
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      "The result will be published soon. Stay tuned with us!\n\nClick OK to continue."
+                    )
+                  ) {
+                    // You can add additional logic here if needed
+                  }
+                }}
+                className="btn btn-secondary"
+              >
+                Shutter Stories - Chapter IV <br />
+                View Results
+              </button>
             </div>
           </div>
         </div>
