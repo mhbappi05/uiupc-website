@@ -52,7 +52,7 @@ const UniversalAdmin = () => {
       "https://script.google.com/macros/s/AKfycbyzV-c3PZJtzFbD2A_PmKMIR9V5oiQ1vjKarmruIVsCA3vcDQy8nHQ6fPZnWYa-lvDPoA/exec",
     blog: "https://script.google.com/macros/s/AKfycbydYlnt1AiH6QsicIlyh2cRH2XmfAmwO-ksB4cGQU17Ho7GQBXcx-Fn6u32wkvYp-fDFA/exec",
     results:
-      "https://script.google.com/macros/s/AKfycbz2HkE1V8bMHwonhgyn-Mx0_XOMHHjBoqNbgo1DnO502dM3ndnhxW7WmZczM94c8wvssw/exec",
+      "https://script.google.com/macros/s/AKfycbyfEfzXEAzF27NHgN_R5MwaHa98A679KjSq8vd9ru2Om9BYpJtiPobOa6WdRfEGFBUZPw/exec",
   };
 
   const toggleJoinPageStatus = async () => {

@@ -132,7 +132,7 @@ const ResultsManagement = ({ scripts, user, onUpdate }) => {
       paymentMethod: "nagad",
       transactionId: "NAG987654321",
       totalAmount: 3060,
-      status: "verified",
+      status: "pending",
       timestamp: "2024-01-15T12:30:00Z",
       eventName: "Shutter Stories Chapter IV",
     },
@@ -149,7 +149,7 @@ const ResultsManagement = ({ scripts, user, onUpdate }) => {
       paymentMethod: "rocket",
       transactionId: "ROCK11223344",
       totalAmount: 3060,
-      status: "rejected",
+      status: "pending",
       timestamp: "2024-01-15T13:00:00Z",
       eventName: "Shutter Stories Chapter IV",
     },
@@ -201,6 +201,8 @@ const ResultsManagement = ({ scripts, user, onUpdate }) => {
 
   const fetchPayments = async () => {
     try {
+      console.log("🔄 Fetching payments...");
+
       // Use CORS proxy for payments
       const targetUrl = `${
         scripts.results
@@ -227,6 +229,15 @@ const ResultsManagement = ({ scripts, user, onUpdate }) => {
 
         if (result.success) {
           const paymentsData = Array.isArray(result.data) ? result.data : [];
+          console.log(
+            "✅ Payments fetched successfully:",
+            paymentsData.length,
+            "items"
+          );
+          console.log(
+            "📊 Sample payment statuses:",
+            paymentsData.map((p) => ({ id: p.id, status: p.status }))
+          );
           setPayments(paymentsData);
           return;
         } else {
@@ -258,6 +269,7 @@ const ResultsManagement = ({ scripts, user, onUpdate }) => {
       }
 
       // Use demo data
+      console.log("⚠️ Using demo payments data");
       setPayments(demoPayments);
     }
   };
@@ -381,232 +393,300 @@ const ResultsManagement = ({ scripts, user, onUpdate }) => {
     );
   };
 
-   // In ResultsManagement.js, replace your POST request functions:
-
-// Handle adding a new result - UPDATED
-const handleAddResult = async () => {
-  try {
-    console.log('Adding new result:', newResult);
-    
-    // Validate required fields
-    if (!newResult.name || !newResult.name.trim()) {
-      alert('Name is required!');
-      return;
-    }
-    
-    if (!newResult.institute || !newResult.institute.trim()) {
-      alert('Institute is required!');
-      return;
-    }
-    
-    // Prepare data in the exact format the backend expects
-    const requestData = {
-      name: newResult.name.trim(),
-      institute: newResult.institute.trim(),
-      photos: parseInt(newResult.photos) || 1,
-      selected: newResult.selected,
-      category: newResult.category,
-      status: newResult.status,
-      eventId: selectedEvent
-    };
-    
-    console.log('Request data:', requestData);
-    
-    // Use GET request with URL parameters (works better with Google Apps Script)
-    const queryParams = new URLSearchParams({
-      action: 'addResult',
-      name: requestData.name,
-      institute: requestData.institute,
-      photos: requestData.photos,
-      selected: requestData.selected,
-      category: requestData.category,
-      status: requestData.status,
-      eventId: requestData.eventId,
-      t: Date.now() // Cache buster
-    }).toString();
-    
-    const url = `${scripts.results}?${queryParams}`;
-    console.log('Request URL:', url);
-    
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
-      }
-    });
-    
-    const responseText = await response.text();
-    console.log('Response:', responseText);
-    
-    let result;
+  // Handle adding a new result
+  const handleAddResult = async () => {
     try {
-      result = JSON.parse(responseText);
-    } catch (parseError) {
-      console.error('Failed to parse response:', parseError);
-      throw new Error('Invalid response from server');
-    }
-    
-    if (result.success) {
-      alert('Result added successfully!');
-      setRefreshTrigger(prev => prev + 1);
-      // Reset form
-      setNewResult({
-        eventId: "shutter-stories",
-        name: "",
-        institute: "",
-        category: "single",
-        photos: 1,
-        selected: true,
-        status: "selected",
+      console.log("Adding new result:", newResult);
+
+      // Validate required fields
+      if (!newResult.name || !newResult.name.trim()) {
+        alert("Name is required!");
+        return;
+      }
+
+      if (!newResult.institute || !newResult.institute.trim()) {
+        alert("Institute is required!");
+        return;
+      }
+
+      // Prepare data in the exact format the backend expects
+      const requestData = {
+        name: newResult.name.trim(),
+        institute: newResult.institute.trim(),
+        photos: parseInt(newResult.photos) || 1,
+        selected: newResult.selected,
+        category: newResult.category,
+        status: newResult.status,
+        eventId: selectedEvent,
+      };
+
+      console.log("Request data:", requestData);
+
+      // Use GET request with URL parameters (works better with Google Apps Script)
+      const queryParams = new URLSearchParams({
+        action: "addResult",
+        name: requestData.name,
+        institute: requestData.institute,
+        photos: requestData.photos,
+        selected: requestData.selected,
+        category: requestData.category,
+        status: requestData.status,
+        eventId: requestData.eventId,
+        t: Date.now(), // Cache buster
+      }).toString();
+
+      const url = `${scripts.results}?${queryParams}`;
+      console.log("Request URL:", url);
+
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+        },
       });
-    } else {
-      alert('Failed to add result: ' + (result.error || 'Unknown error'));
+
+      const responseText = await response.text();
+      console.log("Response:", responseText);
+
+      let result;
+      try {
+        result = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error("Failed to parse response:", parseError);
+        throw new Error("Invalid response from server");
+      }
+
+      if (result.success) {
+        alert("Result added successfully!");
+        setRefreshTrigger((prev) => prev + 1);
+        // Reset form
+        setNewResult({
+          eventId: "shutter-stories",
+          name: "",
+          institute: "",
+          category: "single",
+          photos: 1,
+          selected: true,
+          status: "selected",
+        });
+      } else {
+        alert("Failed to add result: " + (result.error || "Unknown error"));
+      }
+    } catch (error) {
+      console.error("Error adding result:", error);
+
+      if (error.message.includes("Failed to fetch")) {
+        alert(`Network error: Cannot connect to the server. Please check:
+        1. Is the server running?
+        2. Is the correct API URL configured?
+        3. Are there any CORS issues? (Check browser console)
+        
+        Current API URL: ${scripts.results}`);
+      } else {
+        alert("Error adding result: " + error.message);
+      }
     }
-  } catch (error) {
-    console.error('Error adding result:', error);
-    
-    if (error.message.includes('Failed to fetch')) {
-      alert(`Network error: Cannot connect to the server. Please check:
-      1. Is the server running?
-      2. Is the correct API URL configured?
-      3. Are there any CORS issues? (Check browser console)
-      
-      Current API URL: ${scripts.results}`);
-    } else {
-      alert('Error adding result: ' + error.message);
+  };
+
+  // Handle updating a result
+  const handleUpdateResult = async (resultId, updatedData) => {
+    try {
+      console.log("Updating result:", { resultId, updatedData });
+
+      const formData = new FormData();
+      formData.append("action", "updateResult");
+      formData.append("resultId", resultId);
+      formData.append("data", JSON.stringify(updatedData));
+
+      await fetch(scripts.results, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData,
+      });
+
+      alert("Update submitted. Refreshing data...");
+      setRefreshTrigger((prev) => prev + 1);
+    } catch (error) {
+      console.error("Error updating result:", error);
+      alert("Error updating result. Check console for details.");
     }
-  }
-};
+  };
 
-// Handle updating a result - UPDATED
-const handleUpdateResult = async (resultId, updatedData) => {
-  try {
-    console.log('Updating result:', { resultId, updatedData });
-    
-    const formData = new FormData();
-    formData.append('action', 'updateResult');
-    formData.append('resultId', resultId);
-    formData.append('data', JSON.stringify(updatedData));
-    
-    await fetch(scripts.results, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: formData
-    });
-    
-    alert('Update submitted. Refreshing data...');
-    setRefreshTrigger(prev => prev + 1);
-    
-  } catch (error) {
-    console.error('Error updating result:', error);
-    alert('Error updating result. Check console for details.');
-  }
-};
+  // Handle deleting a result
+  const handleDeleteResult = async (resultId) => {
+    if (!window.confirm("Are you sure you want to delete this result?")) {
+      return;
+    }
 
-// Handle deleting a result - UPDATED
-const handleDeleteResult = async (resultId) => {
-  if (!window.confirm('Are you sure you want to delete this result?')) {
-    return;
-  }
+    try {
+      console.log("Deleting result:", resultId);
 
-  try {
-    console.log('Deleting result:', resultId);
-    
-    const formData = new FormData();
-    formData.append('action', 'deleteResult');
-    formData.append('resultId', resultId);
-    
-    await fetch(scripts.results, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: formData
-    });
-    
-    alert('Delete submitted. Refreshing data...');
-    setRefreshTrigger(prev => prev + 1);
-    
-  } catch (error) {
-    console.error('Error deleting result:', error);
-    alert('Error deleting result. Check console for details.');
-  }
-};
+      const formData = new FormData();
+      formData.append("action", "deleteResult");
+      formData.append("resultId", resultId);
 
-// Handle updating payment status - UPDATED
-const handleUpdatePaymentStatus = async (paymentId, status) => {
-  try {
-    const formData = new FormData();
-    formData.append('action', 'updatePaymentStatus');
-    formData.append('paymentId', paymentId);
-    formData.append('status', status);
-    
-    await fetch(scripts.results, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: formData
-    });
-    
-    alert(`Payment ${status} submitted. Refreshing data...`);
-    setRefreshTrigger(prev => prev + 1);
-    
-  } catch (error) {
-    console.error('Error updating payment status:', error);
-    alert('Error updating payment status: ' + error.message);
-  }
-};
+      await fetch(scripts.results, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData,
+      });
+
+      alert("Delete submitted. Refreshing data...");
+      setRefreshTrigger((prev) => prev + 1);
+    } catch (error) {
+      console.error("Error deleting result:", error);
+      alert("Error deleting result. Check console for details.");
+    }
+  };
+
+  // Handle updating payment status
+  const handleUpdatePaymentStatus = async (paymentId, status) => {
+    try {
+      console.log(`Updating payment ${paymentId} to ${status}`);
+
+      const formData = new FormData();
+      formData.append("action", "updatePaymentStatus");
+      formData.append("paymentId", paymentId);
+      formData.append("status", status);
+
+      await fetch(scripts.results, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData,
+      });
+
+      alert(`Payment ${status} submitted. Refreshing data...`);
+      setRefreshTrigger((prev) => prev + 1);
+    } catch (error) {
+      console.error("Error updating payment status:", error);
+      alert("Error updating payment status: " + error.message);
+    }
+  };
 
   // Export to CSV function
   const exportToCSV = (data, filename) => {
     if (!data || data.length === 0) {
-      alert('No data to export');
+      alert("No data to export");
       return;
     }
 
     const headers = Object.keys(data[0]);
     const csvRows = [
-      headers.join(','),
-      ...data.map(row => 
-        headers.map(header => {
-          const value = row[header];
-          // Handle special characters and commas
-          if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
-            return `"${value.replace(/"/g, '""')}"`;
-          }
-          return value;
-        }).join(',')
-      )
+      headers.join(","),
+      ...data.map((row) =>
+        headers
+          .map((header) => {
+            const value = row[header];
+            // Handle special characters and commas
+            if (
+              typeof value === "string" &&
+              (value.includes(",") ||
+                value.includes('"') ||
+                value.includes("\n"))
+            ) {
+              return `"${value.replace(/"/g, '""')}"`;
+            }
+            return value;
+          })
+          .join(",")
+      ),
     ];
 
-    const csvString = csvRows.join('\n');
-    const blob = new Blob([csvString], { type: 'text/csv' });
+    const csvString = csvRows.join("\n");
+    const blob = new Blob([csvString], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.setAttribute('hidden', '');
-    a.setAttribute('href', url);
-    a.setAttribute('download', `${filename}_${new Date().toISOString().split('T')[0]}.csv`);
+    const a = document.createElement("a");
+    a.setAttribute("hidden", "");
+    a.setAttribute("href", url);
+    a.setAttribute(
+      "download",
+      `${filename}_${new Date().toISOString().split("T")[0]}.csv`
+    );
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
   };
 
-  // Connection test function (optional - you can add if needed)
+  // Connection test function
   const testConnection = async () => {
     try {
-      const response = await fetch(`${scripts.results}?action=test&t=${Date.now()}`);
+      const response = await fetch(
+        `${scripts.results}?action=test&t=${Date.now()}`
+      );
       const result = await response.json();
       if (result.success) {
-        alert('Connection test successful!');
+        alert("Connection test successful!");
       } else {
-        alert('Connection test failed: ' + (result.error || 'Unknown error'));
+        alert("Connection test failed: " + (result.error || "Unknown error"));
       }
     } catch (error) {
-      alert('Connection test failed: ' + error.message);
+      alert("Connection test failed: " + error.message);
     }
   };
 
-  // CORS proxy function (optional - you can add if needed)
+  // CORS proxy function
   const useCorsProxy = async () => {
-    alert('Switching to CORS proxy for connections...');
+    alert("Switching to CORS proxy for connections...");
     // Implementation depends on how you want to handle this
+  };
+
+  // Handle sending payment confirmation email with GET request
+  const handleSendPaymentEmailGET = async (paymentId, paymentData) => {
+    console.log("📧 handleSendPaymentEmailGET called:", {
+      paymentId,
+      paymentData,
+    });
+
+    if (
+      !window.confirm(
+        `Send payment confirmation email to ${paymentData.email}?`
+      )
+    ) {
+      return;
+    }
+
+    try {
+      console.log("📧 Sending email for payment:", paymentId);
+
+      const url = `${
+        scripts.results
+      }?action=sendPaymentEmail&paymentId=${paymentId}&t=${Date.now()}`;
+      console.log("📧 Email request URL:", url);
+
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      const responseText = await response.text();
+      console.log("📧 Raw email response:", responseText);
+
+      try {
+        const result = JSON.parse(responseText);
+        console.log("📧 Parsed email response:", result);
+
+        if (result.success) {
+          alert("✅ Confirmation email sent successfully!");
+        } else {
+          // Show more detailed error message
+          const errorMsg =
+            result.error || result.data?.error || "Unknown error";
+          console.error("❌ Email sending failed:", errorMsg);
+          alert(`❌ Failed to send email: ${errorMsg}`);
+        }
+      } catch (parseError) {
+        console.error("Failed to parse response:", parseError);
+        console.error("Raw response that failed to parse:", responseText);
+        alert(
+          "⚠️ Email sent but server response was not clear. Check server logs."
+        );
+      }
+    } catch (error) {
+      console.error("❌ Network error sending email:", error);
+      alert(`❌ Network error sending email: ${error.message}`);
+    }
   };
 
   const renderResultsTable = () => {
@@ -881,116 +961,194 @@ const handleUpdatePaymentStatus = async (paymentId, status) => {
     );
   };
 
-  const renderPaymentsTable = () => (
-    <div className="table-container">
-      <div className="table-header">
-        <h3>
-          <FaMoneyBillWave /> Payment Management ({filteredPayments.length})
-        </h3>
-        <div className="table-actions">
-          <button
-            className="btn-secondary"
-            onClick={() => exportToCSV(payments, "payments")}
-            disabled={payments.length === 0}
-          >
-            <FaDownload /> Export CSV
-          </button>
-        </div>
-      </div>
+  const renderPaymentsTable = () => {
+    console.log("🔍 renderPaymentsTable called");
+    console.log("🔍 filteredPayments:", filteredPayments);
+    console.log("🔍 paginatedPayments:", paginatedPayments);
 
-      {filteredPayments.length === 0 ? (
-        <div className="no-data-message">No payments found.</div>
-      ) : (
-        <>
-          <div className="table-responsive">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Category</th>
-                  <th>Amount</th>
-                  <th>Transaction ID</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedPayments.map((payment) => (
-                  <tr key={payment.id || Math.random()}>
-                    <td>{payment.id}</td>
-                    <td>{payment.name}</td>
-                    <td>{payment.email}</td>
-                    <td>
-                      <span className={`category-badge ${payment.category}`}>
-                        {payment.category === "single" ? "Single" : "Story"}
-                      </span>
-                    </td>
-                    <td>{payment.totalAmount?.toLocaleString()} BDT</td>
-                    <td>
-                      <code>{payment.transactionId}</code>
-                    </td>
-                    <td>
-                      <span className={`status-badge ${payment.status}`}>
-                        {payment.status === "verified"
-                          ? "Verified"
-                          : payment.status === "pending"
-                          ? "Pending"
-                          : payment.status === "rejected"
-                          ? "Rejected"
-                          : payment.status}
-                      </span>
-                    </td>
-                    <td className="actions-cell">
-                      <button
-                        className="action-btn view-btn"
-                        onClick={() => {
-                          setSelectedPayment(payment);
-                          setShowPaymentModal(true);
-                        }}
-                        title="View Details"
-                      >
-                        <FaEye />
-                      </button>
-                      {payment.status === "pending" && (
-                        <>
-                          <button
-                            className="action-btn approve-btn"
-                            onClick={() =>
-                              handleUpdatePaymentStatus(payment.id, "verified")
-                            }
-                            title="Verify Payment"
-                          >
-                            <FaCheck />
-                          </button>
-                          <button
-                            className="action-btn reject-btn"
-                            onClick={() =>
-                              handleUpdatePaymentStatus(payment.id, "rejected")
-                            }
-                            title="Reject Payment"
-                          >
-                            <FaTimes />
-                          </button>
-                        </>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+    // Calculate counts for stats
+    const pendingPaymentsCount = filteredPayments.filter(
+      (p) => p.status && p.status.toLowerCase().trim() === "pending"
+    ).length;
+
+    const confirmedPaymentsCount = filteredPayments.filter(
+      (p) => p.status && p.status.toLowerCase().trim() === "confirmed"
+    ).length;
+
+    return (
+      <div className="table-container">
+        <div className="table-header">
+          <h3>
+            <FaMoneyBillWave /> Payment Management ({filteredPayments.length})
+            <span className="status-summary">
+              <span className="confirmed-count">
+                {confirmedPaymentsCount} Confirmed
+              </span>
+              <span className="pending-count">
+                {pendingPaymentsCount} Pending
+              </span>
+            </span>
+          </h3>
+          <div className="table-actions">
+            <button
+              className="btn-secondary"
+              onClick={() => exportToCSV(payments, "payments")}
+              disabled={payments.length === 0}
+            >
+              <FaDownload /> Export CSV
+            </button>
           </div>
-          <Pagination
-            currentPage={currentPaymentsPage}
-            totalPages={totalPaymentsPages}
-            onPageChange={setCurrentPaymentsPage}
-            dataType="payments"
-          />
-        </>
-      )}
-    </div>
-  );
+        </div>
+
+        {filteredPayments.length === 0 ? (
+          <div className="no-data-message">No payments found.</div>
+        ) : (
+          <>
+            <div className="table-responsive">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Transaction ID</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginatedPayments.map((payment) => {
+                    // Normalize status for comparison
+                    const normalizedStatus = payment.status
+                      ? payment.status.toString().toLowerCase().trim()
+                      : "pending";
+
+                    const shouldShowEmail = normalizedStatus === "pending";
+
+                    console.log(
+                      `🔍 Payment ${payment.id}: status=${payment.status}, normalized=${normalizedStatus}, showEmail=${shouldShowEmail}`
+                    );
+
+                    return (
+                      <tr key={payment.id || Math.random()}>
+                        <td>{payment.id}</td>
+                        <td>{payment.name}</td>
+                        <td>{payment.email}</td>
+                        <td>
+                          <span
+                            className={`category-badge ${payment.category}`}
+                          >
+                            {payment.category === "single" ? "Single" : "Story"}
+                          </span>
+                        </td>
+                        <td>{payment.totalAmount?.toLocaleString()} BDT</td>
+                        <td>
+                          <code>{payment.transactionId}</code>
+                        </td>
+                        <td>
+                          <span className={`status-badge ${normalizedStatus}`}>
+                            {normalizedStatus === "pending"
+                              ? "Pending"
+                              : normalizedStatus === "rejected"
+                              ? "Rejected"
+                              : normalizedStatus === "confirmed"
+                              ? "Confirmed"
+                              : normalizedStatus}
+                          </span>
+                        </td>
+                        <td className="actions-cell">
+                          <button
+                            className="action-btn view-btn"
+                            onClick={() => {
+                              setSelectedPayment(payment);
+                              setShowPaymentModal(true);
+                            }}
+                            title="View Details"
+                          >
+                            <FaEye />
+                          </button>
+
+                          {/* Email Button - Show only for pending payments */}
+                          {shouldShowEmail && (
+                            <button
+                              className="action-btn email-btn"
+                              onClick={() => {
+                                console.log(
+                                  "📧 Email button clicked for payment:",
+                                  payment.id
+                                );
+                                handleSendPaymentEmailGET(payment.id, payment);
+                              }}
+                              title="Send Confirmation Email"
+                              style={{
+                                border: "2px solid #17a2b8",
+                                background: "rgba(23, 162, 184, 0.3)",
+                                margin: "0 2px",
+                                color: "#fff",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              <FaEnvelope />
+                            </button>
+                          )}
+
+                          {/* Show verify/reject buttons only for pending payments */}
+                          {normalizedStatus === "pending" && (
+                            <>
+                              {/* <button
+                                className="action-btn approve-btn"
+                                onClick={() => {
+                                  console.log(
+                                    "✅ Approve button clicked for payment:",
+                                    payment.id
+                                  );
+                                  handleUpdatePaymentStatus(
+                                    payment.id,
+                                    "verified"
+                                  );
+                                }}
+                                title="Verify Payment"
+                              >
+                                <FaCheck />
+                              </button> */}
+                              <button
+                                className="action-btn reject-btn"
+                                onClick={() => {
+                                  console.log(
+                                    "❌ Reject button clicked for payment:",
+                                    payment.id
+                                  );
+                                  handleUpdatePaymentStatus(
+                                    payment.id,
+                                    "rejected"
+                                  );
+                                }}
+                                title="Reject Payment"
+                              >
+                                <FaTimes />
+                              </button>
+                            </>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <Pagination
+              currentPage={currentPaymentsPage}
+              totalPages={totalPaymentsPages}
+              onPageChange={setCurrentPaymentsPage}
+              dataType="payments"
+            />
+          </>
+        )}
+      </div>
+    );
+  };
 
   const renderResultsModal = () => (
     <div className="modal-overlay">
@@ -1267,8 +1425,8 @@ const handleUpdatePaymentStatus = async (paymentId, status) => {
                 <div className="detail-label">Status:</div>
                 <div className="detail-value">
                   <span className={`status-badge ${selectedPayment.status}`}>
-                    {selectedPayment.status === "verified"
-                      ? "Verified"
+                    {selectedPayment.status === "confiremed"
+                      ? "Confirmed"
                       : selectedPayment.status === "pending"
                       ? "Pending"
                       : selectedPayment.status === "rejected"
@@ -1290,9 +1448,33 @@ const handleUpdatePaymentStatus = async (paymentId, status) => {
           >
             Close
           </button>
+
+          {/* Email button in modal */}
+          {selectedPayment && selectedPayment.status === "pending" && (
+            <button
+              className="btn-primary email-btn"
+              onClick={() => {
+                console.log(
+                  "📧 Modal email button clicked for payment:",
+                  selectedPayment.id
+                );
+                handleSendPaymentEmailGET(selectedPayment.id, selectedPayment);
+                setShowPaymentModal(false);
+                setSelectedPayment(null);
+              }}
+              style={{
+                background: "rgba(23, 162, 184, 0.15)",
+                border: "1px solid rgba(23, 162, 184, 0.3)",
+                color: "#17a2b8",
+              }}
+            >
+              <FaEnvelope /> Send Confirmation Email
+            </button>
+          )}
+
           {selectedPayment && selectedPayment.status === "pending" && (
             <>
-              <button
+              {/* <button
                 className="btn-primary approve-btn"
                 onClick={() => {
                   handleUpdatePaymentStatus(selectedPayment.id, "verified");
@@ -1301,7 +1483,7 @@ const handleUpdatePaymentStatus = async (paymentId, status) => {
                 }}
               >
                 <FaCheck /> Verify Payment
-              </button>
+              </button> */}
               <button
                 className="btn-primary reject-btn"
                 onClick={() => {
@@ -1380,8 +1562,31 @@ const handleUpdatePaymentStatus = async (paymentId, status) => {
           <div className="stat-card">
             <FaCheck />
             <div className="stat-content">
-              <h3>{payments.filter((p) => p.status === "verified").length}</h3>
-              <p>Verified Payments</p>
+              <h3>
+                {
+                  payments.filter(
+                    (p) =>
+                      p.status &&
+                      p.status.toString().toLowerCase().trim() === "confirmed"
+                  ).length
+                }
+              </h3>
+              <p>Confirmed Payments</p>
+            </div>
+          </div>
+          <div className="stat-card">
+            <FaEnvelope />
+            <div className="stat-content">
+              <h3>
+                {
+                  payments.filter(
+                    (p) =>
+                      p.status &&
+                      p.status.toString().toLowerCase().trim() === "pending"
+                  ).length
+                }
+              </h3>
+              <p>Pending (Emailable)</p>
             </div>
           </div>
         </div>

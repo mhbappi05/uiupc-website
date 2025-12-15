@@ -250,9 +250,9 @@
   border: 1px solid rgba(255, 193, 7, 0.3);
 }
 
-.status-badge.verified {
+.status-badge.confirmed {
   background: rgba(25, 135, 84, 0.2);
-  color: #75b798;
+  color: #1dff96;
   border: 1px solid rgba(25, 135, 84, 0.3);
 }
 
@@ -851,4 +851,14 @@
   .table-actions button {
     width: 100%;
   }
+}
+
+/* Add to ResultsManagement.css */
+.email-btn {
+  color: #17a2b8;
+  background: rgba(23, 162, 184, 0.1);
+}
+
+.email-btn:hover {
+  background: rgba(23, 162, 184, 0.2);
 }
