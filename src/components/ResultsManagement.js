@@ -302,20 +302,45 @@ const ResultsManagement = ({ scripts, user, onUpdate }) => {
     (result) => result.category === "story"
   );
 
-  // Filter payments - ensure payments is an array
+  // Filter and sort payments - show pending first, then by timestamp
   const filteredPayments = Array.isArray(payments)
-    ? payments.filter((payment) => {
-        if (searchQuery) {
-          const query = searchQuery.toLowerCase();
-          return (
-            (payment.name && payment.name.toLowerCase().includes(query)) ||
-            (payment.email && payment.email.toLowerCase().includes(query)) ||
-            (payment.transactionId &&
-              payment.transactionId.toLowerCase().includes(query))
-          );
-        }
-        return true;
-      })
+    ? payments
+        .filter((payment) => {
+          if (searchQuery) {
+            const query = searchQuery.toLowerCase();
+            return (
+              (payment.name && payment.name.toLowerCase().includes(query)) ||
+              (payment.email && payment.email.toLowerCase().includes(query)) ||
+              (payment.transactionId &&
+                payment.transactionId.toLowerCase().includes(query))
+            );
+          }
+          return true;
+        })
+        .sort((a, b) => {
+          // Sort by status: pending first, then confirmed, then rejected
+          const statusOrder = {
+            pending: 0,
+            confirmed: 1,
+            rejected: 2,
+            verified: 1,
+          };
+          const aStatus = (a.status || "pending")
+            .toString()
+            .toLowerCase()
+            .trim();
+          const bStatus = (b.status || "pending")
+            .toString()
+            .toLowerCase()
+            .trim();
+
+          // If status is the same, sort by timestamp (newest first)
+          if (statusOrder[aStatus] === statusOrder[bStatus]) {
+            return new Date(b.timestamp || 0) - new Date(a.timestamp || 0);
+          }
+
+          return statusOrder[aStatus] - statusOrder[bStatus];
+        })
     : [];
 
   // Pagination logic for results
@@ -544,22 +569,75 @@ const ResultsManagement = ({ scripts, user, onUpdate }) => {
     try {
       console.log(`Updating payment ${paymentId} to ${status}`);
 
-      const formData = new FormData();
-      formData.append("action", "updatePaymentStatus");
-      formData.append("paymentId", paymentId);
-      formData.append("status", status);
-
-      await fetch(scripts.results, {
-        method: "POST",
-        mode: "no-cors",
-        body: formData,
+      // First, update the local state optimistically
+      const updatedPayments = payments.map((payment) => {
+        if (payment.id === paymentId) {
+          return {
+            ...payment,
+            status: status,
+            // For consistency with your data structure
+            status: status === "verified" ? "confirmed" : status,
+          };
+        }
+        return payment;
       });
 
-      alert(`Payment ${status} submitted. Refreshing data...`);
-      setRefreshTrigger((prev) => prev + 1);
+      // Update UI immediately
+      setPayments(updatedPayments);
+
+      // Then send to server
+      const queryParams = new URLSearchParams({
+        action: "updatePaymentStatus",
+        paymentId: paymentId,
+        status: status,
+        t: Date.now(),
+      }).toString();
+
+      const url = `${scripts.results}?${queryParams}`;
+
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      const responseText = await response.text();
+      console.log("Payment update response:", responseText);
+
+      let result;
+      try {
+        result = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error("Failed to parse response:", parseError);
+        // Keep the optimistic update, but log the error
+        console.warn(
+          "Payment status updated locally but server response unclear"
+        );
+        return;
+      }
+
+      if (result.success) {
+        console.log(`✅ Payment ${status} successfully`);
+
+        // Optional: Refresh from server to ensure consistency
+        setTimeout(() => {
+          fetchPayments();
+        }, 1000);
+      } else {
+        // Revert optimistic update if server fails
+        console.error("Server failed to update payment:", result.error);
+        alert(`Failed to update payment: ${result.error}`);
+
+        // Revert the optimistic update by refreshing from server
+        fetchPayments();
+      }
     } catch (error) {
       console.error("Error updating payment status:", error);
       alert("Error updating payment status: " + error.message);
+
+      // Revert optimistic update by refreshing from server
+      fetchPayments();
     }
   };
 
