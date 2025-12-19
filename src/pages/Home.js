@@ -31,7 +31,7 @@ const Home = ({ featuredPhotos }) => {
             time: "9:00 AM - 8:00 PM",
             location: "Will be Announced SOON, Stay Tuned!",
             // registrationLink: "https://forms.gle/your-registration-link",
-            entryFee: "Initially Free, 1000BDT per Single Photos & 2000BDT per Photo Story after shortlisting",
+            entryFee: "Initially Free, 1020BDT per Single Photos & 3060BDT per Photo Story after shortlisting",
             submissionDeadline: "December 20, 2025",
             announcementDate: "December 20, 2025",
             description: "A prestigious national-level photography exhibition that brings together photography enthusiasts from across the country.",

@@ -26,11 +26,13 @@ const ResultsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-  
+
   // Pagination & Search State
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const registrationEndDate = new Date("2025-12-19");
+  const isRegistrationClosed = new Date() > registrationEndDate;
 
   // Google Apps Script Web App URL - FIXED URL (remove any trailing slashes)
   const GOOGLE_SCRIPT_URL =
@@ -283,15 +285,16 @@ const ResultsPage = () => {
   // Filter and pagination logic
   const displayResults = useMemo(() => {
     if (!results) return [];
-    
-    const categoryResults = selectedCategory === "single" 
-      ? results.singlePhotos || [] 
-      : results.stories || [];
-    
+
+    const categoryResults =
+      selectedCategory === "single"
+        ? results.singlePhotos || []
+        : results.stories || [];
+
     // Filter by search query
-    const filtered = categoryResults.filter(item => {
+    const filtered = categoryResults.filter((item) => {
       if (!searchQuery.trim()) return true;
-      
+
       const query = searchQuery.toLowerCase();
       return (
         item.name.toLowerCase().includes(query) ||
@@ -300,14 +303,14 @@ const ResultsPage = () => {
         (item.selected ? "selected" : "not selected").includes(query)
       );
     });
-    
+
     return filtered;
   }, [results, selectedCategory, searchQuery]);
 
   // Calculate pagination
   const totalItems = displayResults.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-  
+
   // Get current page items
   const currentItems = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -320,9 +323,9 @@ const ResultsPage = () => {
     if (pageNumber < 1 || pageNumber > totalPages) return;
     setCurrentPage(pageNumber);
     // Scroll to top of table
-    const tableContainer = document.querySelector('.results-table-container');
+    const tableContainer = document.querySelector(".results-table-container");
     if (tableContainer) {
-      tableContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      tableContainer.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
@@ -441,34 +444,31 @@ const ResultsPage = () => {
     <div className="results-page">
       <div className="container">
         <div className="quick-nav-buttons">
-  <button
-    className="back-btn"
-    onClick={() => navigate("/events")}
-  >
-    <FaArrowLeft /> Back to Events
-  </button>
-  
-  <button
-    className="jump-to-registration-btn"
-    onClick={() => {
-      const paymentSection = document.querySelector('.payment-section');
-      if (paymentSection) {
-        paymentSection.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'start' 
-        });
-        // Optionally open the registration form automatically
-        if (!showPaymentForm) {
-          setTimeout(() => {
-            setShowPaymentForm(true);
-          }, 500);
-        }
-      }
-    }}
-  >
-    <FaCheckCircle /> Jump to Registration
-  </button>
-</div>
+          <button className="back-btn" onClick={() => navigate("/events")}>
+            <FaArrowLeft /> Back to Events
+          </button>
+
+          <button
+            className="jump-to-registration-btn"
+            onClick={() => {
+              const paymentSection = document.querySelector(".payment-section");
+              if (paymentSection) {
+                paymentSection.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+                // Optionally open the registration form automatically
+                // if (!showPaymentForm) {
+                //   setTimeout(() => {
+                //     setShowPaymentForm(true);
+                //   }, 500);
+                // }
+              }
+            }}
+          >
+            <FaCheckCircle /> Jump to Registration
+          </button>
+        </div>
 
         <div className="results-header">
           <FaTrophy className="trophy-icon" />
@@ -512,14 +512,16 @@ const ResultsPage = () => {
             <input
               type="text"
               placeholder={`Search ${
-                selectedCategory === "single" ? "Single Photos" : "Photo Stories"
+                selectedCategory === "single"
+                  ? "Single Photos"
+                  : "Photo Stories"
               } by name, institute, or status...`}
               value={searchQuery}
               onChange={handleSearch}
               className="search-input"
             />
             {searchQuery && (
-              <button 
+              <button
                 className="clear-search-btn"
                 onClick={() => setSearchQuery("")}
                 aria-label="Clear search"
@@ -550,7 +552,8 @@ const ResultsPage = () => {
             <tbody>
               {currentItems.length > 0 ? (
                 currentItems.map((result, index) => {
-                  const globalIndex = (currentPage - 1) * itemsPerPage + index + 1;
+                  const globalIndex =
+                    (currentPage - 1) * itemsPerPage + index + 1;
                   return (
                     <tr
                       key={result.id}
@@ -606,10 +609,10 @@ const ResultsPage = () => {
               >
                 <FaAngleLeft /> Prev
               </button>
-              
+
               <div className="page-numbers">
                 {Array.from({ length: totalPages }, (_, i) => i + 1)
-                  .filter(page => {
+                  .filter((page) => {
                     // Show first, last, current, and pages around current
                     if (page === 1 || page === totalPages) return true;
                     if (Math.abs(page - currentPage) <= 2) return true;
@@ -617,12 +620,17 @@ const ResultsPage = () => {
                   })
                   .map((page, index, array) => {
                     // Add ellipsis for gaps
-                    const showEllipsis = index > 0 && page - array[index - 1] > 1;
+                    const showEllipsis =
+                      index > 0 && page - array[index - 1] > 1;
                     return (
                       <React.Fragment key={page}>
-                        {showEllipsis && <span className="page-ellipsis">...</span>}
+                        {showEllipsis && (
+                          <span className="page-ellipsis">...</span>
+                        )}
                         <button
-                          className={`page-number ${currentPage === page ? "active" : ""}`}
+                          className={`page-number ${
+                            currentPage === page ? "active" : ""
+                          }`}
                           onClick={() => handlePageChange(page)}
                         >
                           {page}
@@ -631,7 +639,7 @@ const ResultsPage = () => {
                     );
                   })}
               </div>
-              
+
               <button
                 className="pagination-btn next-page"
                 onClick={() => handlePageChange(currentPage + 1)}
@@ -707,13 +715,29 @@ const ResultsPage = () => {
 
           <button
             className="btn-primary payment-toggle-btn"
-            onClick={() => setShowPaymentForm(!showPaymentForm)}
+            onClick={() => {
+              if (isRegistrationClosed) {
+                alert("Sorry! Registration is closed.");
+              } else {
+                setShowPaymentForm(!showPaymentForm);
+              }
+            }}
             disabled={submitting}
           >
             {showPaymentForm
               ? "Hide Registration Form"
               : "Register for Exhibition"}
           </button>
+
+          {/* <button
+            className="btn-primary payment-toggle-btn"
+            onClick={() => setShowPaymentForm(!showPaymentForm)}
+            disabled={submitting}
+          >
+            {showPaymentForm
+              ? "Hide Registration Form"
+              : "Register for Exhibition"}
+          </button> */}
 
           {showPaymentForm && (
             <form className="payment-form" onSubmit={handlePaymentSubmit}>
@@ -851,7 +875,9 @@ const ResultsPage = () => {
                       Bkash02: 01679861740 (Personal)
                     </option>
                     <option value="nagad">Nagad: 01679861740 (Personal)</option>
-                    <option value="rocket">Rocket: 01679861740 (Personal)</option>
+                    <option value="rocket">
+                      Rocket: 01679861740 (Personal)
+                    </option>
                   </select>
                 </div>
 
@@ -908,7 +934,10 @@ const ResultsPage = () => {
                   <li>Enter the transaction ID in the form</li>
                   <li>Submit the form after payment</li>
                   <li>We will verify payment within 24 hours</li>
-                  <li>For any queries: 01783503006 (Md Zobaer Ahmed - Act. Head of HR, UIU)</li>
+                  <li>
+                    For any queries: 01783503006 (Md Zobaer Ahmed - Act. Head of
+                    HR, UIU)
+                  </li>
                 </ol>
               </div>
 

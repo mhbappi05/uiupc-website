@@ -301,7 +301,7 @@ const Events = () => {
             <p className="banner-subtitle">
               Result Have Been Published • December 14, 2025
             </p>
-            <h2 className="banner-title">Registration Going On</h2>
+            <h2 className="banner-title">Registration is Closed</h2>
             <p className="banner-subtitle">
               Registration Deadline • December 17, 2025
             </p>
