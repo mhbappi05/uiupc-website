@@ -132,10 +132,23 @@ const EventDetail = () => {
           -> Will be Announced SOON, Stay Tuned!
 
         ## 📍 Venue Details
-          -> Will be Announced SOON, Stay Tuned!
+          -> Phase 01 :
+            Bangladesh Shilpakala Academy
+            26th Dec to 28th Dec, 2025
+
+          -> Phase 02 :
+            United International University (UIU) 
+            6th Jan to 07th Jan, 2026
 
         ## 🤝 Sponsors & Partners
           -> Tittle Sponsor: United Medical
+          -> Venue Partner: Bangladesh Shilpakala Academy
+          -> Education Partner: Counter Foto
+          -> Broadcast Partner: Jamuna TV
+          -> Print Media Partner: The Bussiness Standard
+          -> Digital Media Partner: Campus24
+          -> Youth Engagement Partner: The Business Standard Graduate
+          -> Supporting Partner: UIU Photography Club , DCCSA
 
         *************************************************//////////*************************************************
         ## TERMS & CONDITION FOR PHOTO SUBMISSION
