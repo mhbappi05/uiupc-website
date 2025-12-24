@@ -10,6 +10,17 @@ const HeroSlider = () => {
   // Local slides data
   const localSlides = [
     {
+      id: 2,
+      imageUrl:
+        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1766601236/event_cover-02_uc2p0k.png",
+      title: "Shutter Stories - Chapter IV",
+      subtitle: "Opening",
+      subtitle2: "In Bangladesh Shilpakala Academy on December 26, 2025 at 4:00 PM. ",
+      eventLink: "/results",
+      type: "image",
+      duration: 15000, // 5 seconds for images
+    },
+    {
       id: 1,
       videoUrl:
         "https://res.cloudinary.com/do0e8p5d2/video/upload/v1763138349/Shutter_Stories_Chapter_4_-_2025_Promo_glsjvm.mp4",
@@ -169,6 +180,7 @@ const HeroSlider = () => {
           <div className="slide-content">
             <h1>{slide.title}</h1>
             <p>{slide.subtitle}</p>
+            <p>{slide.subtitle2}</p>
             <div className="cta-buttons">
               <a href={slide.eventLink} className="btn btn-secondary">
                 Shutter Stories - Chapter IV <br/>
