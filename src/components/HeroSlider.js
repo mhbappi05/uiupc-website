@@ -14,11 +14,11 @@ const HeroSlider = () => {
       imageUrl:
         "https://res.cloudinary.com/do0e8p5d2/image/upload/v1766601236/event_cover-02_uc2p0k.png",
       title: "Shutter Stories - Chapter IV",
-      subtitle: "Opening",
-      subtitle2: "In Bangladesh Shilpakala Academy on December 26, 2025 at 4:00 PM. ",
+      subtitle: "Phase 02",
+      subtitle2: "In UIU Multipurpose Hall on January 6 and 7, 2026. ",
       eventLink: "/results",
       type: "image",
-      duration: 15000, // 5 seconds for images
+      duration: 15000, // 15 seconds for images
     },
     {
       id: 1,

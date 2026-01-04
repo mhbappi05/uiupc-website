@@ -26,7 +26,7 @@ const EventDetail = () => {
       date: "Dec 14 - Dec 17, 2025",
       time: "9:00 AM - 8:00 PM",
       //   location: 'UIU Campus & National Museum, Dhaka',
-      location: "Will be Announced SOON, Stay Tuned!",
+      location: "Phase 02: UIU Multipurpose Hall",
       registrationLink: "/register/shutter-stories",
       entryFee:
         "Single Photo: 1020BDT  Photo Story: 3060BDT",
@@ -129,7 +129,8 @@ const EventDetail = () => {
           -> Mahmud Hossain Opu
 
         ## 🎪 Event Schedule
-          -> Will be Announced SOON, Stay Tuned!
+          -> Phase 01: Bangladesh Shilpakala Academy
+          -> Phase 02: UIU Multipurpose Hall
 
         ## 📍 Venue Details
           -> Phase 01 :

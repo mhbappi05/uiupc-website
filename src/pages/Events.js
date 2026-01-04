@@ -79,7 +79,7 @@ const Events = () => {
         date: " Photo Submission Started from November 15, 2025",
         // time: "9:00 AM - 8:00 PM",
         // location: "UIU Campus & National Museum",
-        location: "Will be Announced SOON, Stay Tuned!",
+        location: "Phase 02: UIU Multipurpose Hall",
         description:
           "A prestigious national-level photography exhibition that brings together photography enthusiasts from across the country. Featuring both single photographs and compelling photo stories that narrate powerful visual tales.",
         fullDescription: `
