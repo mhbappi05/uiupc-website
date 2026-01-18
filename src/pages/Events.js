@@ -74,7 +74,7 @@ const Events = () => {
         id: "shutter-stories",
         title: "Shutter Stories",
         subtitle: "National Photography Exhibition",
-        status: "ongoing",
+        status: "completed",
         chapter: "Chapter IV",
         date: " Photo Submission Started from November 15, 2025",
         // time: "9:00 AM - 8:00 PM",
@@ -117,9 +117,9 @@ const Events = () => {
           "Professional workshops",
         ],
         stats: {
-          participants: "500+",
-          photos: "2000+",
-          chapters: "3",
+          participants: "1000+",
+          photos: "10000+",
+          chapters: "4",
           awards: "50+",
         },
         image:
@@ -294,7 +294,7 @@ const Events = () => {
         <div className="container">
           <div className="banner-content">
             <div className="banner-badge">
-              <span className="badge-text">Ongoing Event</span>
+              <span className="badge-text">Completed Event</span>
               <div className="badge-pulse"></div>
             </div>
             <h2 className="banner-title">Shutter Stories Chapter IV</h2>
