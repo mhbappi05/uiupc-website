@@ -15,35 +15,35 @@ const Stats = () => {
 
   const stats = [
     {
-      number: "100+",
+      number: "100",
       label: "Active Members",
       icon: FaUsers,
       color: "#FF6B35",
-      suffix: "",
+      suffix: "+",
       description: "Passionate photographers",
     },
     {
-      number: "50+",
+      number: "50",
       label: "Events Organized",
       icon: FaCalendarAlt,
       color: "#2196F3",
-      suffix: "",
+      suffix: "+",
       description: "Successful gatherings",
     },
     {
-      number: "25+",
+      number: "25",
       label: "Awards Won",
       icon: FaTrophy,
       color: "#FFC107",
-      suffix: "",
+      suffix: "+",
       description: "National recognition",
     },
     {
-      number: "100+",
+      number: "100",
       label: "Workshops",
       icon: FaPhotoVideo,
       color: "#9C27B0",
-      suffix: "",
+      suffix: "+",
       description: "Skill development",
     },
   ];

@@ -10,28 +10,7 @@ const HeroSlider = () => {
   // Local slides data
   const localSlides = [
     {
-      id: 2,
-      imageUrl:
-        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1766601236/event_cover-02_uc2p0k.png",
-      title: "Shutter Stories - Chapter IV",
-      subtitle: "Phase 02",
-      subtitle2: "In UIU Multipurpose Hall on January 6 and 7, 2026. ",
-      eventLink: "/results",
-      type: "image",
-      duration: 15000, // 15 seconds for images
-    },
-    {
       id: 1,
-      videoUrl:
-        "https://res.cloudinary.com/do0e8p5d2/video/upload/v1763138349/Shutter_Stories_Chapter_4_-_2025_Promo_glsjvm.mp4",
-      title: "Shutter Stories - Chapter IV",
-      subtitle: "Showcase Your Talent",
-      eventLink: "/results",
-      type: "video",
-      duration: 74000, // 74 seconds for video (1 min 14 sec)
-    },
-    {
-      id: 2,
       imageUrl:
         "https://res.cloudinary.com/do0e8p5d2/image/upload/v1763054814/uiupc_HeroSlider1_d9kprm.jpg",
       title: "UIU Photography Club",
@@ -41,24 +20,14 @@ const HeroSlider = () => {
       duration: 5000, // 5 seconds for images
     },
     {
-      id: 3,
-      imageUrl:
-        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799600/uiupc_HeroSlider3_iehvzr.png",
+      id: 2,
+      videoUrl:
+        "https://res.cloudinary.com/do0e8p5d2/video/upload/v1763138349/Shutter_Stories_Chapter_4_-_2025_Promo_glsjvm.mp4",
       title: "Shutter Stories - Chapter IV",
-      subtitle: "Submit Your Photos",
+      subtitle: "Showcase Your Talent",
       eventLink: "/results",
-      type: "image",
-      duration: 5000, // 5 seconds for images
-    },
-    {
-      id: 4,
-      imageUrl:
-        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1763225125/HeroSlider04_zqnypu.jpg",
-      title: "Call for Photo",
-      subtitle: "Submit Now for National Exhibition",
-      eventLink: "/results",
-      type: "image",
-      duration: 5000, // 5 seconds for images
+      type: "video",
+      duration: 74000, // 74 seconds for video (1 min 14 sec)
     },
     {
       id: 5,
@@ -180,7 +149,6 @@ const HeroSlider = () => {
           <div className="slide-content">
             <h1>{slide.title}</h1>
             <p>{slide.subtitle}</p>
-            <p>{slide.subtitle2}</p>
             <div className="cta-buttons">
               <a href={slide.eventLink} className="btn btn-secondary">
                 Shutter Stories - Chapter IV <br/>
