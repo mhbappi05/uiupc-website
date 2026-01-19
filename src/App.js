@@ -27,6 +27,7 @@ import EventDetail from "./pages/EventDetail";
 import PhotoSubmissionForm from "./components/PhotoSubmissionForm";
 import Login from "./pages/Login";
 import ResultsPage from "./components/ResultsPage";
+import Committee2026 from "./pages/Committee2026";
 
 // Context
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
@@ -62,7 +63,7 @@ function AppContent() {
   const [featuredPhotos, setFeaturedPhotos] = useState([]);
   const [events, setEvents] = useState([]);
   const [dataLoading, setDataLoading] = useState(true);
-  const { user, loading: authLoading } = useAuth();
+  const { loading: authLoading } = useAuth();
 
   useEffect(() => {
     // Fetch initial data
@@ -115,58 +116,59 @@ function AppContent() {
   }
 
   return (
-    <Router>
-      <div className="App">
-        <ScrollToTop />
-        <Navbar />
-        <main>
-          <Routes>
-            <Route
-              path="/"
-              element={<Home featuredPhotos={featuredPhotos} events={events} />}
-            />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/members" element={<Members />} />
-            <Route path="/events" element={<Events />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/join" element={<Join />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/events/:eventId" element={<EventDetail />} />
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute>
-                  <Admin />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/login"
-              element={
-                <PublicRoute>
-                  <Login />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/register/:eventId"
-              element={<PhotoSubmissionForm />}
-            />
-            <Route path="/results" element={<ResultsPage />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+    <div className="App">
+      <ScrollToTop />
+      <Navbar />
+      <main>
+        <Routes>
+          <Route
+            path="/"
+            element={<Home featuredPhotos={featuredPhotos} events={events} />}
+          />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/members" element={<Members />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/join" element={<Join />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/events/:eventId" element={<EventDetail />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <Admin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/register/:eventId"
+            element={<PhotoSubmissionForm />}
+          />
+          <Route path="/results" element={<ResultsPage />} />
+          <Route path="/committee-2026" element={<Committee2026 />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
   );
 }
 
-// Main App wrapper with AuthProvider
+// Main App wrapper with AuthProvider and Router
 function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <Router>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </Router>
   );
 }
 
