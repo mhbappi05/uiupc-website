@@ -41,7 +41,7 @@ const Navbar = () => {
     { path: '/gallery', label: 'Gallery' },
     { path: '/blog', label: 'Blog' },
     { path: '/contact', label: 'Contact' },
-    { path: '/committee-2026', label: 'Committee 2026' }
+    // { path: '/committee-2026', label: 'Committee 2026' }
   ];
 
   return (
