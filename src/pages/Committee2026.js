@@ -182,7 +182,7 @@ const Committee2026 = () => {
       positionType: "assistantHead",
     },
     {
-      id: 15,
+      id: 16,
       name: "Mahin Muntasin Rahul",
       role: "Asst. Head of HR",
       department: "Environment and Development Studies",
@@ -191,7 +191,7 @@ const Committee2026 = () => {
       positionType: "assistantHead",
     },
     {
-      id: 16,
+      id: 17,
       name: "Md Abdul Aziz Arafat",
       role: "Asst. Head of HR",
       department: "Computer Science & Engineering",
@@ -202,7 +202,7 @@ const Committee2026 = () => {
 
     // Designers Team
     {
-      id: 17,
+      id: 18,
       name: "Jonayed",
       role: "Head of Design",
       department: "Computer Science & Engineering",
@@ -211,7 +211,7 @@ const Committee2026 = () => {
       positionType: "head",
     },
     {
-      id: 18,
+      id: 19,
       name: "Md Abdul Aziz Arafat",
       role: "Asst. Head of Design",
       department: "Computer Science & Engineering",
@@ -222,7 +222,7 @@ const Committee2026 = () => {
 
     // Executives Team
     {
-      id: 19,
+      id: 20,
       name: "Abdullah R Rafi",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -231,7 +231,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 20,
+      id: 21,
       name: "Yeasin Arafat Babu",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -240,7 +240,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 21,
+      id: 22,
       name: "S.M. Atik Hasan",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -249,7 +249,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 22,
+      id: 23,
       name: "Fahmid Khan",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -258,7 +258,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 23,
+      id: 24,
       name: "Million Kuthial",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -267,7 +267,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 24,
+      id: 25,
       name: "Tanzin Tuli",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -276,7 +276,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 25,
+      id: 26,
       name: "Murad Hasan",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -285,7 +285,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 26,
+      id: 27,
       name: "Ameenah Binte Mahbub",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -294,7 +294,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 27,
+      id: 28,
       name: "Sadman Saleh",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -303,7 +303,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 28,
+      id: 29,
       name: "Sadika Salam",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -312,7 +312,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 29,
+      id: 30,
       name: "Nusrat Subha",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -321,7 +321,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 30,
+      id: 31,
       name: "Siam Arefin",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -330,7 +330,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 31,
+      id: 32,
       name: "Faysal Bin Ibrahim",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -377,6 +377,14 @@ const Committee2026 = () => {
         };
       }
     });
+    
+    // Add a subtle scroll effect when revealing
+    setTimeout(() => {
+      const gridSection = document.querySelector('.committee-grid-section');
+      if (gridSection) {
+        gridSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 300);
   };
 
   const getFilteredMembers = () => {
@@ -414,6 +422,30 @@ const Committee2026 = () => {
         return false;
       });
     }
+  };
+
+  // Function to separate heads and assistants for hierarchical layout
+  const getTeamStructure = () => {
+    const members = getFilteredMembers();
+    
+    if (activeFilter === "Core" || activeFilter === "Executives" || activeFilter === "all") {
+      return {
+        hasHierarchy: false,
+        head: null,
+        assistants: members,
+        hasHead: false
+      };
+    }
+    
+    const head = members.find(member => member.positionType === "head");
+    const assistants = members.filter(member => member.positionType === "assistantHead");
+    
+    return {
+      hasHierarchy: head || assistants.length > 0,
+      head: head || null,
+      assistants: assistants,
+      hasHead: !!head
+    };
   };
 
   // Initialize state when component mounts and when filter changes
@@ -573,7 +605,7 @@ const Committee2026 = () => {
             <AnimatePresence mode="wait">
               <motion.div
                 key="all"
-                className="committee-grid"
+                className={`committee-grid ${committee2026.length === 1 ? 'single-card' : ''}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -686,29 +718,84 @@ const Committee2026 = () => {
                 </div>
               )}
 
-              {/* Committee Grid */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeFilter + "-members"}
-                  className="committee-grid"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {getFilteredMembers().map((member) => (
-                    <div key={member.id} className="committee-card-wrapper">
-                      <CommitteeCard
-                        member={member}
-                        onClick={() => handleMemberClick(member)}
-                      />
-                    </div>
-                  ))}
-                </motion.div>
-              </AnimatePresence>
+              {/* Committee Grid - Show different layouts based on team type */}
+              {activeFilter === "Core" || activeFilter === "Executives" ? (
+                // For Core and Executives - normal grid
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeFilter + "-members"}
+                    className={`committee-grid ${getFilteredMembers().length === 1 ? 'single-card' : ''}`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {getFilteredMembers().map((member) => (
+                      <div key={member.id} className="committee-card-wrapper">
+                        <CommitteeCard
+                          member={member}
+                          onClick={() => handleMemberClick(member)}
+                        />
+                      </div>
+                    ))}
+                  </motion.div>
+                </AnimatePresence>
+              ) : activeFilter !== "all" && activeFilter !== "Core" && activeFilter !== "Executives" ? (
+                // For other teams with hierarchy layout
+                getTeamStructure().hasHierarchy ? (
+                  <div className="team-hierarchical-grid">
+                    {/* Head Card (if revealed) */}
+                    {getTeamStructure().hasHead && (
+                      <div className="head-card-container">
+                        <div className="committee-card-wrapper">
+                          <CommitteeCard
+                            member={getTeamStructure().head}
+                            onClick={() => handleMemberClick(getTeamStructure().head)}
+                          />
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Assistant Cards */}
+                    {getTeamStructure().assistants.length > 0 && (
+                      <div className="assistant-cards-container">
+                        {getTeamStructure().assistants.map((member) => (
+                          <div key={member.id} className="committee-card-wrapper">
+                            <CommitteeCard
+                              member={member}
+                              onClick={() => handleMemberClick(member)}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  // If no hierarchy, use normal grid
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeFilter + "-members"}
+                      className={`committee-grid ${getFilteredMembers().length === 1 ? 'single-card' : ''}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {getFilteredMembers().map((member) => (
+                        <div key={member.id} className="committee-card-wrapper">
+                          <CommitteeCard
+                            member={member}
+                            onClick={() => handleMemberClick(member)}
+                          />
+                        </div>
+                      ))}
+                    </motion.div>
+                  </AnimatePresence>
+                )
+              ) : null}
 
               {/* Empty state message */}
-              {getFilteredMembers().length === 0 && (
+              {getFilteredMembers().length === 0 && activeFilter !== "all" && (
                 <div className="empty-state">
                   <p>
                     No members revealed yet. Click the buttons above to reveal

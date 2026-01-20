@@ -168,6 +168,35 @@
 
 .committee-card-wrapper {
   perspective: 1000px;
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.head-card-container .committee-card {
+  transform-origin: center;
+  animation: cardReveal 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes cardReveal {
+  0% {
+    transform: scale(0.8) translateY(30px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
 }
 
 /* Committee Card Styles */
@@ -262,6 +291,15 @@
   align-self: flex-start;
 }
 
+/* Center single card */
+.committee-grid.single-card {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  max-width: 400px !important;
+  margin: 0 auto !important;
+}
+
 /* Filtered Section Container */
 .filtered-section-container {
   background: rgba(30, 30, 30, 0.6);
@@ -337,6 +375,9 @@
   transition: all 0.3s ease;
   font-size: 0.9rem;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .reveal-position-btn:hover {
@@ -349,6 +390,114 @@
   color: white;
   border-color: transparent;
   box-shadow: var(--shadow-orange);
+  animation: glowPulse 2s infinite;
+  transform: scale(1.05);
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(255, 107, 0, 0.5),
+                var(--shadow-orange);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 107, 0, 0.8),
+                0 0 40px rgba(255, 107, 0, 0.3),
+                var(--shadow-orange);
+  }
+}
+
+/* Reveal button shine effect */
+.reveal-position-btn.active::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  transform: rotate(30deg);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) rotate(30deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(30deg);
+  }
+}
+
+/* Team layout for heads and assistants */
+.team-hierarchical-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  padding: 2rem 0;
+}
+
+.head-card-container {
+  position: relative;
+  margin: 0 auto;
+  max-width: 400px;
+}
+
+.head-card-container::before {
+  content: 'HEAD';
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--uiu-orange), var(--uiu-orange-light));
+  color: white;
+  padding: 0.5rem 2rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  z-index: 10;
+  box-shadow: var(--shadow-orange);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+}
+
+.assistant-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+  padding-top: 3rem;
+  border-top: 2px dashed rgba(255, 107, 0, 0.3);
+}
+
+.assistant-cards-container::before {
+  content: 'Our Valued Members';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  background: rgba(30, 30, 30, 0.95);
+  color: var(--uiu-orange);
+  padding: 0.5rem 2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  z-index: 10;
+  border: 2px solid rgba(255, 107, 0, 0.3);
 }
 
 /* Team Reveal Section for non-Core teams */
@@ -632,5 +781,64 @@
   .status-indicator {
     padding: 0.6rem 1rem;
     font-size: 0.85rem;
+  }
+}
+
+/* Add this to enhance the Core reveal section */
+.core-reveal-section {
+  position: relative;
+  background: linear-gradient(135deg, 
+    rgba(255, 107, 0, 0.1) 0%, 
+    rgba(255, 107, 0, 0.05) 50%, 
+    transparent 100%);
+}
+
+.core-reveal-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    var(--uiu-orange), 
+    transparent);
+  animation: lineGlow 3s infinite;
+}
+
+@keyframes lineGlow {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.reveal-buttons-grid {
+  position: relative;
+  z-index: 2;
+}
+
+.reveal-position-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.reveal-position-btn.active::before {
+  content: '👑';
+  font-size: 1.2rem;
+  animation: crownBounce 2s infinite;
+}
+
+@keyframes crownBounce {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(15deg);
   }
 }
