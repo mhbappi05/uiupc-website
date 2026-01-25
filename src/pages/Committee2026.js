@@ -31,62 +31,62 @@ const Committee2026 = () => {
     // Core Team
     {
       id: 1,
-      name: "Anika Anjum Mona",
+      name: "Ahmad Hasan",
       role: "President",
-      department: "Environment and Development Studies",
-      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/mona_y54t2k.jpg",
+      department: "Computer Science & Engineering",
+      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983042/ahmad_enzaam.jpg",
       tag: "Core",
       positionType: "president",
     },
     {
       id: 2,
-      name: "Ahmad Hasan",
-      role: "General Secretary",
+      name: "Md Zobaer Ahmed",
+      role: "Vice President",
       department: "Computer Science & Engineering",
-      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983042/ahmad_enzaam.jpg",
+      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983045/zobayer_rztaox.jpg",
+      tag: "Core",
+      positionType: "vicepresident",
+    },
+    {
+      id: 3,
+      name: "Anika Anjum Mona",
+      role: "General Secretary",
+      department: "Environment and Development Studies",
+      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/mona_y54t2k.jpg",
       tag: "Core",
       positionType: "generalSecretary",
     },
     {
-      id: 3,
-      name: "Minhaz Hossain Shemul",
+      id: 4,
+      name: "Dipto Mahdud Sultan",
       role: "Assistant General Secretary",
-      department: "Electrical & Electronic Engineering",
-      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/shemul_o2n1am.jpg",
+      department: "Department of MSJ",
+      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983041/dipto_yxckvv.jpg",
       tag: "Core",
       positionType: "assistantGeneralSecretary",
     },
     {
-      id: 4,
-      name: "Mayesha Nur",
+      id: 5,
+      name: "Jonayed Shah Jesun",
       role: "Treasurer",
       department: "Computer Science & Engineering",
-      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/maisha_eawkws.jpg",
+      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983043/Jonayed_ozbke5.jpg",
       tag: "Core",
       positionType: "treasurer",
     },
 
     // Public Relations Team
     {
-      id: 5,
-      name: "Rifat Hassan Rabib",
+      id: 6,
+      name: "Zannatul Amin",
       role: "Head of PR",
-      department: "Computer Science & Engineering",
-      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983041/rabib_dzpawf.jpg",
+      department: "Deptartment of BBA",
+      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983042/anika_anssy2.jpg",
       tag: "Public Relations",
       positionType: "head",
     },
     {
-      id: 15,
-      name: "Zannatul Amin",
-      role: "Asst. Head of PR",
-      department: "Computer Science & Engineering",
-      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983042/anika_anssy2.jpg",
-      tag: "Public Relations",
-      positionType: "assistantHead",
-    },
-    {
-      id: 6,
+      id: 7,
       name: "Jahid Hasan Sabbir",
       role: "Asst. Head of PR",
       department: "Computer Science & Engineering",
@@ -95,7 +95,7 @@ const Committee2026 = () => {
       positionType: "assistantHead",
     },
     {
-      id: 7,
+      id: 8,
       name: "Tahsin Moin Rhythm",
       role: "Asst. Head of PR",
       department: "Computer Science & Engineering",
@@ -106,17 +106,17 @@ const Committee2026 = () => {
 
     // Organizers Team
     {
-      id: 8,
-      name: "Tanvir Ahmed",
+      id: 9,
+      name: "Minhaz Hossain Shemul",
       role: "Head of ORG",
-      department: "Computer Science & Engineering",
-      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/tanvir_cuzdid.jpg",
+      department: "Electrical & Electronic Engineering",
+      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/shemul_o2n1am.jpg",
       tag: "Organizers",
       positionType: "head",
     },
     {
-      id: 9,
-      name: "Arean Nobi",
+      id: 10,
+      name: "Md Arean Nobi Kanok",
       role: "Asst. Head of Org",
       department: "Computer Science & Engineering",
       profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983041/arean_ubnwpt.jpg",
@@ -124,7 +124,7 @@ const Committee2026 = () => {
       positionType: "assistantHead",
     },
     {
-      id: 10,
+      id: 11,
       name: "Md. Eakub Ali",
       role: "Asst. Head of Org",
       department: "Electrical & Electronic Engineering",
@@ -135,22 +135,13 @@ const Committee2026 = () => {
 
     // Event Team
     {
-      id: 11,
-      name: "Dipto Mahdud Sultan",
+      id: 12,
+      name: "Mayesha Tun Nur",
       role: "Head of Event",
-      department: "Department of MSJ",
-      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983041/dipto_yxckvv.jpg",
+      department: "Computer Science & Engineering",
+      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983044/maisha_eawkws.jpg",
       tag: "Event",
       positionType: "head",
-    },
-    {
-      id: 12,
-      name: "Rifat Hassan Rabib",
-      role: "Asst. Head of Event",
-      department: "Computer Science & Engineering",
-      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983041/rabib_dzpawf.jpg",
-      tag: "Event",
-      positionType: "assistantHead",
     },
     {
       id: 13,
@@ -161,28 +152,37 @@ const Committee2026 = () => {
       tag: "Event",
       positionType: "assistantHead",
     },
-
-    // Human Resources Team
     {
       id: 14,
-      name: "Md Zobaer Ahmed",
-      role: "Head of HR",
+      name: "Abdullah R Rafi",
+      role: "Asst. Head of Event",
       department: "Computer Science & Engineering",
-      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983045/zobayer_rztaox.jpg",
-      tag: "Human Resources",
-      positionType: "head",
+      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1768918568/rafi_ndafws.jpg",
+      tag: "Event",
+      positionType: "assistantHead",
     },
     {
       id: 15,
+      name: "Faiaz Nibir",
+      role: "Asst. Head of Event",
+      department: "Computer Science & Engineering",
+      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1769364556/nibir_dwslhp.jpg",
+      tag: "Event",
+      positionType: "assistantHead",
+    },
+
+    // Human Resources Team
+    {
+      id: 16,
       name: "Pratoy Barua",
       role: "Asst. Head of HR",
       department: "Computer Science & Engineering",
       profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1768920153/Pratoy_dpd6iw.jpg",
       tag: "Human Resources",
-      positionType: "assistantHead",
+      positionType: "head",
     },
     {
-      id: 16,
+      id: 17,
       name: "Mahin Muntasin Rahul",
       role: "Asst. Head of HR",
       department: "Environment and Development Studies",
@@ -191,29 +191,29 @@ const Committee2026 = () => {
       positionType: "assistantHead",
     },
     {
-      id: 17,
-      name: "Md Abdul Aziz Arafat",
+      id: 18,
+      name: "Fahmid Khan",
       role: "Asst. Head of HR",
       department: "Computer Science & Engineering",
-      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1768920153/Aziz_jgktta.jpg",
+      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1768922035/Fahmid_efjirs.jpg",
       tag: "Human Resources",
       positionType: "assistantHead",
     },
 
     // Designers Team
     {
-      id: 18,
-      name: "Jonayed",
-      role: "Head of Design",
+      id: 19,
+      name: "Md Fardin Jany",
+      role: "Design",
       department: "Computer Science & Engineering",
-      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1761983043/Jonayed_ozbke5.jpg",
+      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1769365238/raad_wtc3a0.jpg",
       tag: "Designers",
-      positionType: "head",
+      positionType: "assistantHead",
     },
     {
-      id: 19,
+      id: 20,
       name: "Md Abdul Aziz Arafat",
-      role: "Asst. Head of Design",
+      role: "Design",
       department: "Computer Science & Engineering",
       profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1768920153/Aziz_jgktta.jpg",
       tag: "Designers",
@@ -221,15 +221,6 @@ const Committee2026 = () => {
     },
 
     // Executives Team
-    {
-      id: 20,
-      name: "Abdullah R Rafi",
-      role: "Executive Member",
-      department: "Computer Science & Engineering",
-      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1768918568/rafi_ndafws.jpg",
-      tag: "Executives",
-      positionType: "executive",
-    },
     {
       id: 21,
       name: "Yeasin Arafat Babu",
@@ -250,15 +241,6 @@ const Committee2026 = () => {
     },
     {
       id: 23,
-      name: "Fahmid Khan",
-      role: "Executive Member",
-      department: "Computer Science & Engineering",
-      profileImage: "https://res.cloudinary.com/do0e8p5d2/image/upload/v1768922035/Fahmid_efjirs.jpg",
-      tag: "Executives",
-      positionType: "executive",
-    },
-    {
-      id: 25,
       name: "Tanzin Tuli",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -267,7 +249,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 26,
+      id: 24,
       name: "Murad Hasan",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -276,7 +258,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 27,
+      id: 25,
       name: "Ameenah Binte Mahbub",
       role: "Executive Member",
       department: "Electrical & Electronic Engineering",
@@ -285,7 +267,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 28,
+      id: 26,
       name: "Sadman Saleh",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -294,7 +276,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 29,
+      id: 27,
       name: "Sadika Salam",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -303,7 +285,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 30,
+      id: 28,
       name: "Nusrat Subha",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -312,7 +294,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 31,
+      id: 29,
       name: "Siam Arefin",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -321,7 +303,7 @@ const Committee2026 = () => {
       positionType: "executive",
     },
     {
-      id: 32,
+      id: 30,
       name: "Faysal Bin Ibrahim",
       role: "Executive Member",
       department: "Computer Science & Engineering",
@@ -341,6 +323,7 @@ const Committee2026 = () => {
         // For Core team: turn off all others, turn on this one
         const newCoreState = {
           president: false,
+          vicepresident: false,
           generalSecretary: false,
           assistantGeneralSecretary: false,
           treasurer: false,
@@ -652,8 +635,8 @@ const Committee2026 = () => {
                       }
                     >
                       {revealedSections.core.assistantGeneralSecretary
-                        ? "✓ Assistant General Secretary"
-                        : "Reveal Assistant General Secretary"}
+                        ? "✓ Asst. General Secretary"
+                        : "Asst. General Secretary"}
                     </button>
                     <button
                       className={`reveal-position-btn ${revealedSections.core.treasurer ? "active" : ""}`}
@@ -661,7 +644,7 @@ const Committee2026 = () => {
                     >
                       {revealedSections.core.treasurer
                         ? "✓ Treasurer"
-                        : "Reveal Treasurer"}
+                        : "Treasurer"}
                     </button>
                     <button
                       className={`reveal-position-btn ${revealedSections.core.generalSecretary ? "active" : ""}`}
@@ -671,7 +654,15 @@ const Committee2026 = () => {
                     >
                       {revealedSections.core.generalSecretary
                         ? "✓ General Secretary"
-                        : "Reveal General Secretary"}
+                        : "General Secretary"}
+                    </button>
+                    <button
+                      className={`reveal-position-btn ${revealedSections.core.vicepresident ? "active" : ""}`}
+                      onClick={() => toggleReveal("core", "vicepresident", true)}
+                    >
+                      {revealedSections.core.vicepresident
+                        ? "✓ Vice President"
+                        : "Vice President"}
                     </button>
                     <button
                       className={`reveal-position-btn ${revealedSections.core.president ? "active" : ""}`}
@@ -679,7 +670,7 @@ const Committee2026 = () => {
                     >
                       {revealedSections.core.president
                         ? "✓ President"
-                        : "Reveal President"}
+                        : "President"}
                     </button>
                   </div>
                 </div>

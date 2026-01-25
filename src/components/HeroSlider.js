@@ -15,7 +15,7 @@ const HeroSlider = () => {
         "https://res.cloudinary.com/do0e8p5d2/image/upload/v1763054814/uiupc_HeroSlider1_d9kprm.jpg",
       title: "UIU Photography Club",
       subtitle: "Capturing Moments, Creating Memories",
-      eventLink: "/results",
+      eventLink: "/committee-2026",
       type: "image",
       duration: 5000, // 5 seconds for images
     },
@@ -25,17 +25,17 @@ const HeroSlider = () => {
         "https://res.cloudinary.com/do0e8p5d2/video/upload/v1763138349/Shutter_Stories_Chapter_4_-_2025_Promo_glsjvm.mp4",
       title: "Shutter Stories - Chapter IV",
       subtitle: "Showcase Your Talent",
-      eventLink: "/results",
+      eventLink: "/committee-2026",
       type: "video",
       duration: 74000, // 74 seconds for video (1 min 14 sec)
     },
     {
-      id: 5,
+      id: 3,
       imageUrl:
         "https://res.cloudinary.com/do0e8p5d2/image/upload/v1762121158/uiupc_HeroSlider2_cyl1xw.jpg",
       title: "Join Our Community",
       subtitle: "Learn, Share, and Grow Together",
-      eventLink: "/results",
+      eventLink: "/committee-2026",
       type: "image",
       duration: 5000, // 5 seconds for images
     },
@@ -151,8 +151,8 @@ const HeroSlider = () => {
             <p>{slide.subtitle}</p>
             <div className="cta-buttons">
               <a href={slide.eventLink} className="btn btn-secondary">
-                Shutter Stories - Chapter IV <br/>
-                View Results
+                Meet Our New <br/>
+                Commiittee 2026
               </a>
             </div>
             {/* <div className="cta-buttons">
