@@ -188,21 +188,21 @@ const EventDetail = () => {
     },
     "Member-Recruitemet": {
       id: "Member-Recruitemet",
-      title: "Member Recruitment 2025",
+      title: "Member Recruitment Spring 2026",
       subtitle: "Join the UIU Photography Club",
-      status: "completed",
-      chapter: "Fall'25",
-      date: "Nov 15-16 , 2025",
-      time: "9:00 AM - 4:00 PM",
+      status: "ongoing",
+      chapter: "Spring'26",
+      date: "March 03 - March 04, 2026",
+      time: "8:30 PM - 4:00 PM",
       location: "UIU Gallery, 1st Floor",
       registrationLink: "/join",
       entryFee: "500BDT",
-      submissionDeadline: "November 16, 2025",
-      announcementDate: "November 15, 2025",
+      submissionDeadline: "March 04, 2026",
+      announcementDate: "March 03, 2026",
       description:
         "Join the vibrant community of photography enthusiasts at UIU Photography Club.",
       fullDescription: `
-        # Member Recruitment 2025
+        # Member Recruitment 2026
         ## Join the UIU Photography Club
         Are you passionate about photography? Do you want to enhance your skills, participate in exciting events, and connect with fellow photography enthusiasts? The UIU Photography Club is thrilled to announce our Member Recruitment for the year 2024!
 
@@ -217,7 +217,7 @@ const EventDetail = () => {
         1. Fill out the online application form.
         2. Pay the membership fee of 500BDT.
         ## ⏰ Important Dates
-        - **Application Deadline**: November 16, 2025
+        - **Application Deadline**: March 04, 2026
         ## 🤝 Contact Us
         For more information, reach out to us at:
         - Email: photographyclub@dccsa.uiu.ac.bd

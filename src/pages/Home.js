@@ -22,6 +22,19 @@ const Home = ({ featuredPhotos }) => {
         // Mock data - in real app, this would be an API call
         const mockEvents = [
           {
+            id: "Member-Recruitemet",
+            title: "Member Recruitment Spring 2026",
+            subtitle: "Join with Us!",
+            status: "ongoing",
+            chapter: "Spring'26",
+            date: "March 03 - March 04, 2026",
+            time: "8:30 PM - 4:00 PM",
+            location: "UIU Campus, Dhaka",
+            registrationLink: "/join",
+            entryFee: "1st Phase : Interview & Selected Members 500BDT",
+            description: "If any enquiry please contact us via Facebook or Instagram. or you come to the club room #Basement Table 03 ",
+          },
+          {
             id: "shutter-stories",
             title: "Shutter Stories Chapter IV",
             subtitle: "National Photography Exhibition",
@@ -36,19 +49,7 @@ const Home = ({ featuredPhotos }) => {
             announcementDate: "December 20, 2025",
             description: "A prestigious national-level photography exhibition that brings together photography enthusiasts from across the country.",
           },
-         {
-            id: "Member-Recruitemet",
-            title: "Member Recruitment Fall 2025",
-            subtitle: "Join with Us!",
-            status: "completed",
-            chapter: "Fall'25",
-            date: "November 15, November 19 2025",
-            time: "8:30 PM - 4:00 PM",
-            location: "UIU Campus, Dhaka",
-            registrationLink: "/join",
-            entryFee: "1st Phase : Interview & Selected Members 500BDT",
-            description: "If any enquiry please contact us via Facebook or Instagram. or you come to the club room #Basement Table 03 ",
-          },
+         
           /*{
             id: "photo-editing-masterclass",
             title: "Photo Editing Masterclass",
