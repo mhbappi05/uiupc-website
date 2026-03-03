@@ -47,8 +47,8 @@ const UpcomingEvents = ({ events }) => {
       return 'https://images.unsplash.com/photo-1563089145-599997674d42?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80';
     } else if (event.title?.toLowerCase().includes('shutter')) {
       return 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1762799836/Blog5_lbkrue.png';
-    } else if (event.title?.toLowerCase().includes('contest')) {
-      return 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80';
+    } else if (event.title?.toLowerCase().includes('iftar')) {
+      return 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1772527923/Post_air114.jpg';
     } else if (event.title?.toLowerCase().includes('member')) {
       return 'https://res.cloudinary.com/do0e8p5d2/image/upload/v1772526242/Artboard_1-100_u1jtvp.jpg';
     } else {

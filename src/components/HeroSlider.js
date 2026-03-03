@@ -30,6 +30,16 @@ const HeroSlider = () => {
       duration: 5000, // 5 seconds for images
     },
     {
+      id: 2,
+      imageUrl:
+        "https://res.cloudinary.com/do0e8p5d2/image/upload/v1772527954/Cover_mhro7f.jpg",
+      title: "Iftar-e-Ziyafat",
+      subtitle: "Lets Break Our Fast with UIUPC Family",
+      eventLink: "https://forms.gle/u9jskfgWjqN12vd97",
+      type: "image",
+      duration: 5000, // 5 seconds for images
+    },
+    {
       id: 3,
       videoUrl:
         "https://res.cloudinary.com/do0e8p5d2/video/upload/v1763138349/Shutter_Stories_Chapter_4_-_2025_Promo_glsjvm.mp4",
@@ -161,8 +171,7 @@ const HeroSlider = () => {
             <p>{slide.subtitle}</p>
             <div className="cta-buttons">
               <a href={slide.eventLink} className="btn btn-secondary">
-                Meet Our New <br/>
-                Commiittee 2026
+                Join With US
               </a>
             </div>
             {/* <div className="cta-buttons">
